@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  fetch:
+    build: .
+    volumes:
+     - ./fetch_data:/fetch_data
+     - ./data:/data
+    command: ['python', "-m", "fetch_data"]
