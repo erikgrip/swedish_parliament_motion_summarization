@@ -6,4 +6,6 @@ RUN pip3 install --upgrade pip
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
+VOLUME /data
 VOLUME /fetch_data
+VOLUME /logs
