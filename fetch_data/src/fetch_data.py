@@ -8,6 +8,8 @@ import pickle
 import time
 import pandas as pd
 import pathlib
+import logging
+
 
 def timing(f):
     def wrap(*args, **kwargs):
@@ -20,7 +22,6 @@ def timing(f):
     return wrap
 
 
-@timing
 def download_motion_zip_files(file_type='html'):
     '''Downloads a collection of zipped directories to the /data/raw
     directory. Returns a list of the downloaded files' names
@@ -76,7 +77,6 @@ def _parse_html_text(html: str):
     return text
 
 
-@timing
 def read_motions_from_zip_arch(zip_arch):
     '''Read motion files from local zipped directories and return
     a list of dictionaries with one entry per motion. Each dict hold info
@@ -96,31 +96,52 @@ def read_motions_from_zip_arch(zip_arch):
             with z.open(filename) as f:
                 data = f.read()
                 d = json.loads(data.decode("utf-8-sig"))
-                sub_d = d['dokumentstatus']['dokument']
+                document = d['dokumentstatus']['dokument']
 
                 doc = {}
-                doc['id'] = sub_d['dok_id']
-                doc['date'] = sub_d['datum']
-                doc['title'] = _trim_whitespace(sub_d['titel'])
-                doc['text'] = _trim_whitespace(_parse_html_text(sub_d['html']))
-                docs.append(doc)
+                try:
+                    doc['id'] = document['dok_id']
+                    doc['date'] = document['datum']
+                    doc['title'] = document['titel']
+                    doc['subtitle'] = document['subtitel']
+                    doc['text'] = _parse_html_text(document['html'])
+                    authors =  d['dokumentstatus']['dokintressent']['intressent']
+                    if isinstance(authors, list):
+                        doc['main_author'] = authors[0]['namn']
+                        doc['author_party'] = authors[0]['partibet']
+                    else:
+                        doc['main_author'] = authors['namn']
+                        doc['author_party'] = authors['partibet']
+                    docs.append(doc)
+                except KeyError as e:
+                    logging.info('Did not find key %s in motion id=%s, title=%s',
+                                 e, document['dok_id'], document['titel'])
+                    pass
+                except TypeError as e:
+                    logging.error('Failed to read motion: %s', e)
+                    pass
     return docs
 
 
-@timing
 def save_pickle(obj, path):
     target_file = open(path, "wb")
     pickle.dump(obj, target_file)
     target_file.close()
 
 
-@timing
 def read_pickle(path):
     f = open(path, "rb")
     return pickle.load(f)
 
 
 def main():
+    # Create output dir if not exists
+    output_dir = 'logs'
+    pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    logging.basicConfig(filename='logs/fetch.log',
+                        encoding='utf-8',
+                        level=logging.DEBUG)
+
     dl_zip_file_paths = download_motion_zip_files('json')
 
     mot_dict = []
