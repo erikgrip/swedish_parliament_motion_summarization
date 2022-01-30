@@ -2,8 +2,23 @@ version: '3.9'
 
 services:
   fetch:
-    build: .
+    build: ./docker
     volumes:
      - ./fetch_data:/fetch_data
+     - ./prep_data:/prep_data
      - ./data:/data
-    command: ['python', "-m", "fetch_data"]
+     - ./logs:/logs
+     - ./tests:/tests
+     - ./run.sh:/run.sh
+    command: ['./run.sh']
+  jlab:
+    build: ./docker/jlab
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=easy
+    ports:
+      - 8888:8888
+    volumes:
+      - ./data/:/home/jovyan/work/data
+      - ./notebooks/:/home/jovyan/work/notebooks
+    command: start-notebook.sh --ServerApp.password='sha1:dcf97170ed86:b1ce72070dcd762dac904e1cbae93b46b428686f'
