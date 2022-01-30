@@ -57,12 +57,6 @@ def download_motion_zip_files(file_type='html'):
     return downloaded_archive_names
 
 
-@timing
-def _trim_whitespace(text):
-    return re.sub('\s+', ' ', text).strip()
-
-
-@timing
 def _parse_html_text(html: str):
     soup = BeautifulSoup(html, features="html.parser")
 
