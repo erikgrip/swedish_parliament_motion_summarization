@@ -1,0 +1,13 @@
+-c prod.txt
+bandit
+beautifulsoup4
+black
+mypy
+pycodestyle
+pydocstyle
+pylint
+pytest
+requests
+safety
+tqdm
+wandb
