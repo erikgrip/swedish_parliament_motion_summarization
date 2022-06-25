@@ -1,17 +1,25 @@
 from pathlib import Path
 from typing import Dict
 import argparse
+import json
+import logging
+import re
+import zipfile
 
-
-from torch.utils.data import random_split, DataLoader
 from bs4 import BeautifulSoup
-import glob
-import pytorch_lightning as pl
+from spacy.lang.sv import Swedish
+from torch.utils.data import random_split, DataLoader
+import pandas as pd
 import requests
 
 from text_summarizer.data.base_data_module import (
     BaseDataModule,
     load_and_print_info)
+from text_summarizer.data.util import (
+    load_pickle,
+    save_pickle,
+    trim_whitespace,
+    text_to_lower)
 from text_summarizer import util
 
 
@@ -31,8 +39,7 @@ def _download_raw_dataset(metadata: Dict, dl_dirname: Path) -> Path:
         raise ValueError("Downloaded data file SHA-256 does not match that listed in metadata document.")
     return filename
 
-
-def download_motion_zip_files(dl_dirname: Path, file_type='html'):
+def _download_motion_zip_files(dl_dirname: Path, file_type='html'):
     '''Downloads a collection of zipped directories to the dl_dirname
     directory. Returns a list of all files in the download directory.
 
@@ -54,16 +61,17 @@ def download_motion_zip_files(dl_dirname: Path, file_type='html'):
 
     for doc in doc_list:
         if (doc.typ.string == 'mot') & (doc.format.string == file_type):
-            output_file_path = Path(str(dl_dirname) + '/' + doc.filnamn.string)
+            output_file_path = Path(dl_dirname / doc.filnamn.string)
             if not output_file_path.is_file():
                 zip_arch_url = base_url + doc.url.string
                 response = requests.get(zip_arch_url, allow_redirects=True)
                 with open(output_file_path, 'wb') as f:
+                    print(f"Downloading raw dataset from {zip_arch_url} to {output_file_path}...")
                     f.write(response.content)
-    return dl_dirname.glob('*')
+    return dl_dirname.glob('*.zip')
     
 
-def read_motions_from_zip_arch(zip_arch):
+def _read_motions_from_zip_arch(zip_arch):
     '''Read motion files from local zipped directories and return
     a list of dictionaries with one entry per motion. Each dict hold info
     about the document's ID, date, title and text.
@@ -107,6 +115,22 @@ def read_motions_from_zip_arch(zip_arch):
                     logging.error('Failed to read motion: %s', e)
                     pass
     return docs
+
+
+def _parse_html_text(html: str):
+    soup = BeautifulSoup(html, features="html.parser")
+
+    # Drop script and style elements
+    for script in soup(["script", "style"]):
+        script.extract()
+
+    text = soup.get_text()
+    lines = (line.strip() for line in text.splitlines())
+    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+    text = ' '.join(chunk for chunk in chunks if chunk)
+    return text
+
+
 class SweParliamentMotions(BaseDataModule):
     def __init__(self, args: argparse.Namespace) -> None:
         self.data_dir = DOWNLOADED_DATA_DIRNAME
