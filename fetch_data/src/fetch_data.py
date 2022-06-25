@@ -11,17 +11,6 @@ import pathlib
 import logging
 
 
-def timing(f):
-    def wrap(*args, **kwargs):
-        time1 = time.time()
-        ret = f(*args, **kwargs)
-        time2 = time.time()
-        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
-
-        return ret
-    return wrap
-
-
 def download_motion_zip_files(file_type='html'):
     '''Downloads a collection of zipped directories to the /data/raw
     directory. Returns a list of the downloaded files' names

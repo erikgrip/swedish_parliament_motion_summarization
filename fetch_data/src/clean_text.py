@@ -19,8 +19,8 @@ def text_to_lower(s):
 
 # See notebook for rationale
 def trim_motion_text(row):
-    '''Motion structure specific trimming. Please see notebook for rationale.
-    Requires text to be lower case'''
+    '''Motion structure specific trimming to appy row wise to pandas DataFrame.
+    See notebook for rationale. Requires text to be lower case'''
 
     def trim_motion_text_by_subtitle(row):
         split = row['text'].split(row['subtitle'], 1)
@@ -37,9 +37,9 @@ def trim_motion_text(row):
 
     def trim_motion_text_by_proposed_decision(row):
         split = re.split("förslag till riksdagsbeslut riksdagen [A-ö0-9\s,]+\.\s|" +\
-                        "riksdagen tillkännager för regeringen som sin mening [A-ö0-9\s,]+\.\s|" +\
-                        "riksdagen ställer sig bakom det som anförs [A-ö0-9\s,]+\.\s",
-                        row['text'].lower())
+                         "riksdagen tillkännager för regeringen som sin mening [A-ö0-9\s,]+\.\s|" +\
+                         "riksdagen ställer sig bakom det som anförs [A-ö0-9\s,]+\.\s",
+                         row['text'].lower())
         return split[-1].strip()
 
 
