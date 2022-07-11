@@ -16,6 +16,9 @@ pip-tools:
 	pip-compile requirements/prod.in && pip-compile requirements/dev.in
 	pip-sync requirements/prod.txt requirements/dev.txt
 
+training-dataset:
+	python -m training_dataset_downloader
+
 # Example training command
 train-mnist-cnn-ddp:
 	python training/run_experiment.py --max_epochs=10 --gpus=-1 --accelerator=ddp --num_workers=20 --data_class=MNIST --model_class=MLP
