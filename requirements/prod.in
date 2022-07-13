@@ -2,5 +2,7 @@ numpy
 pandas
 pyarrow
 pytorch-lightning
+sentencepiece
 spacy
 torch
+transformers

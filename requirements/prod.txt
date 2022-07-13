@@ -38,6 +38,10 @@ cymem==2.0.6
     #   preshed
     #   spacy
     #   thinc
+filelock==3.7.1
+    # via
+    #   huggingface-hub
+    #   transformers
 frozenlist==1.3.0
     # via
     #   aiohttp
@@ -52,6 +56,8 @@ google-auth-oauthlib==0.4.6
     # via tensorboard
 grpcio==1.46.3
     # via tensorboard
+huggingface-hub==0.8.1
+    # via transformers
 idna==3.3
     # via
     #   requests
@@ -86,13 +92,16 @@ numpy==1.22.4
     #   tensorboard
     #   thinc
     #   torchmetrics
+    #   transformers
 oauthlib==3.2.0
     # via requests-oauthlib
 packaging==21.3
     # via
+    #   huggingface-hub
     #   pytorch-lightning
     #   spacy
     #   torchmetrics
+    #   transformers
 pandas==1.4.2
     # via -r requirements/prod.in
 pathy==0.6.1
@@ -128,17 +137,26 @@ pytorch-lightning==1.6.4
 pytz==2022.1
     # via pandas
 pyyaml==6.0
-    # via pytorch-lightning
+    # via
+    #   huggingface-hub
+    #   pytorch-lightning
+    #   transformers
+regex==2022.7.9
+    # via transformers
 requests==2.27.1
     # via
     #   fsspec
+    #   huggingface-hub
     #   requests-oauthlib
     #   spacy
     #   tensorboard
+    #   transformers
 requests-oauthlib==1.3.1
     # via google-auth-oauthlib
 rsa==4.8
     # via google-auth
+sentencepiece==0.1.96
+    # via -r requirements/prod.in
 six==1.16.0
     # via
     #   google-auth
@@ -164,6 +182,8 @@ tensorboard-plugin-wit==1.8.1
     # via tensorboard
 thinc==8.0.17
     # via spacy
+tokenizers==0.12.1
+    # via transformers
 torch==1.11.0
     # via
     #   -r requirements/prod.in
@@ -173,14 +193,19 @@ torchmetrics==0.9.0
     # via pytorch-lightning
 tqdm==4.64.0
     # via
+    #   huggingface-hub
     #   pytorch-lightning
     #   spacy
+    #   transformers
+transformers==4.20.1
+    # via -r requirements/prod.in
 typer==0.4.1
     # via
     #   pathy
     #   spacy
 typing-extensions==4.0.1
     # via
+    #   huggingface-hub
     #   pydantic
     #   pytorch-lightning
     #   torch
