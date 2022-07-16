@@ -63,16 +63,16 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         )
 
         self.data_train = SwedishParliamentMotionsDataset(
-            data_train.dataset["text"].tolist(),
-            data_train.dataset["title"].tolist(),
+            data=data_train.dataset["text"].tolist(),
+            targets=data_train.dataset["title"].tolist(),
         )
         self.data_val = SwedishParliamentMotionsDataset(
-            data_val.dataset["text"].tolist(),
-            data_val.dataset["title"].tolist(),
+            data=data_val.dataset["text"].tolist(),
+            targets=data_val.dataset["title"].tolist(),
         )
         self.data_test = SwedishParliamentMotionsDataset(
-            data_test.dataset["text"].tolist(),
-            data_test.dataset["title"].tolist(),
+            data=data_test.dataset["text"].tolist(),
+            targets=data_test.dataset["title"].tolist(),
         )
 
     def train_dataloader(self):

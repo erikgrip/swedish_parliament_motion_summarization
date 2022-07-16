@@ -135,7 +135,6 @@ def main():
         if args.wandb:
             wandb.save(best_model_path)
             print("Best model also uploaded to W&B")
-    # Hide lines above until Lab 5
 
 
 if __name__ == "__main__":
