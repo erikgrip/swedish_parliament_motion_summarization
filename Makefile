@@ -25,7 +25,7 @@ train-mnist-cnn-ddp:
 
 # Overfit on single batch
 overfit:
-	python training/run_experiment.py --max_epochs=10 --gpus=-1 --accelerator=ddp --num_workers=20 --data_class=MNIST --model_class=MLP  --overfit_batches=1
+	python training/run_experiment.py --max_epochs=10 --gpus=0 --accelerator=ddp --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5  --overfit_batches=1
 
 # Lint
 lint:
