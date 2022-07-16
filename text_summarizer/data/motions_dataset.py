@@ -2,7 +2,10 @@ from typing import Any, Tuple
 
 from transformers import T5Tokenizer
 
-from util import BaseDataset
+from .util import BaseDataset
+
+
+DEFAULT_TOKENIZER = T5Tokenizer.from_pretrained("t5-base")
 
 
 class SwedishParliamentMotionsDataset(BaseDataset):
@@ -12,7 +15,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
         targets,
         transform=None,
         target_transform=None,
-        tokenizer=T5Tokenizer,
+        tokenizer=DEFAULT_TOKENIZER,
         data_max_token_length=256,
         target_max_token_length=32,
     ) -> None:
@@ -26,7 +29,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
 
         text_encoding = self.tokenizer(
             text,
-            max_lenght=self.data_max_token_length,
+            max_length=self.data_max_token_length,
             padding="max_length",
             truncation=True,
             return_attention_mask=True,
@@ -35,8 +38,8 @@ class SwedishParliamentMotionsDataset(BaseDataset):
         )
 
         summary_encoding = self.tokenizer(
-            text,
-            max_lenght=self.target_max_token_length,
+            summary,
+            max_length=self.target_max_token_length,
             padding="max_length",
             truncation=True,
             return_attention_mask=True,
@@ -50,7 +53,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
         return dict(
             text=text,
             summary=summary,
-            text_inpud_ids=text_encoding["input_ids"].flatten(),
+            text_input_ids=text_encoding["input_ids"].flatten(),
             text_attention_mask=text_encoding["attention_mask"].flatten(),
             labels=labels.flatten(),
             labels_attention_mask=summary_encoding["attention_mask"].flatten(),

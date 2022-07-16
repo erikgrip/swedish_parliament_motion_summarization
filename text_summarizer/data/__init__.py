@@ -1,0 +1,1 @@
+from .motions_data_module import SweParliamentMotionsDataModule
