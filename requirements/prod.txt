@@ -184,7 +184,7 @@ thinc==8.0.17
     # via spacy
 tokenizers==0.12.1
     # via transformers
-torch==1.11.0
+torch @ https://download.pytorch.org/whl/cu113/torch-1.12.0%2Bcu113-cp39-cp39-linux_x86_64.whl
     # via
     #   -r requirements/prod.in
     #   pytorch-lightning

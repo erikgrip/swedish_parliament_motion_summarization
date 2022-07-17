@@ -4,5 +4,5 @@ pyarrow
 pytorch-lightning
 sentencepiece
 spacy
-torch
+torch @ https://download.pytorch.org/whl/cu113/torch-1.12.0%2Bcu113-cp39-cp39-linux_x86_64.whl
 transformers
