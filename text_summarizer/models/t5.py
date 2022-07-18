@@ -2,7 +2,7 @@ from typing import Any, Dict
 import argparse
 
 from torch import nn
-from transformers import T5ForConditionalGeneration
+from transformers import MT5ForConditionalGeneration
 
 
 class t5(nn.Module):
@@ -10,8 +10,8 @@ class t5(nn.Module):
         super().__init__()
         self.args = vars(args) if args is not None else {}
         self.data_config = data_config
-        self.model = T5ForConditionalGeneration.from_pretrained(
-            "t5-small", return_dict=True
+        self.model = MT5ForConditionalGeneration.from_pretrained(
+            "google/mt5-base", return_dict=True
         )
 
     @staticmethod
