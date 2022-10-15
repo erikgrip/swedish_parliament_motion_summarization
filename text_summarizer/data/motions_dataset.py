@@ -1,11 +1,8 @@
 from typing import Any, Tuple
 
-from transformers import T5Tokenizer
+from transformers import MT5TokenizerFast
 
 from .util import BaseDataset
-
-
-DEFAULT_TOKENIZER = T5Tokenizer.from_pretrained("t5-base")
 
 
 class SwedishParliamentMotionsDataset(BaseDataset):
@@ -15,7 +12,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
         targets,
         transform=None,
         target_transform=None,
-        tokenizer=DEFAULT_TOKENIZER,
+        tokenizer=MT5TokenizerFast,
         data_max_token_length=256,
         target_max_token_length=32,
     ) -> None:

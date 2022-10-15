@@ -1,7 +1,7 @@
 import argparse
 
 from torch.utils.data import random_split, DataLoader
-from transformers import T5TokenizerFast
+from transformers import MT5TokenizerFast
 import pandas as pd
 import torch
 
@@ -15,7 +15,7 @@ DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 BATCH_SIZE = 8
 MAX_TEXT_TOKENS = 512
 MAX_SUMMARY_TOKENS = 32
-TOKENIZER = T5TokenizerFast
+TOKENIZER = MT5TokenizerFast.from_pretrained("google/mt5-base")
 
 
 class SweParliamentMotionsDataModule(BaseDataModule):
@@ -65,14 +65,17 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         self.data_train = SwedishParliamentMotionsDataset(
             data=data_train.dataset["text"].tolist(),
             targets=data_train.dataset["title"].tolist(),
+            tokenizer=self.tokenizer,
         )
         self.data_val = SwedishParliamentMotionsDataset(
             data=data_val.dataset["text"].tolist(),
             targets=data_val.dataset["title"].tolist(),
+            tokenizer=self.tokenizer,
         )
         self.data_test = SwedishParliamentMotionsDataset(
             data=data_test.dataset["text"].tolist(),
             targets=data_test.dataset["title"].tolist(),
+            tokenizer=self.tokenizer,
         )
 
     def train_dataloader(self):

@@ -3,6 +3,7 @@ bandit
 beautifulsoup4
 black==22.3.0
 ipykernel
+matplotlib
 mypy
 pycodestyle
 pydocstyle
@@ -10,5 +11,6 @@ pylint
 pytest
 requests
 safety
+seaborn
 tqdm
 wandb
