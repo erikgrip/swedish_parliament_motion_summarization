@@ -21,8 +21,8 @@ def _trim_motion_text_by_subtitle(row):
         row["text"]
 
 
-def _trim_motion_text_by_title(row):
-    if row["title"] in row["text"]:
+def _trim_motion_text_by_leading_title(row):
+    if row["text"].startswith(row["title"]):
         text = row["text"].split(row["title"], 1)[-1].strip()
     else:
         text = row["text"]
@@ -48,6 +48,8 @@ def _trim_motion_text_by_proposed_decision(row):
         + "Riksdagen tillkännager för [A-Öa-ö]+ som sin mening .+?\. (?=([A-ZÅÄÖ]))|"
         + "Riksdagen bemyndigar .+?\. (?=([A-ZÅÄÖ]))|"
         + "Riksdagen beslutar om .+?\. (?=([A-ZÅÄÖ]))|"
+        + "Härmed hemställs att riksdagen .+?\. (?=([A-ZÅÄÖ]))|"
+        + "Med hänvisning till vad so(?:m|rn) anförts .+?\. (?=([A-ZÅÄÖ]))|"
         + "Riksdagen ställer sig bakom det som anförs .+?\. (?=([A-ZÅÄÖ]))",
         row["text"],
     )
@@ -57,6 +59,18 @@ def _trim_motion_text_by_proposed_decision(row):
 def _trim_leadning_motivation(row):
     if re.match(r"^Motivering [A-ZÅÄÖ\d]", row["text"]):
         row["text"] = row["text"].split("Motivering", 1)[-1].strip()
+    return row["text"]
+
+
+def _set_empty_when_leadning_date(row):
+    if re.match(r"^Stockholm den [\d]+ [a-z]+ \d{4}", row["text"]):
+        row["text"] = ""
+    return row["text"]
+
+
+def _delete_footer(row):
+    if re.sub(r"(?<=\.) Stockholm den [\d]+ [a-z]+ \d{4} .+", row["text"]):
+        row["text"] = ""
     return row["text"]
 
 
@@ -76,9 +90,11 @@ def prep_training_dataset(data_path=INPUT_DATA_PATH):
         df["text"] = _trim_linebreaks(df["text"])
         df["text"] = _trim_whitespace(df["text"])
         df["text"] = df.apply(_trim_motion_text_by_subtitle, axis=1)
-        df["text"] = df.apply(_trim_motion_text_by_title, axis=1)
+        df["text"] = df.apply(_trim_motion_text_by_leading_title, axis=1)
         df["text"] = df.apply(_trim_motion_text_by_proposed_decision, axis=1)
         df["text"] = df.apply(_trim_leadning_motivation, axis=1)
+        df["text"] = df.apply(_set_empty_when_leadning_date, axis=1)
+        df["text"] = df.apply(_delete_footer, axis=1)
 
         df.to_feather(path=OUTPUT_DATA_PATH)
 
