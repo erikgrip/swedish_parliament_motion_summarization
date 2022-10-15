@@ -76,7 +76,7 @@ def prep_training_dataset(data_path=INPUT_DATA_PATH):
     with open(data_path, "rb") as f:
         df = pd.DataFrame(pickle.load(f))
         pre_filter_len = len(df)
-        df = df.dropna().reset_index(drop=True)
+        df = df.dropna()
         print(f"Filtered {pre_filter_len - len(df)} rows with missing values.")
 
         df["date"] = pd.to_datetime(df["date"])
@@ -95,7 +95,7 @@ def prep_training_dataset(data_path=INPUT_DATA_PATH):
 
         # Drop rows with very short texts after the cleaning
         pre_filter_len = len(df)
-        df = df.loc[df["text"].str.len() >= 150]
+        df = df.loc[df["text"].str.len() >= 150].reset_index(drop=True)
         print(f"Filtered {pre_filter_len - len(df)} texts shorter than 150 characters.")
         print(f"Number of rows remaining: {len(df)}")
 
