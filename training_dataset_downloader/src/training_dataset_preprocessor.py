@@ -78,7 +78,6 @@ def prep_training_dataset(data_path=INPUT_DATA_PATH):
         pre_filter_len = len(df)
         df = df.dropna().reset_index(drop=True)
         print(f"Filtered {pre_filter_len - len(df)} rows with missing values.")
-        print(f"Number of rows remaining: {len(df)}")
 
         df["date"] = pd.to_datetime(df["date"])
         df["file_date"] = pd.to_datetime(df["file_date"])
@@ -93,6 +92,12 @@ def prep_training_dataset(data_path=INPUT_DATA_PATH):
         df["text"] = df.apply(_trim_leadning_motivation, axis=1)
         df["text"] = df.apply(_set_empty_when_leadning_date, axis=1)
         df["text"] = df.apply(_delete_footer, axis=1)
+
+        # Drop rows with very short texts after the cleaning
+        pre_filter_len = len(df)
+        df = df.loc[df["text"].str.len() >= 150]
+        print(f"Filtered {pre_filter_len - len(df)} texts shorter than 150 characters.")
+        print(f"Number of rows remaining: {len(df)}")
 
         df.to_feather(path=OUTPUT_DATA_PATH)
 
