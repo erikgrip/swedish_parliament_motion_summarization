@@ -69,9 +69,7 @@ def _set_empty_when_leadning_date(row):
 
 
 def _delete_footer(row):
-    if re.sub(r"(?<=\.) Stockholm den [\d]+ [a-z]+ \d{4} .+", row["text"]):
-        row["text"] = ""
-    return row["text"]
+    return re.sub(r"(?<=\.) Stockholm den [\d]+ [a-z]+ \d{4} .+", "", row["text"])
 
 
 def prep_training_dataset(data_path=INPUT_DATA_PATH):

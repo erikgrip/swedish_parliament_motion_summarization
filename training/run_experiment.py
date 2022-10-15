@@ -128,7 +128,6 @@ def main():
     trainer.test(lit_model, datamodule=data)
     # pylint: enable=no-member
 
-    # Hide lines below until Lab 5
     best_model_path = model_checkpoint_callback.best_model_path
     if best_model_path:
         print("Best model saved at:", best_model_path)
