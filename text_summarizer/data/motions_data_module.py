@@ -29,6 +29,7 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         self.max_summary_tokens = self.args.get(
             "max_summary_tokens", MAX_SUMMARY_TOKENS
         )
+        self.seed = 1
 
     @staticmethod
     def add_to_argparse(parser):
@@ -59,7 +60,7 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         data_train, data_val, data_test = random_split(
             df,
             [train_size, val_size, test_size],
-            generator=torch.Generator().manual_seed(42),
+            generator=torch.Generator().manual_seed(self.seed),
         )
 
         self.data_train = SwedishParliamentMotionsDataset(
