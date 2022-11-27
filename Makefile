@@ -20,12 +20,12 @@ training-dataset:
 	python -m training_dataset_downloader
 
 # Example training command
-train-t5:
-	python training/run_experiment.py --max_epochs=3 --gpus=1 --accelerator=ddp --batch_size=32 --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5
+train-mt5:
+	PYTHONPATH=. python training/run_experiment.py --max_epochs=3 --gpus=1 --batch_size=32 --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5
 
 # Overfit on single batch
 overfit:
-	python training/run_experiment.py --max_epochs=10 --gpus=0 --accelerator=ddp --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5  --overfit_batches=1
+	PYTHONPATH=. python training/run_experiment.py --max_epochs=10 --gpus=0 --accelerator=ddp --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5  --overfit_batches=1
 
 # Lint
 lint:
