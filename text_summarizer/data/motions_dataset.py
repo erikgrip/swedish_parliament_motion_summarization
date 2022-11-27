@@ -1,3 +1,6 @@
+"""Dataset class for Swedish Parliament Motions."""
+
+import argparse
 from typing import Any, Tuple
 
 from transformers import MT5TokenizerFast
@@ -5,8 +8,14 @@ from transformers import MT5TokenizerFast
 from .util import BaseDataset
 
 
+
 class SwedishParliamentMotionsDataset(BaseDataset):
-    def __init__(
+    """Extends base class to return tokenized texts"""
+    def __init__(self, data, targets, args: argparse.Namespace=None) -> None:
+        self.args = vars(args) if args is not None else {}
+        self.data_transform = self.args.get("data_transform", None)
+        self.target_transform = self.args.get("target_transform", None)
+"""     def __init__(
         self,
         data,
         targets,
@@ -15,7 +24,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
         tokenizer=MT5TokenizerFast,
         data_max_token_length=256,
         target_max_token_length=32,
-    ) -> None:
+    ) -> None: """
         super().__init__(data, targets, transform, target_transform)
         self.tokenizer = tokenizer
         self.data_max_token_length = data_max_token_length
@@ -58,7 +67,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
 
 
 if __name__ == "__main__":
-    data = ["This is my first sentence", "And here's my 2nd one"]
-    targets = ["The first", "The second"]
+    dummy_data = ["This is my first sentence", "And here's my 2nd one"]
+    dummy_targets = ["The first", "The second"]
 
-    ds = SwedishParliamentMotionsDataset(data=data, targets=targets)
+    ds = SwedishParliamentMotionsDataset(data=dummy_data, targets=dummy_targets)

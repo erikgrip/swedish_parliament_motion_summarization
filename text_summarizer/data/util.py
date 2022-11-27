@@ -1,3 +1,5 @@
+"""BaseDataset class."""
+
 from typing import Any, Callable, Sequence, Tuple, Union
 
 import torch

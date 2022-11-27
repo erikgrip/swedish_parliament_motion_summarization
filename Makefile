@@ -21,7 +21,7 @@ training-dataset:
 
 # Example training command
 train-mt5:
-	PYTHONPATH=. python training/run_experiment.py --max_epochs=3 --gpus=1 --batch_size=32 --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5
+	PYTHONPATH=. python training/run_experiment.py --max_epochs=15 --gpus=1 --batch_size=16 --num_workers=20 --data_class=SweParliamentMotionsDataModule --model_class=t5
 
 # Overfit on single batch
 overfit:
