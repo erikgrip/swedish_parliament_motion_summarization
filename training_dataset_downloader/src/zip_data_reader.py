@@ -44,7 +44,11 @@ def _read_motions_from_zip_arch(zip_arch):
             with z.open(filename) as f:
                 data = f.read()
                 d = json.loads(data.decode("utf-8-sig"))
-                document = d["dokumentstatus"]["dokument"]
+                try:
+                    document = d["dokumentstatus"]["dokument"]
+                except TypeError as e:
+                    logging.warning("Failed to read motion %s: %s", filename, e)
+                    pass
 
                 doc = {}
                 try:
@@ -70,9 +74,7 @@ def _read_motions_from_zip_arch(zip_arch):
                         document["titel"],
                     )
                     pass
-                except TypeError as e:
-                    logging.error("Failed to read motion: %s", e)
-                    pass
+
     return docs
 
 
