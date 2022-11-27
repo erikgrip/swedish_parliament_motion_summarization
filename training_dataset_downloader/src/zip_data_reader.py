@@ -48,7 +48,7 @@ def _read_motions_from_zip_arch(zip_arch):
                     document = d["dokumentstatus"]["dokument"]
                 except TypeError as e:
                     logging.warning("Failed to read motion %s: %s", filename, e)
-                    pass
+                    continue
 
                 doc = {}
                 try:
@@ -73,7 +73,6 @@ def _read_motions_from_zip_arch(zip_arch):
                         document["dok_id"],
                         document["titel"],
                     )
-                    pass
 
     return docs
 
