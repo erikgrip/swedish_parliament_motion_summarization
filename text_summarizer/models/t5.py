@@ -11,7 +11,7 @@ class t5(nn.Module):
         self.args = vars(args) if args is not None else {}
         self.data_config = data_config
         self.model = MT5ForConditionalGeneration.from_pretrained(
-            "google/mt5-base", return_dict=True
+            "google/mt5-small", return_dict=True
         )
 
     @staticmethod
