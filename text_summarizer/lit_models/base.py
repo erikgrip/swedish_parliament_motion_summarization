@@ -74,8 +74,8 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
             "monitor": "val_loss",
         }
 
-    def forward(self, x):
-        return self.model(x)
+    def forward(self, *args, **kwargs):
+        pass
 
     def training_step(self, batch, batch_idx):  # pylint: disable=unused-argument
         x, y = batch  # pylint: disable=invalid-name
