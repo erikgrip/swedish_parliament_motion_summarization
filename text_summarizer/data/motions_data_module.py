@@ -52,17 +52,14 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         self.data_train = SwedishParliamentMotionsDataset(
             data=data_train.dataset["text"].tolist(),
             targets=data_train.dataset["title"].tolist(),
-            tokenizer=self.tokenizer,
         )
         self.data_val = SwedishParliamentMotionsDataset(
             data=data_val.dataset["text"].tolist(),
             targets=data_val.dataset["title"].tolist(),
-            tokenizer=self.tokenizer,
         )
         self.data_test = SwedishParliamentMotionsDataset(
             data=data_test.dataset["text"].tolist(),
             targets=data_test.dataset["title"].tolist(),
-            tokenizer=self.tokenizer,
         )
 
     def train_dataloader(self):
