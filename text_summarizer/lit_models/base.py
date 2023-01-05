@@ -12,9 +12,8 @@ ONE_CYCLE_TOTAL_STEPS = 100
 
 
 class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
-    """
-    Generic PyTorch-Lightning class that must be initialized with a PyTorch module.
-    """
+    """ Generic PyTorch-Lightning class that must be initialized
+    with a PyTorch module. """
 
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__()
@@ -24,7 +23,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         optimizer = self.args.get("optimizer", OPTIMIZER)
         self.optimizer_class = getattr(torch.optim, optimizer)
 
-        self.lr = self.args.get("lr", LR)
+        self.lr = self.args.get("lr", LR)  # pylint: disable=invalid-name
 
         loss = self.args.get("loss", LOSS)
         if loss not in ("ctc", "transformer"):
@@ -40,7 +39,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.test_acc = Accuracy()
 
     @staticmethod
-    def add_to_argparse(parser):
+    def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
         parser.add_argument(
             "--optimizer",
             type=str,
@@ -79,7 +78,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         return self.model(x)
 
     def training_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        x, y = batch
+        x, y = batch  # pylint: disable=invalid-name
         logits = self(x)
         loss = self.loss_fn(logits, y)
         self.log("train_loss", loss)
@@ -88,7 +87,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         return loss
 
     def validation_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        x, y = batch
+        x, y = batch  # pylint: disable=invalid-name
         logits = self(x)
         loss = self.loss_fn(logits, y)
         self.log("val_loss", loss, prog_bar=True)
@@ -96,7 +95,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         self.log("val_acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
 
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        x, y = batch
+        x, y = batch  # pylint: disable=invalid-name
         logits = self(x)
         self.test_acc(logits, y)
         self.log("test_acc", self.test_acc, on_step=False, on_epoch=True)

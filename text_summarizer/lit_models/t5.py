@@ -10,6 +10,7 @@ class t5LitModel(BaseLitModel):
         self.model = model
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
+        """Forward pass through self.model."""
         loss, logits = self.model(
             input_ids,
             attention_mask=attention_mask,

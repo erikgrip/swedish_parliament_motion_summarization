@@ -1,4 +1,4 @@
-"""General utility stuff"""
+"""General utility stuff."""
 
 from urllib.request import urlretrieve
 
@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 
 class TqdmUpTo(tqdm):
-    """From https://github.com/tqdm/tqdm/blob/master/examples/tqdm_wget.py"""
+    """From https://github.com/tqdm/tqdm/blob/master/examples/tqdm_wget.py."""
 
     def update_to(self, blocks=1, bsize=1, tsize=None):
         """
@@ -33,7 +33,7 @@ def download_url(url, filename):
 
 
 def summarize(model, text, tokenizer, text_max_num_tokens, summary_max_num_tokens):
-    """Generate summary for an input text"""
+    """Generate summary for an input text."""
     text_encoding = tokenizer(
         text,
         max_length=text_max_num_tokens,
@@ -43,7 +43,6 @@ def summarize(model, text, tokenizer, text_max_num_tokens, summary_max_num_token
         add_special_tokens=True,
         return_tensors="pt",
     )
-    print(text_encoding)
 
     generated_ids = model.model.generate(
         input_ids=text_encoding["input_ids"],

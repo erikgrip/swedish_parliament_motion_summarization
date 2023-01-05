@@ -19,6 +19,8 @@ TOKENIZER = MT5TokenizerFast.from_pretrained("google/mt5-base")
 
 
 class SweParliamentMotionsDataModule(BaseDataModule):
+    """Pytorch lightning DataModule class for the motion data."""
+
     def __init__(self, args: argparse.Namespace) -> None:
         super().__init__(args)
         self.args = vars(args) if args is not None else {}
@@ -41,8 +43,8 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         )
         return parser
 
-    def prepare_data(self):
-        # Define steps that should be done on only one GPU, like getting data.
+    def prepare_data(self, *args, **kwargs):
+        """Define steps that should be done on only one GPU, like getting data."""
 
         # Download and concatenate data
         # TODO: Make path not hardcoded here but passed in get_training_dataset call
@@ -80,21 +82,21 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         )
 
     def train_dataloader(self):
-        # Return DataLoader for Training Data here
+        """Return DataLoader for Training Data."""
         return DataLoader(
             self.data_train, batch_size=self.batch_size, shuffle=True, num_workers=2
         )
 
     def val_dataloader(self):
-        # Return DataLoader for Validation Data here
+        """Return DataLoader for Validation Data."""
         return DataLoader(
             self.data_val, batch_size=self.batch_size, shuffle=False, num_workers=2
         )
 
     def test_dataloader(self):
-        # Return DataLoader for Testing Data here
+        """Return DataLoader for Test Data."""
         return DataLoader(
-            self.data_test, batch_size=self.batch_size, shuffle=False, num_workers=2
+            self.data_test, batch_size=self.batch_size, shuffle=False, num_workers=4
         )
 
 

@@ -20,7 +20,7 @@ torch.manual_seed(42)
 
 
 def _import_class(module_and_class_name: str) -> type:
-    """Import class from a module, e.g. 'motion_summarizer.models.t5'"""
+    """Import class from a module, e.g. 'motion_summarizer.models.t5'."""
     module_name, class_name = module_and_class_name.rsplit(".", 1)
     module = importlib.import_module(module_name)
     class_ = getattr(module, class_name)
@@ -33,9 +33,9 @@ def _setup_parser():
 
     # Add Trainer specific arguments, such as --max_epochs, --gpus, --precision
     trainer_parser = pl.Trainer.add_argparse_args(parser)
-    trainer_parser._action_groups[
+    trainer_parser._action_groups[  # pylint: disable=protected-access
         1
-    ].title = "Trainer Args"  # pylint: disable=protected-access
+    ].title = "Trainer Args"
     parser = argparse.ArgumentParser(add_help=False, parents=[trainer_parser])
 
     # Basic arguments
@@ -69,7 +69,12 @@ def main():
 
     Sample command:
     ```
-    python training/run_experiment.py --max_epochs=3 --gpus='0,' --num_workers=20 --model_class=MLP --data_class=MNIST
+    python training/run_experiment.py \
+        --max_epochs=3 \
+        --gpus='0,' \
+        --num_workers=20
+        --model_class=t5 \
+        --data_class=SweParliamentMotionsData
     ```
     """
     parser = _setup_parser()
