@@ -1,7 +1,6 @@
 import argparse
 
 from torch.utils.data import random_split, DataLoader
-from transformers import MT5TokenizerFast
 import pandas as pd
 import torch
 
@@ -13,9 +12,6 @@ from training_dataset_downloader import get_training_dataset
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 
 BATCH_SIZE = 8
-MAX_TEXT_TOKENS = 512
-MAX_SUMMARY_TOKENS = 32
-TOKENIZER = MT5TokenizerFast.from_pretrained("google/mt5-base")
 
 
 class SweParliamentMotionsDataModule(BaseDataModule):
@@ -26,22 +22,7 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         self.args = vars(args) if args is not None else {}
         self.data_dir = DOWNLOADED_DATA_DIRNAME
         self.data_file = DOWNLOADED_DATA_DIRNAME / "prepped_training_data.feather"
-        self.tokenizer = self.args.get("tokenizer", TOKENIZER)
-        self.max_text_tokens = self.args.get("max_text_tokens", MAX_TEXT_TOKENS)
-        self.max_summary_tokens = self.args.get(
-            "max_summary_tokens", MAX_SUMMARY_TOKENS
-        )
-        self.seed = 1
-
-    @staticmethod
-    def add_to_argparse(parser):
-        BaseDataModule.add_to_argparse(parser)
-        # parser.add_argument("--batch_size", type=int, default=BATCH_SIZE)
-        parser.add_argument("--max_text_tokens", type=int, default=MAX_TEXT_TOKENS)
-        parser.add_argument(
-            "--max_summary_tokens", type=int, default=MAX_SUMMARY_TOKENS
-        )
-        return parser
+        self.seed = 2
 
     def prepare_data(self, *args, **kwargs):
         """Define steps that should be done on only one GPU, like getting data."""

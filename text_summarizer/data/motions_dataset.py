@@ -1,41 +1,63 @@
 """Dataset class for Swedish Parliament Motions."""
 
 import argparse
-from typing import Any, Tuple
+from typing import Any, Dict
 
-from transformers import MT5TokenizerFast
+from transformers import MT5Tokenizer
 
 from .util import BaseDataset
 
+MAX_TEXT_TOKENS = 512
+MAX_SUMMARY_TOKENS = 64
+TOKENIZER = MT5Tokenizer.from_pretrained("google/mt5-small")
 
 
 class SwedishParliamentMotionsDataset(BaseDataset):
-    """Extends base class to return tokenized texts"""
-    def __init__(self, data, targets, args: argparse.Namespace=None) -> None:
-        self.args = vars(args) if args is not None else {}
-        self.data_transform = self.args.get("data_transform", None)
-        self.target_transform = self.args.get("target_transform", None)
-"""     def __init__(
-        self,
-        data,
-        targets,
-        transform=None,
-        target_transform=None,
-        tokenizer=MT5TokenizerFast,
-        data_max_token_length=256,
-        target_max_token_length=32,
-    ) -> None: """
-        super().__init__(data, targets, transform, target_transform)
-        self.tokenizer = tokenizer
-        self.data_max_token_length = data_max_token_length
-        self.target_max_token_length = target_max_token_length
+    """Extends base class to return tokenized texts."""
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __init__(self, data, targets, args: argparse.Namespace = None) -> None:
+        self.args = vars(args) if args is not None else {}
+        super().__init__(
+            data,
+            targets,
+            self.args.get("data_transform", None),
+            self.args.get("target_transform", None),
+        )
+        self.tokenizer = self.args.get("tokenizer", TOKENIZER)
+        self.max_text_tokens = self.args.get("max_text_tokens", MAX_TEXT_TOKENS)
+        self.max_summary_tokens = self.args.get(
+            "max_summary_tokens", MAX_SUMMARY_TOKENS
+        )
+
+    @staticmethod
+    def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
+        parser.add_argument(
+            "--max_text_tokens",
+            type=int,
+            default=MAX_TEXT_TOKENS,
+            help="Maximum number of tokens to use from text",
+        )
+        parser.add_argument(
+            "--max_summary_tokens",
+            type=int,
+            default=MAX_SUMMARY_TOKENS,
+            help="Maximum number of tokens to generate for summary",
+        )
+        parser.add_argument(
+            "--tokenizer",
+            type=int,
+            default=TOKENIZER,
+            help="Tokenizer to use.",
+        )
+        return parser
+
+    def __getitem__(self, index: int) -> Dict[Any, Any]:
+        """Return text and summary with their encodings and attention masks."""
         text, summary = super().__getitem__(index)
 
         text_encoding = self.tokenizer(
             text,
-            max_length=self.data_max_token_length,
+            max_length=self.max_text_tokens,
             padding="max_length",
             truncation=True,
             return_attention_mask=True,
@@ -45,7 +67,7 @@ class SwedishParliamentMotionsDataset(BaseDataset):
 
         summary_encoding = self.tokenizer(
             summary,
-            max_length=self.target_max_token_length,
+            max_length=self.max_summary_tokens,
             padding="max_length",
             truncation=True,
             return_attention_mask=True,
