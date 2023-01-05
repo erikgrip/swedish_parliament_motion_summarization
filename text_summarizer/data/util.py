@@ -1,6 +1,6 @@
 """BaseDataset class."""
 
-from typing import Any, Callable, Sequence, Tuple, Union
+from typing import Any, Callable, Sequence, Dict, Union
 
 import torch
 
@@ -45,7 +45,7 @@ class BaseDataset(torch.utils.data.Dataset):
         """Return length of the dataset."""
         return len(self.data)
 
-    def __getitem__(self, index: int) -> Tuple[Any, Any]:
+    def __getitem__(self, index: int) -> Dict[Any, Any]:
         """
         Return a datum and its target, after processing by transforms.
 
