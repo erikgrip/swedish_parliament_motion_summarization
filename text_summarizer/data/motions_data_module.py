@@ -10,6 +10,7 @@ from training_dataset_downloader import get_training_dataset
 
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
+TEST_DATA_DIRNAME = BaseDataModule.data_dirname() / "test"
 
 BATCH_SIZE = 8
 

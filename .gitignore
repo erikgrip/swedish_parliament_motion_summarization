@@ -1,4 +1,6 @@
-/.vscode/
-/data/
-/training
+.vscode/
+data/*
+!data/test
+training
 __pycache__/
+
