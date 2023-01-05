@@ -26,49 +26,29 @@ class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         return loss, logits
 
     def training_step(self, batch, batch_idx):
-        input_ids = batch["text_input_ids"]
-        attention_mask = batch["text_attention_mask"]
-        labels = batch["labels"]
-        labels_attention_mask = batch["labels_attention_mask"]
-
-        loss, outputs = self(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            labels=labels,
-            decoder_attention_mask=labels_attention_mask,
+        loss, _ = self(
+            input_ids=batch["text_input_ids"],
+            attention_mask=batch["text_attention_mask"],
+            labels=batch["labels"],
+            decoder_attention_mask=batch["labels_attention_mask"],
         )
-
         self.log("train_loss:", loss, prog_bar=True, logger=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
-        input_ids = batch["text_input_ids"]
-        attention_mask = batch["text_attention_mask"]
-        labels = batch["labels"]
-        labels_attention_mask = batch["labels_attention_mask"]
-
-        loss, outputs = self.forward(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            labels=labels,
-            decoder_attention_mask=labels_attention_mask,
+        loss, _ = self(
+            input_ids=batch["text_input_ids"],
+            attention_mask=batch["text_attention_mask"],
+            labels=batch["labels"],
+            decoder_attention_mask=batch["labels_attention_mask"],
         )
-
         self.log("val_loss:", loss, prog_bar=True, logger=True)
-        return loss
 
     def test_step(self, batch, batch_idx):
-        input_ids = batch["text_input_ids"]
-        attention_mask = batch["text_attention_mask"]
-        labels = batch["labels"]
-        labels_attention_mask = batch["labels_attention_mask"]
-
-        loss, outputs = self.forward(
-            input_ids=input_ids,
-            attention_mask=attention_mask,
-            labels=labels,
-            decoder_attention_mask=labels_attention_mask,
+        loss, _ = self(
+            input_ids=batch["text_input_ids"],
+            attention_mask=batch["text_attention_mask"],
+            labels=batch["labels"],
+            decoder_attention_mask=batch["labels_attention_mask"],
         )
-
         self.log("test_loss:", loss, prog_bar=True, logger=True)
-        return loss

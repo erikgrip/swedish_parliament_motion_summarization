@@ -11,7 +11,7 @@ from text_summarizer import lit_models
 
 
 DEFAULT_DATA_CLASS = "SweParliamentMotionsDataModule"
-DEFAULT_MODEL_CLASS = "t5"
+DEFAULT_MODEL_CLASS = "MT5"
 
 
 # In order to ensure reproducible experiments, we must set random seeds.
@@ -86,12 +86,8 @@ def main():
 
     if args.loss not in ("ctc", "transformer"):
         lit_model_class = lit_models.BaseLitModel
-    if args.loss == "ctc":
-        lit_model_class = lit_models.CTCLitModel
-    if args.loss == "transformer":
-        lit_model_class = lit_models.TransformerLitModel
     if args.model_class == "t5":
-        lit_model_class = lit_models.t5LitModel
+        lit_model_class = lit_models.T5LitModel
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(

@@ -32,16 +32,19 @@ class SweParliamentMotionsDataModule(BaseDataModule):
         get_training_dataset()
 
     def setup(self, stage: str = None) -> None:
-        # Define steps that should be done on
-        # every GPU, like splitting data, applying
-        # transform etc.
-        df = pd.read_feather(self.data_file)
+        """Define steps that should be done on every GPU, like splitting data,
+        applying transform etc."""
+
+        if self.args.get("overfit_batches", 0) == 1:
+            data = pd.read_csv(TEST_DATA_DIRNAME / "test_data.csv")
+        else:
+            data = pd.read_feather(self.data_file)
         # TODO: Split data more elegantly
-        train_size = int(len(df) * 0.70)
-        val_size = int(len(df) * 0.15)
-        test_size = len(df) - train_size - val_size
+        train_size = int(len(data) * 0.70)
+        val_size = int(len(data) * 0.15)
+        test_size = len(data) - train_size - val_size
         data_train, data_val, data_test = random_split(
-            df,
+            data,
             [train_size, val_size, test_size],
             generator=torch.Generator().manual_seed(self.seed),
         )
@@ -65,13 +68,13 @@ class SweParliamentMotionsDataModule(BaseDataModule):
     def train_dataloader(self):
         """Return DataLoader for Training Data."""
         return DataLoader(
-            self.data_train, batch_size=self.batch_size, shuffle=True, num_workers=2
+            self.data_train, batch_size=self.batch_size, shuffle=True, num_workers=4
         )
 
     def val_dataloader(self):
         """Return DataLoader for Validation Data."""
         return DataLoader(
-            self.data_val, batch_size=self.batch_size, shuffle=False, num_workers=2
+            self.data_val, batch_size=self.batch_size, shuffle=False, num_workers=4
         )
 
     def test_dataloader(self):
