@@ -84,9 +84,7 @@ def main():
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
 
-    if args.loss not in ("ctc", "transformer"):
-        lit_model_class = lit_models.BaseLitModel
-    if args.model_class == "t5":
+    if args.model_class == "MT5":
         lit_model_class = lit_models.T5LitModel
 
     if args.load_checkpoint is not None:
@@ -103,21 +101,34 @@ def main():
         logger.log_hyperparams(vars(args))
 
     # There's no available val_loss when overfitting to batches
-    loss_to_log = "val_loss:" if args.overfit_batches == 0 else "train_loss:"
+    if args.overfit_batches:
+        loss_to_log = "train_loss:"
+        enable_checkpointing = False
+    else:
+        loss_to_log = "val_loss:"
+        enable_checkpointing = True
 
     early_stopping_callback = pl.callbacks.EarlyStopping(
-        monitor=loss_to_log, mode="min", patience=10
+        monitor=loss_to_log, mode="min", patience=50
     )
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
         filename="{epoch:03d}-{val_loss:.3f}-{val_cer:.3f}",
         monitor=loss_to_log,
         mode="min",
     )
-    callbacks = [early_stopping_callback, model_checkpoint_callback]
+    callbacks = (
+        [early_stopping_callback, model_checkpoint_callback]
+        if not args.overfit_batches
+        else [early_stopping_callback]
+    )
 
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(
-        args, callbacks=callbacks, logger=logger, weights_save_path="training/logs"
+        args,
+        callbacks=callbacks,
+        logger=logger,
+        weights_save_path="training/logs",
+        enable_checkpointing=enable_checkpointing,
     )
 
     # pylint: disable=no-member
