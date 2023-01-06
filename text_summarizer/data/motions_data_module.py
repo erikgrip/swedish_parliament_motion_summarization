@@ -30,7 +30,8 @@ class SweParliamentMotionsDataModule(BaseDataModule):
 
         # Download and concatenate data
         # TODO: Make path not hardcoded here but passed in get_training_dataset call
-        get_training_dataset()
+        if not self.args.get("overfit_batches", 0):
+            get_training_dataset()
 
     def setup(self, stage: str = None) -> None:
         """Define steps that should be done on every GPU, like splitting data,

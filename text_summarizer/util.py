@@ -32,9 +32,9 @@ def download_url(url, filename):
         urlretrieve(url, filename, reporthook=t.update_to, data=None)  # nosec
 
 
-def summarize(model, text, tokenizer, text_max_num_tokens, summary_max_num_tokens):
-    """Generate summary for an input text."""
-    text_encoding = tokenizer(
+def tokenize(tokenizer, text, text_max_num_tokens):
+    """Get encoding of an input text."""
+    return tokenizer(
         text,
         max_length=text_max_num_tokens,
         padding="max_length",
@@ -44,6 +44,9 @@ def summarize(model, text, tokenizer, text_max_num_tokens, summary_max_num_token
         return_tensors="pt",
     )
 
+
+def summarize(model, text_encoding, summary_max_num_tokens):
+    """Generate summary for an input text encoding."""
     generated_ids = model.model.generate(
         input_ids=text_encoding["input_ids"],
         attention_mask=text_encoding["attention_mask"],
