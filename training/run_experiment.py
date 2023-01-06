@@ -11,7 +11,7 @@ from text_summarizer import lit_models
 
 
 DEFAULT_DATA_CLASS = "SweParliamentMotionsDataModule"
-DEFAULT_MODEL_CLASS = "t5"
+DEFAULT_MODEL_CLASS = "MT5"
 
 
 # In order to ensure reproducible experiments, we must set random seeds.
@@ -20,7 +20,7 @@ torch.manual_seed(42)
 
 
 def _import_class(module_and_class_name: str) -> type:
-    """Import class from a module, e.g. 'motion_summarizer.models.t5'"""
+    """Import class from a module, e.g. 'motion_summarizer.models.t5'."""
     module_name, class_name = module_and_class_name.rsplit(".", 1)
     module = importlib.import_module(module_name)
     class_ = getattr(module, class_name)
@@ -33,9 +33,9 @@ def _setup_parser():
 
     # Add Trainer specific arguments, such as --max_epochs, --gpus, --precision
     trainer_parser = pl.Trainer.add_argparse_args(parser)
-    trainer_parser._action_groups[
+    trainer_parser._action_groups[  # pylint: disable=protected-access
         1
-    ].title = "Trainer Args"  # pylint: disable=protected-access
+    ].title = "Trainer Args"
     parser = argparse.ArgumentParser(add_help=False, parents=[trainer_parser])
 
     # Basic arguments
@@ -69,7 +69,12 @@ def main():
 
     Sample command:
     ```
-    python training/run_experiment.py --max_epochs=3 --gpus='0,' --num_workers=20 --model_class=MLP --data_class=MNIST
+    python training/run_experiment.py \
+        --max_epochs=3 \
+        --gpus='0,' \
+        --num_workers=20
+        --model_class=t5 \
+        --data_class=SweParliamentMotionsData
     ```
     """
     parser = _setup_parser()
@@ -79,14 +84,8 @@ def main():
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
 
-    if args.loss not in ("ctc", "transformer"):
-        lit_model_class = lit_models.BaseLitModel
-    if args.loss == "ctc":
-        lit_model_class = lit_models.CTCLitModel
-    if args.loss == "transformer":
-        lit_model_class = lit_models.TransformerLitModel
-    if args.model_class == "t5":
-        lit_model_class = lit_models.t5LitModel
+    if args.model_class == "MT5":
+        lit_model_class = lit_models.T5LitModel
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(
@@ -102,21 +101,34 @@ def main():
         logger.log_hyperparams(vars(args))
 
     # There's no available val_loss when overfitting to batches
-    loss_to_log = "val_loss:" if args.overfit_batches == 0 else "train_loss:"
+    if args.overfit_batches:
+        loss_to_log = "train_loss:"
+        enable_checkpointing = False
+    else:
+        loss_to_log = "val_loss:"
+        enable_checkpointing = True
 
     early_stopping_callback = pl.callbacks.EarlyStopping(
-        monitor=loss_to_log, mode="min", patience=10
+        monitor=loss_to_log, mode="min", patience=50
     )
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
         filename="{epoch:03d}-{val_loss:.3f}-{val_cer:.3f}",
         monitor=loss_to_log,
         mode="min",
     )
-    callbacks = [early_stopping_callback, model_checkpoint_callback]
+    callbacks = (
+        [early_stopping_callback, model_checkpoint_callback]
+        if not args.overfit_batches
+        else [early_stopping_callback]
+    )
 
     args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(
-        args, callbacks=callbacks, logger=logger, weights_save_path="training/logs"
+        args,
+        callbacks=callbacks,
+        logger=logger,
+        weights_save_path="training/logs",
+        enable_checkpointing=enable_checkpointing,
     )
 
     # pylint: disable=no-member
