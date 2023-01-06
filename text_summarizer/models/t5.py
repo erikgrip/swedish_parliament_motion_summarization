@@ -18,7 +18,6 @@ class MT5(nn.Module):
         self.model = MT5ForConditionalGeneration.from_pretrained(
             f"google/mt5-{model_version}", return_dict=True
         )
-        self.model.eval()
 
     @staticmethod
     def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
