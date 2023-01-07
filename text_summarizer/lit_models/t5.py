@@ -14,54 +14,9 @@ class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__(model, args=args)
         self.model = model
-        self.tokenizer = self.args.get("tokenizer", TOKENIZER)
-        self.max_text_tokens = self.args.get("max_text_tokens", MAX_TEXT_TOKENS)
-        self.max_summary_tokens = self.args.get(
-            "max_summary_tokens", MAX_SUMMARY_TOKENS
-        )
-
-    @staticmethod
-    def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
-        parser.add_argument(
-            "--max_text_tokens",
-            type=int,
-            default=MAX_TEXT_TOKENS,
-            help="Maximum number of tokens to use from text",
-        )
-        parser.add_argument(
-            "--max_summary_tokens",
-            type=int,
-            default=MAX_SUMMARY_TOKENS,
-            help="Maximum number of tokens to generate for summary",
-        )
-        parser.add_argument(
-            "--tokenizer",
-            type=int,
-            default=TOKENIZER,
-            help="Tokenizer to use.",
-        )
-        return parser
-
-    def encode(self, text, max_tokens, set_zero_to=0):
-        """Get encoding of text."""
-        encoding = self.tokenizer(
-            text,
-            max_length=max_tokens,
-            padding="max_length",
-            truncation=True,
-            return_attention_mask=True,
-            add_special_tokens=True,
-            return_tensors="pt",
-        )
-
-        input_ids = encoding["input_ids"]
-        input_ids[input_ids == 0] = set_zero_to
-
-        return dict(
-            text=text,
-            text_input_ids=input_ids.flatten(),
-            text_attention_mask=encoding["attention_mask"].flatten(),
-        )
+        print(args)
+        import sys
+        sys.exit(0)
 
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
         """Forward pass through self.model."""
