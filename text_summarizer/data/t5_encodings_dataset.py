@@ -10,7 +10,7 @@ MAX_TITLE_TOKENS = 64
 MT5_VERSION = "small"
 
 
-class T5EncodingsDataset(BaseDataset):
+class MT5EncodingsDataset(BaseDataset):
     """Extends base class to return text encodings."""
 
     def __init__(self, data, targets, args: argparse.Namespace = None) -> None:
@@ -90,4 +90,4 @@ if __name__ == "__main__":
     dummy_data = ["This is my first sentence", "And here's my 2nd one"]
     dummy_targets = ["The first", "The second"]
 
-    ds = T5EncodingsDataset(data=dummy_data, targets=dummy_targets)
+    ds = MT5EncodingsDataset(data=dummy_data, targets=dummy_targets)

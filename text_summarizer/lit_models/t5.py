@@ -1,10 +1,12 @@
 import argparse
 
+from transformers.models.mt5 import MT5Tokenizer
+
 from text_summarizer.lit_models.base import BaseLitModel
 
 
-class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
-    """Lightning class to hold a T5 model for conditional generation."""
+class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
+    """Lightning class to hold a MT5 model for conditional generation."""
 
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__(model, args=args)

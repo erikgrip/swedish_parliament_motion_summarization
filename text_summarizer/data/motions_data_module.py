@@ -5,7 +5,7 @@ import torch
 from torch.utils.data import DataLoader, random_split
 
 from text_summarizer.data.base_data_module import BaseDataModule, load_and_print_info
-from text_summarizer.data.t5_encodings_dataset import T5EncodingsDataset
+from text_summarizer.data.t5_encodings_dataset import MT5EncodingsDataset
 from training_dataset_downloader import get_training_dataset
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
@@ -50,15 +50,15 @@ class SweParliamentMotionsDataModule(BaseDataModule):
             generator=torch.Generator().manual_seed(self.seed),
         )
 
-        self.data_train = T5EncodingsDataset(
+        self.data_train = MT5EncodingsDataset(
             data=data_train.dataset["text"].tolist(),
             targets=data_train.dataset["title"].tolist(),
         )
-        self.data_val = T5EncodingsDataset(
+        self.data_val = MT5EncodingsDataset(
             data=data_val.dataset["text"].tolist(),
             targets=data_val.dataset["title"].tolist(),
         )
-        self.data_test = T5EncodingsDataset(
+        self.data_test = MT5EncodingsDataset(
             data=data_test.dataset["text"].tolist(),
             targets=data_test.dataset["title"].tolist(),
         )
