@@ -6,6 +6,7 @@ from transformers.models.mt5.modeling_mt5 import MT5ForConditionalGeneration
 
 MT5_VERSION = "small"
 
+
 class MT5(nn.Module):
     """Model class for MT5 models for conditional generation."""
 
@@ -14,9 +15,9 @@ class MT5(nn.Module):
         self.args = vars(args) if args is not None else {}
         self.data_config = data_config
         model_version = self.args.get("mt5_version", MT5_VERSION)
-        model = f"google/mt5-{model_version}"
+        self.model_name = f"google/mt5-{model_version}"
         self.model = MT5ForConditionalGeneration.from_pretrained(
-            model, return_dict=True
+            self.model_name, return_dict=True
         )
 
     @staticmethod

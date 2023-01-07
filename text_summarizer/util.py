@@ -45,7 +45,7 @@ def tokenize(tokenizer, text, text_max_num_tokens):
     )
 
 
-def summarize(model, text_encoding, summary_max_num_tokens):
+def summarize(model, tokenizer, text_encoding, summary_max_num_tokens):
     """Generate summary for an input text encoding."""
     generated_ids = model.model.generate(
         input_ids=text_encoding["input_ids"],
