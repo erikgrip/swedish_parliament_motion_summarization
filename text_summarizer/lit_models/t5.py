@@ -1,11 +1,9 @@
 import argparse
 
-from transformers import MT5Tokenizer
 
 from text_summarizer.lit_models.base import BaseLitModel
 
 
-tokenizer = MT5Tokenizer.from_pretrained("google/mt5-small")
 
 
 class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors

@@ -5,7 +5,7 @@ import pandas as pd
 import torch
 
 from text_summarizer.data.base_data_module import BaseDataModule, load_and_print_info
-from text_summarizer.data.motions_dataset import SwedishParliamentMotionsDataset
+from text_summarizer.data.motions_dataset import T5EncodingsDataset
 from training_dataset_downloader import get_training_dataset
 
 
@@ -50,15 +50,16 @@ class SweParliamentMotionsDataModule(BaseDataModule):
             generator=torch.Generator().manual_seed(self.seed),
         )
 
-        self.data_train = SwedishParliamentMotionsDataset(
+        self.data_train = T5EncodingsDataset(
             data=data_train.dataset["text"].tolist(),
             targets=data_train.dataset["title"].tolist(),
+            tokenizer=self.tok
         )
-        self.data_val = SwedishParliamentMotionsDataset(
+        self.data_val = T5EncodingsDataset(
             data=data_val.dataset["text"].tolist(),
             targets=data_val.dataset["title"].tolist(),
         )
-        self.data_test = SwedishParliamentMotionsDataset(
+        self.data_test = T5EncodingsDataset(
             data=data_test.dataset["text"].tolist(),
             targets=data_test.dataset["title"].tolist(),
         )

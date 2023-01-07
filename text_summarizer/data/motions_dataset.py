@@ -11,6 +11,8 @@ MAX_TEXT_TOKENS = 512
 MAX_SUMMARY_TOKENS = 64
 TOKENIZER = MT5Tokenizer.from_pretrained("google/mt5-small")
 
+class T5EncodingsDataset(BaseDataset):
+    """Extends base class to return text encodings."""
 
 class SwedishParliamentMotionsDataset(BaseDataset):
     """Extends base class to return tokenized texts."""
