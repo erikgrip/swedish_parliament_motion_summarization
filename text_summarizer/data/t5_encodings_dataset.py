@@ -50,8 +50,8 @@ class T5EncodingsDataset(BaseDataset):
         return parser
 
     def __getitem__(self, index: int) -> Dict[Any, Any]:
-        """Return text and summary with their encodings and attention masks."""
-        text, summary = super().__getitem__(index)
+        """Return text and title with their encodings and attention masks."""
+        text, title = super().__getitem__(index)
 
         text_encoding = self.tokenizer(
             text,
@@ -63,8 +63,8 @@ class T5EncodingsDataset(BaseDataset):
             return_tensors="pt",
         )
 
-        summary_encoding = self.tokenizer(
-            summary,
+        title_encoding = self.tokenizer(
+            title,
             max_length=self.max_title_tokens,
             padding="max_length",
             truncation=True,
@@ -73,16 +73,16 @@ class T5EncodingsDataset(BaseDataset):
             return_tensors="pt",
         )
 
-        labels = summary_encoding["input_ids"]
-        labels[labels == 0] = -100
+        title_mod_ids = title_encoding["input_ids"]
+        title_mod_ids[title_mod_ids == 0] = -100
 
         return dict(
             text=text,
-            summary=summary,
+            title=title,
             text_input_ids=text_encoding["input_ids"].flatten(),
             text_attention_mask=text_encoding["attention_mask"].flatten(),
-            labels=labels.flatten(),
-            labels_attention_mask=summary_encoding["attention_mask"].flatten(),
+            title_mod_ids=title_mod_ids.flatten(),
+            title_attention_mask=title_encoding["attention_mask"].flatten(),
         )
 
 

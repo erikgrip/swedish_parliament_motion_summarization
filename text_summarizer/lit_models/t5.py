@@ -24,8 +24,8 @@ class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         loss, _ = self(
             input_ids=batch["text_input_ids"],
             attention_mask=batch["text_attention_mask"],
-            labels=batch["text_input_ids"],
-            decoder_attention_mask=batch["text_attention_mask"],
+            labels=batch["title_mod_ids"],
+            decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("train_loss:", loss, prog_bar=True, logger=True)
         return loss
@@ -34,8 +34,8 @@ class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         loss, _ = self(
             input_ids=batch["text_input_ids"],
             attention_mask=batch["text_attention_mask"],
-            labels=batch["text_input_ids"],
-            decoder_attention_mask=batch["text_attention_mask"],
+            labels=batch["title_mod_ids"],
+            decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("val_loss:", loss, prog_bar=True, logger=True)
         self.log("sample prediction", {"text": batch["text_input_ids"]})
@@ -44,7 +44,7 @@ class T5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         loss, _ = self(
             input_ids=batch["text_input_ids"],
             attention_mask=batch["text_attention_mask"],
-            labels=batch["text_input_ids"],
-            decoder_attention_mask=batch["text_attention_mask"],
+            labels=batch["title_mod_ids"],
+            decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("test_loss:", loss, prog_bar=True, logger=True)

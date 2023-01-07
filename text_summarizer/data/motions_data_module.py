@@ -1,13 +1,12 @@
 import argparse
 
-from torch.utils.data import random_split, DataLoader
 import pandas as pd
 import torch
+from torch.utils.data import DataLoader, random_split
 
 from text_summarizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_summarizer.data.t5_encodings_dataset import T5EncodingsDataset
 from training_dataset_downloader import get_training_dataset
-
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 TEST_DATA_DIRNAME = BaseDataModule.data_dirname() / "test"

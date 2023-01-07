@@ -1,9 +1,8 @@
-from typing import Any, Dict
 import argparse
+from typing import Any, Dict
 
 from torch import nn
 from transformers.models.mt5.modeling_mt5 import MT5ForConditionalGeneration
-
 
 MT5_VERSION = "small"
 
