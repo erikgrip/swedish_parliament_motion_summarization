@@ -23,7 +23,18 @@ class MotionsDataModule(BaseDataModule):
         self.args = vars(args) if args is not None else {}
         self.data_dir = DOWNLOADED_DATA_DIRNAME
         self.data_file = DOWNLOADED_DATA_DIRNAME / "prepped_training_data.feather"
+        self.data_fraction = float(self.args.get("data_fraction", DATA_FRACTION))
         self.seed = 2
+
+    @staticmethod
+    def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
+        BaseDataModule.add_to_argparse(parser)
+        parser.add_argument(
+            "--data_fraction",
+            type=float,
+            default=DATA_FRACTION,
+            help="Share of total training examples to use.",
+        )
 
     def prepare_data(self, *args, **kwargs):
         """Define steps that should be done on only one GPU, like getting data."""
@@ -41,7 +52,10 @@ class MotionsDataModule(BaseDataModule):
             data = pd.read_csv(TEST_DATA_DIRNAME / "test_data.csv")
         else:
             data = pd.read_feather(self.data_file)
-        # TODO: Split data more elegantly
+        total_rows = len(data)
+        data = data.sample(frac=self.data_fraction, random_state=self.seed)
+        print(f"Using {len(data)} of {total_rows} examples.")
+
         train_size = int(len(data) * 0.70)
         val_size = int(len(data) * 0.15)
         test_size = len(data) - train_size - val_size
