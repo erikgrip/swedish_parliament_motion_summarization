@@ -73,8 +73,8 @@ def main():
         --max_epochs=3 \
         --gpus='0,' \
         --num_workers=20
-        --model_class=t5 \
-        --data_class=SweParliamentMotionsData
+        --model_class=MT5 \
+        --data_class=MotionsDataModule
     ```
     """
     parser = _setup_parser()
@@ -85,7 +85,7 @@ def main():
     model = model_class(data_config=data.config(), args=args)
 
     if args.model_class == "MT5":
-        lit_model_class = lit_models.T5LitModel
+        lit_model_class = lit_models.MT5LitModel
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(

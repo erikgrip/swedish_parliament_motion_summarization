@@ -6,7 +6,7 @@ import argparse
 from torch.utils.data import ConcatDataset, DataLoader
 import pytorch_lightning as pl
 
-from text_summarizer.data.util import BaseDataset
+from text_summarizer.data.base_dataset import BaseDataset
 
 
 BATCH_SIZE = 8
