@@ -53,8 +53,8 @@ class MotionsDataModule(BaseDataModule):
         data = data.sample(frac=self.data_fraction, random_state=self.seed)
         print(f"Using {len(data)} of {total_rows} examples.")
 
-        train_size = int(len(data) * 0.70)
-        val_size = int(len(data) * 0.15)
+        train_size = round(len(data) * 0.70)
+        val_size = round(len(data) * 0.15)
         test_size = len(data) - train_size - val_size
         data_train, data_val, data_test = random_split(
             dataset=data,
