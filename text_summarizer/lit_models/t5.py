@@ -52,25 +52,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("train_loss:", loss, prog_bar=True, logger=True)
-        return {
-            "loss": loss,
-            "sample_text_encoding": batch["text_input_ids"][0],
-            "sample_title": batch["title"][0],
-        }
-
-    def training_epoch_end(self, training_step_outputs):
-        print("On training epoch end:")
-        self.logger.experiment.add_text("log", "apa")
-        print(training_step_outputs)
-        sample_output = summarize(
-            self.model,
-            self.tokenizer,
-            training_step_outputs[0]["sample_text"],
-            self.max_title_tokens,
-        )
-
-        print(training_step_outputs[0]["sample_title"])
-        print(sample_output)
+        return loss
 
     def validation_step(self, batch, batch_idx):
         loss, _ = self(
@@ -80,12 +62,22 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("val_loss:", loss, prog_bar=True, logger=True)
-        self.log(
-            "sample prediction",
-            batch["text_input_ids"],
-            on_epoch=True,
-            prog_bar=True,
-            logger=True,
+        return {"loss": loss, "sample_encoding": {k: v[:1] for k, v in batch.items()}}
+
+    def validation_epoch_end(self, validation_step_outputs):
+        encoding = validation_step_outputs[0]["sample_encoding"]
+
+        sample_output = summarize(
+            self.model,
+            self.tokenizer,
+            encoding,
+            self.max_title_tokens,
+        )
+        self.logger.experiment.add_text(
+            "actual title", encoding["title"][0], global_step=self.global_step
+        )
+        self.logger.experiment.add_text(
+            "generated title", sample_output, global_step=self.global_step
         )
 
     def test_step(self, batch, batch_idx):
