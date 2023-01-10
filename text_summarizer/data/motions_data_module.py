@@ -38,9 +38,6 @@ class MotionsDataModule(BaseDataModule):
 
     def prepare_data(self, *args, **kwargs):
         """Define steps that should be done on only one GPU, like getting data."""
-
-        # Download and concatenate data
-        # TODO: Make path not hardcoded here but passed in get_training_dataset call
         if not self.args.get("overfit_batches", 0):
             get_training_dataset()
 
