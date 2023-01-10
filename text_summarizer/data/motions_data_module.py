@@ -11,10 +11,11 @@ from training_dataset_downloader import get_training_dataset
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 TEST_DATA_DIRNAME = BaseDataModule.data_dirname() / "test"
 
+DATA_FRACTION = 1.0  # Allows scaling data down for faster trining
 BATCH_SIZE = 8
 
 
-class SweParliamentMotionsDataModule(BaseDataModule):
+class MotionsDataModule(BaseDataModule):
     """Pytorch lightning DataModule class for the motion data."""
 
     def __init__(self, args: argparse.Namespace) -> None:
@@ -83,4 +84,4 @@ class SweParliamentMotionsDataModule(BaseDataModule):
 
 
 if __name__ == "__main__":
-    load_and_print_info(SweParliamentMotionsDataModule)
+    load_and_print_info(MotionsDataModule)

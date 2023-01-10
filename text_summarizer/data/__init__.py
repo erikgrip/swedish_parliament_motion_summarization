@@ -1,1 +1,1 @@
-from .motions_data_module import SweParliamentMotionsDataModule
+from .motions_data_module import MotionsDataModule

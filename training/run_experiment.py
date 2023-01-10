@@ -73,8 +73,8 @@ def main():
         --max_epochs=3 \
         --gpus='0,' \
         --num_workers=20
-        --model_class=t5 \
-        --data_class=SweParliamentMotionsData
+        --model_class=MT5 \
+        --data_class=MotionsDataModule
     ```
     """
     parser = _setup_parser()
