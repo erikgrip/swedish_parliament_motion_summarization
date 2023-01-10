@@ -63,16 +63,16 @@ class MotionsDataModule(BaseDataModule):
         )
 
         self.data_train = MT5EncodingsDataset(
-            data=data_train.dataset["text"].tolist(),
-            targets=data_train.dataset["title"].tolist(),
+            data=data.iloc[list(data_train.indices)]["text"].tolist(),
+            targets=data.iloc[list(data_train.indices)]["title"].tolist(),
         )
         self.data_val = MT5EncodingsDataset(
-            data=data_val.dataset["text"].tolist(),
-            targets=data_val.dataset["title"].tolist(),
+            data=data.iloc[list(data_val.indices)]["text"].tolist(),
+            targets=data.iloc[list(data_val.indices)]["title"].tolist(),
         )
         self.data_test = MT5EncodingsDataset(
-            data=data_test.dataset["text"].tolist(),
-            targets=data_test.dataset["title"].tolist(),
+            data=data.iloc[list(data_test.indices)]["text"].tolist(),
+            targets=data.iloc[list(data_test.indices)]["title"].tolist(),
         )
 
     def train_dataloader(self):
