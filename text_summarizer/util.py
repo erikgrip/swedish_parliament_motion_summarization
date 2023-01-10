@@ -47,9 +47,10 @@ def tokenize(tokenizer, text, text_max_num_tokens):
 
 def summarize(model, tokenizer, text_encoding, summary_max_num_tokens):
     """Generate summary for an input text encoding."""
+    model.eval()
     generated_ids = model.model.generate(
-        input_ids=text_encoding["input_ids"],
-        attention_mask=text_encoding["attention_mask"],
+        input_ids=text_encoding["text_input_ids"],
+        attention_mask=text_encoding["text_attention_mask"],
         max_length=summary_max_num_tokens,
         num_beams=2,
         repetition_penalty=2.5,
@@ -63,5 +64,5 @@ def summarize(model, tokenizer, text_encoding, summary_max_num_tokens):
         )
         for gen_id in generated_ids
     ]
-
+    model.train()
     return "".join(preds)
