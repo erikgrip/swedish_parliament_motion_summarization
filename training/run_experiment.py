@@ -1,3 +1,4 @@
+# type: ignore
 """Experiment-running framework."""
 import argparse
 import importlib
