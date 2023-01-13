@@ -1,3 +1,4 @@
+# type: ignore
 import argparse
 
 from torchmetrics import Accuracy

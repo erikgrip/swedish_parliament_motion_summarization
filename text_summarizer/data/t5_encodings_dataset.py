@@ -1,3 +1,4 @@
+# type: ignore
 import argparse
 from typing import Any, Dict
 

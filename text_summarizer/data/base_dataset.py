@@ -1,9 +1,9 @@
+# type: ignore
 """BaseDataset class."""
 
 from typing import Any, Callable, Sequence, Dict, Union
 
 import torch
-
 
 SequenceOrTensor = Union[Sequence, torch.Tensor]
 

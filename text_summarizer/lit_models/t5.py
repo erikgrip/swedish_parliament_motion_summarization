@@ -1,9 +1,10 @@
+# type: ignore
 import argparse
 
 from transformers.models.mt5 import MT5Tokenizer
 
 from text_summarizer.lit_models.base import BaseLitModel
-from text_summarizer.util import summarize, tokenize
+from text_summarizer.util import summarize
 
 MAX_TEXT_TOKENS = 512  # Keep in sync with Lit Dataset settings
 MAX_TITLE_TOKENS = 64
