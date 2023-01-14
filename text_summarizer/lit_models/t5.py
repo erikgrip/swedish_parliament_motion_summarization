@@ -1,5 +1,6 @@
 # type: ignore
 import argparse
+from random import sample
 
 from transformers.models.mt5 import MT5Tokenizer
 
@@ -63,22 +64,22 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("val_loss:", loss, prog_bar=True, logger=True)
-        return {"loss": loss, "sample_encoding": {k: v[:1] for k, v in batch.items()}}
+        return {"loss": loss, "example": {k: v[:1] for k, v in batch.items()}}
 
-    def validation_epoch_end(self, validation_step_outputs):
-        encoding = validation_step_outputs[0]["sample_encoding"]
+    def validation_epoch_end(self, outputs):
+        sample_output = sample(outputs, 1)[0]["example"]
 
-        sample_output = summarize(
+        generated_title = summarize(
             self.model,
             self.tokenizer,
-            encoding,
+            sample_output,
             self.max_title_tokens,
         )
         self.logger.experiment.add_text(
-            "actual title", encoding["title"][0], global_step=self.global_step
+            "actual title", sample_output["title"][0], global_step=self.global_step
         )
         self.logger.experiment.add_text(
-            "generated title", sample_output, global_step=self.global_step
+            "generated title", generated_title, global_step=self.global_step
         )
 
     def test_step(self, batch, batch_idx):
