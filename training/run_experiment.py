@@ -11,11 +11,11 @@ import wandb
 from text_summarizer import lit_models
 
 
-DEFAULT_DATA_CLASS = "SweParliamentMotionsDataModule"
+DEFAULT_DATA_CLASS = "MotionsDataModule"
 DEFAULT_MODEL_CLASS = "MT5"
 
 
-# In order to ensure reproducible experiments, we must set random seeds.
+# Set random seeds
 np.random.seed(42)
 torch.manual_seed(42)
 
@@ -72,7 +72,7 @@ def main():
     ```
     python training/run_experiment.py \
         --max_epochs=3 \
-        --gpus='0,' \
+        --gpus=0 \
         --num_workers=20
         --model_class=MT5 \
         --data_class=MotionsDataModule
