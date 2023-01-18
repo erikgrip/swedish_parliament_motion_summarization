@@ -2,7 +2,7 @@
 import argparse
 from random import sample
 
-from transformers.models.mt5 import MT5Tokenizer
+from transformers.models.mt5 import MT5TokenizerFast
 
 from text_summarizer.lit_models.base import BaseLitModel
 from text_summarizer.util import summarize
@@ -17,7 +17,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__(model, args=args)
         self.model = model
-        self.tokenizer = MT5Tokenizer.from_pretrained(model.model_name)
+        self.tokenizer = MT5TokenizerFast.from_pretrained(model.model_name)
         self.max_title_tokens = self.args.get("max_title_tokens", MAX_TITLE_TOKENS)
 
     @staticmethod
