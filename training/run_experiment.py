@@ -13,6 +13,7 @@ from text_summarizer import lit_models
 
 DEFAULT_DATA_CLASS = "MotionsDataModule"
 DEFAULT_MODEL_CLASS = "MT5"
+DEFAULT_EARLY_STOPPING = 10
 
 
 # Set random seeds
@@ -44,6 +45,7 @@ def _setup_parser():
     parser.add_argument("--data_class", type=str, default=DEFAULT_DATA_CLASS)
     parser.add_argument("--model_class", type=str, default=DEFAULT_MODEL_CLASS)
     parser.add_argument("--load_checkpoint", type=str, default=None)
+    parser.add_argument("--early_stopping", type=int, default=DEFAULT_EARLY_STOPPING)
 
     # Get the data and model classes, so that we can add their specific arguments
     temp_args, _ = parser.parse_known_args()
@@ -110,7 +112,7 @@ def main():
         enable_checkpointing = True
 
     early_stopping_callback = pl.callbacks.EarlyStopping(
-        monitor=loss_to_log, mode="min", patience=50
+        monitor=loss_to_log, mode="min", patience=args.early_stopping
     )
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
         filename="{epoch:03d}-{val_loss:.3f}-{val_cer:.3f}",

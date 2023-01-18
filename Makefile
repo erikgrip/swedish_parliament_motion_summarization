@@ -25,7 +25,7 @@ train-mt5:
 
 # Overfit on single batch
 overfit:
-	PYTHONPATH=. python training/run_experiment.py --max_epochs=-1 --gpus=1 --batch_size=1 --num_workers=4 --data_class=MotionsDataModule --model_class=MT5 --overfit_batches=1 --lr=0.001
+	PYTHONPATH=. python training/run_experiment.py --max_epochs=-1 --gpus=1 --batch_size=1 --num_workers=4 --data_class=MotionsDataModule --model_class=MT5 --overfit_batches=1 --early_stopping=50 --lr=0.001
 
 # Lint
 lint:
