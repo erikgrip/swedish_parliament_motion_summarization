@@ -44,7 +44,7 @@ class MotionsDataModule(BaseDataModule):
         if self.args.get("overfit_batches") == 1:
             return
         # Avoid loading data again in trainer.test() call.
-        elif self.trainer.testing:
+        elif self.trainer and self.trainer.testing:
             return
         else:
             get_training_dataset()
@@ -52,7 +52,7 @@ class MotionsDataModule(BaseDataModule):
     def setup(self, stage: str = None) -> None:
         """Define steps that should be done on every GPU, like splitting data,
         applying transform etc."""
-        if stage != "fit":
+        if stage and stage != "fit":
             # Setup for all stages is done in trainer.fit()
             return
 
