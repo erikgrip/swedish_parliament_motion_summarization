@@ -36,15 +36,25 @@ class MotionsDataModule(BaseDataModule):
             default=DATA_FRACTION,
             help="Share of total training examples to use.",
         )
+        return parser
 
     def prepare_data(self, *args, **kwargs):
         """Define steps that should be done on only one GPU, like getting data."""
-        if not self.args.get("overfit_batches", 0):
+        # Don't load/prep data if overfitting to 1 batch, test data is loaded in setup()
+        if self.args.get("overfit_batches") == 1:
+            return
+        # Avoid loading data again in trainer.test() call.
+        elif self.trainer.testing:
+            return
+        else:
             get_training_dataset()
 
     def setup(self, stage: str = None) -> None:
         """Define steps that should be done on every GPU, like splitting data,
         applying transform etc."""
+        if stage != "fit":
+            # Setup for all stages is done in trainer.fit()
+            return
 
         if self.args.get("overfit_batches", 0) == 1:
             data = pd.read_csv(TEST_DATA_DIRNAME / "test_data.csv")
@@ -62,6 +72,7 @@ class MotionsDataModule(BaseDataModule):
             lengths=[train_size, val_size, test_size],
             generator=torch.Generator().manual_seed(self.seed),
         )
+        print(f"Train: {len(data_train)}, Val: {len(data_val)}, Test: {len(data_test)}")
 
         self.data_train = MT5EncodingsDataset(
             data=data.iloc[list(data_train.indices)]["text"].tolist(),

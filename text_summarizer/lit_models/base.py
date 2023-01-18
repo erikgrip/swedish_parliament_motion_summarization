@@ -13,8 +13,8 @@ ONE_CYCLE_TOTAL_STEPS = 100
 
 
 class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
-    """ Generic PyTorch-Lightning class that must be initialized
-    with a PyTorch module. """
+    """Generic PyTorch-Lightning class that must be initialized
+    with a PyTorch module."""
 
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__()
