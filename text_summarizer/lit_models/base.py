@@ -18,8 +18,9 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
 
     def __init__(self, model, args: argparse.Namespace = None):
         super().__init__()
-        self.model = model
         self.args = vars(args) if args is not None else {}
+        self.save_hyperparameters(self.args)
+        self.model = model
 
         optimizer = self.args.get("optimizer", OPTIMIZER)
         self.optimizer_class = getattr(torch.optim, optimizer)
