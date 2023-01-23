@@ -2,7 +2,7 @@
 import argparse
 from typing import Any, Dict
 
-from transformers.models.mt5 import MT5TokenizerFast
+from transformers.models.mt5 import MT5Tokenizer
 
 from .base_dataset import BaseDataset
 
@@ -24,7 +24,7 @@ class MT5EncodingsDataset(BaseDataset):
         )
         model_version = self.args.get("model_version", MT5_VERSION)
         model = f"google/mt5-{model_version}"
-        self.tokenizer = MT5TokenizerFast.from_pretrained(model)
+        self.tokenizer = MT5Tokenizer.from_pretrained(model)
         self.max_text_tokens = self.args.get("max_text_tokens", MAX_TEXT_TOKENS)
         self.max_title_tokens = self.args.get("max_title_tokens", MAX_TITLE_TOKENS)
 
