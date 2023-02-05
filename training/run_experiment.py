@@ -98,10 +98,6 @@ def main():
         lit_model = lit_model_class(args=args, model=model)
 
     logger = pl.loggers.TensorBoardLogger("training/logs")
-    if args.wandb:
-        logger = pl.loggers.WandbLogger()
-        logger.watch(model)
-        logger.log_hyperparams(vars(args))
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
@@ -132,7 +128,6 @@ def main():
         logger=logger,
         enable_checkpointing=enable_checkpointing,
     )
-
     # pylint: disable=no-member
     trainer.tune(lit_model, datamodule=data)
     trainer.fit(lit_model, datamodule=data)
@@ -142,9 +137,6 @@ def main():
     best_model_path = model_checkpoint_callback.best_model_path
     if best_model_path:
         print("Best model saved at:", best_model_path)
-        if args.wandb:
-            wandb.save(best_model_path)
-            print("Best model also uploaded to W&B")
 
 
 if __name__ == "__main__":
