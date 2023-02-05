@@ -30,3 +30,7 @@ overfit:
 # Lint
 lint:
 	tasks/lint.sh
+
+# Lint
+test:
+	tasks/test.sh
