@@ -4,6 +4,7 @@ from .src.training_dataset_preprocessor import prep_training_dataset
 
 
 def main():
+    """Download and prep motions data for training."""
     downloaded = download_motion_zip_files()
     if len(downloaded) >= 1:
         read_zip_file_data_to_pkl()

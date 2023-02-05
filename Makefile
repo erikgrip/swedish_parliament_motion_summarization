@@ -27,6 +27,6 @@ overfit:
 lint:
 	tasks/lint.sh
 
-# Lint
+# Test
 test:
 	tasks/test.sh
