@@ -85,10 +85,3 @@ class MT5EncodingsDataset(BaseDataset):
             title_mod_ids=title_mod_ids.flatten(),
             title_attention_mask=title_encoding["attention_mask"].flatten(),
         )
-
-
-if __name__ == "__main__":
-    dummy_data = ["This is my first sentence", "And here's my 2nd one"]
-    dummy_targets = ["The first", "The second"]
-
-    ds = MT5EncodingsDataset(data=dummy_data, targets=dummy_targets)

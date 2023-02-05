@@ -8,7 +8,6 @@ import torch
 
 OPTIMIZER = "Adam"
 LR = 1e-3
-LOSS = "cross_entropy"
 ONE_CYCLE_TOTAL_STEPS = 100
 
 
@@ -24,21 +23,12 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
 
         optimizer = self.args.get("optimizer", OPTIMIZER)
         self.optimizer_class = getattr(torch.optim, optimizer)
-
         self.lr = self.args.get("lr", LR)  # pylint: disable=invalid-name
-
-        loss = self.args.get("loss", LOSS)
-        if loss not in ("ctc", "transformer"):
-            self.loss_fn = getattr(torch.nn.functional, loss)
 
         self.one_cycle_max_lr = self.args.get("one_cycle_max_lr", None)
         self.one_cycle_total_steps = self.args.get(
             "one_cycle_total_steps", ONE_CYCLE_TOTAL_STEPS
         )
-
-        self.train_acc = Accuracy()
-        self.val_acc = Accuracy()
-        self.test_acc = Accuracy()
 
     @staticmethod
     def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
@@ -52,12 +42,6 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         parser.add_argument("--one_cycle_max_lr", type=float, default=None)
         parser.add_argument(
             "--one_cycle_total_steps", type=int, default=ONE_CYCLE_TOTAL_STEPS
-        )
-        parser.add_argument(
-            "--loss",
-            type=str,
-            default=LOSS,
-            help="loss function from torch.nn.functional",
         )
         return parser
 
@@ -77,27 +61,13 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         }
 
     def forward(self, *args, **kwargs):
-        pass
+        raise NotImplementedError
 
     def training_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        x, y = batch  # pylint: disable=invalid-name
-        logits = self(x)
-        loss = self.loss_fn(logits, y)
-        self.log("train_loss", loss)
-        self.train_acc(logits, y)
-        self.log("train_acc", self.train_acc, on_step=False, on_epoch=True)
-        return loss
+        raise NotImplementedError
 
     def validation_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        x, y = batch  # pylint: disable=invalid-name
-        logits = self(x)
-        loss = self.loss_fn(logits, y)
-        self.log("val_loss", loss, prog_bar=True)
-        self.val_acc(logits, y)
-        self.log("val_acc", self.val_acc, on_step=False, on_epoch=True, prog_bar=True)
+        raise NotImplementedError
 
     def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
-        x, y = batch  # pylint: disable=invalid-name
-        logits = self(x)
-        self.test_acc(logits, y)
-        self.log("test_acc", self.test_acc, on_step=False, on_epoch=True)
+        raise NotImplementedError

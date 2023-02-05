@@ -13,7 +13,6 @@ DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 TEST_DATA_DIRNAME = BaseDataModule.data_dirname() / "test"
 
 DATA_FRACTION = 1.0  # Allows scaling data down for faster trining
-BATCH_SIZE = 8
 
 
 class MotionsDataModule(BaseDataModule):
