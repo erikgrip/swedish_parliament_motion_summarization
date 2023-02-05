@@ -115,6 +115,7 @@ def main():
         monitor=loss_to_log, mode="min", patience=args.early_stopping
     )
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
+        dirpath="training/logs",
         filename="{epoch:03d}-{val_loss:.2f}",
         monitor=loss_to_log,
         mode="min",
@@ -125,20 +126,15 @@ def main():
         else [early_stopping_callback]
     )
 
-    args.weights_summary = "full"  # Print full summary of the model
     trainer = pl.Trainer.from_argparse_args(
         args,
         callbacks=callbacks,
         logger=logger,
-        weights_save_path="training/logs",
         enable_checkpointing=enable_checkpointing,
     )
 
     # pylint: disable=no-member
-    trainer.tune(
-        lit_model, datamodule=data
-    )  # If passing --auto_lr_find, this will set learning rate
-
+    trainer.tune(lit_model, datamodule=data)
     trainer.fit(lit_model, datamodule=data)
     trainer.test(lit_model, datamodule=data)
     # pylint: enable=no-member
