@@ -105,17 +105,17 @@ def main():
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
-        loss_to_log = "train_loss:"
+        loss_to_log = "train_loss"
         enable_checkpointing = False
     else:
-        loss_to_log = "val_loss:"
+        loss_to_log = "val_loss"
         enable_checkpointing = True
 
     early_stopping_callback = pl.callbacks.EarlyStopping(
         monitor=loss_to_log, mode="min", patience=args.early_stopping
     )
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        filename="{epoch:03d}-{val_loss:.3f}-{val_cer:.3f}",
+        filename="{epoch:03d}-{val_loss:.2f}",
         monitor=loss_to_log,
         mode="min",
     )

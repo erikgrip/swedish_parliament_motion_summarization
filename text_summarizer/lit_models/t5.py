@@ -51,7 +51,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             labels=batch["title_mod_ids"],
             decoder_attention_mask=batch["title_attention_mask"],
         )
-        self.log("train_loss:", loss, prog_bar=True, logger=True)
+        self.log("train_loss", loss, prog_bar=True, logger=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -61,7 +61,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             labels=batch["title_mod_ids"],
             decoder_attention_mask=batch["title_attention_mask"],
         )
-        self.log("val_loss:", loss, prog_bar=True, logger=True)
+        self.log("val_loss", loss, prog_bar=True, logger=True)
         return {"loss": loss, "example": {k: v[:1] for k, v in batch.items()}}
 
     def validation_epoch_end(self, outputs):
@@ -87,4 +87,4 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             labels=batch["title_mod_ids"],
             decoder_attention_mask=batch["title_attention_mask"],
         )
-        self.log("test_loss:", loss, prog_bar=True, logger=True)
+        self.log("test_loss", loss, prog_bar=True, logger=True)
