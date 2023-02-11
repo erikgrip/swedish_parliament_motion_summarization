@@ -6,7 +6,6 @@ import importlib
 import numpy as np
 import torch
 import pytorch_lightning as pl
-import wandb
 
 from text_summarizer import lit_models
 
@@ -111,7 +110,6 @@ def main():
         monitor=loss_to_log, mode="min", patience=args.early_stopping
     )
     model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
-        dirpath="training/logs",
         filename="{epoch:03d}-{val_loss:.2f}",
         monitor=loss_to_log,
         mode="min",
