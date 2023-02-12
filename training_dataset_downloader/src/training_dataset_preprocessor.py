@@ -18,7 +18,7 @@ def _trim_motion_text_by_subtitle(row):
         return split[-1].strip()
     except Exception as e:
         print(e)
-        row["text"]
+        return row["text"]
 
 
 def _trim_motion_text_by_leading_title(row):
@@ -73,7 +73,9 @@ def _delete_footer(row):
 
 
 def prep_training_dataset(data_path=INPUT_DATA_PATH):
+    """Pipeline to format and filter data."""
     with open(data_path, "rb") as f:
+        print("Preprocessing data ...")
         df = pd.DataFrame(pickle.load(f))
         pre_filter_len = len(df)
         df = df.dropna()
@@ -93,13 +95,18 @@ def prep_training_dataset(data_path=INPUT_DATA_PATH):
         df["text"] = df.apply(_set_empty_when_leadning_date, axis=1)
         df["text"] = df.apply(_delete_footer, axis=1)
 
-        # Drop rows with very short texts after the cleaning
         pre_filter_len = len(df)
         df = df.loc[df["text"].str.len() >= 150].reset_index(drop=True)
         print(f"Filtered {pre_filter_len - len(df)} texts shorter than 150 characters.")
+        pre_filter_len = len(df)
+        df = df.loc[
+            ~df["title"].str.lower().str.startswith("med anledning av prop")
+        ].reset_index(drop=True)
+        print(f"Filtered {pre_filter_len - len(df)} texts with generic title.")
         print(f"Number of rows remaining: {len(df)}")
 
         df.to_feather(path=OUTPUT_DATA_PATH)
+        print("Preprocessed data saved to", OUTPUT_DATA_PATH)
 
 
 if __name__ == "__main__":

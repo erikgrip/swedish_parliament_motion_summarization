@@ -2,17 +2,19 @@
 import argparse
 
 import pandas as pd
-import torch
 from torch.utils.data import DataLoader, random_split
 
 from text_summarizer.data.base_data_module import BaseDataModule, load_and_print_info
 from text_summarizer.data.t5_encodings_dataset import MT5EncodingsDataset
+from text_summarizer.data.util import split_data
 from training_dataset_downloader import get_training_dataset
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
 TEST_DATA_DIRNAME = BaseDataModule.data_dirname() / "test"
 
 DATA_FRACTION = 1.0  # Allows scaling data down for faster trining
+TRAIN_FRAC = 0.75
+VAL_FRAC = 0.15
 
 
 class MotionsDataModule(BaseDataModule):
@@ -59,19 +61,14 @@ class MotionsDataModule(BaseDataModule):
             data = pd.read_csv(TEST_DATA_DIRNAME / "test_data.csv")
         else:
             data = pd.read_feather(self.data_file)
+
         total_rows = len(data)
         data = data.sample(frac=self.data_fraction, random_state=self.seed)
         print(f"Using {len(data)} of {total_rows} examples.")
 
-        train_size = round(len(data) * 0.70)
-        val_size = round(len(data) * 0.15)
-        test_size = len(data) - train_size - val_size
-        data_train, data_val, data_test = random_split(
-            dataset=data,
-            lengths=[train_size, val_size, test_size],
-            generator=torch.Generator().manual_seed(self.seed),
+        data_train, data_val, data_test = split_data(
+            data, TRAIN_FRAC, VAL_FRAC, self.seed
         )
-        print(f"Train: {len(data_train)}, Val: {len(data_val)}, Test: {len(data_test)}")
 
         self.data_train = MT5EncodingsDataset(
             data=data.iloc[list(data_train.indices)]["text"].tolist(),
