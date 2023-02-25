@@ -31,7 +31,6 @@ charset-normalizer==2.0.12
     #   requests
 click==8.1.3
     # via
-    #   -c requirements/prod.txt
     #   black
     #   safety
     #   wandb
@@ -49,6 +48,10 @@ entrypoints==0.4
     # via jupyter-client
 executing==0.8.3
     # via stack-data
+filelock==3.7.1
+    # via
+    #   -c requirements/prod.txt
+    #   huggingface-hub
 fonttools==4.34.4
     # via matplotlib
 gitdb==4.0.9
@@ -57,6 +60,10 @@ gitpython==3.1.26
     # via
     #   bandit
     #   wandb
+huggingface-hub==0.8.1
+    # via
+    #   -c requirements/prod.txt
+    #   -r requirements/dev.in
 idna==3.3
     # via
     #   -c requirements/prod.txt
@@ -102,21 +109,24 @@ nest-asyncio==1.5.5
 numpy==1.22.4
     # via
     #   -c requirements/prod.txt
+    #   -r requirements/dev.in
     #   matplotlib
     #   pandas
+    #   pyarrow
     #   scipy
     #   seaborn
 packaging==21.3
     # via
     #   -c requirements/prod.txt
     #   dparse
+    #   huggingface-hub
     #   ipykernel
     #   matplotlib
     #   pytest
     #   safety
 pandas==1.4.2
     # via
-    #   -c requirements/prod.txt
+    #   -r requirements/dev.in
     #   seaborn
 parso==0.8.3
     # via jedi
@@ -156,6 +166,8 @@ pure-eval==0.2.2
     # via stack-data
 py==1.11.0
     # via pytest
+pyarrow==11.0.0
+    # via -r requirements/dev.in
 pycodestyle==2.8.0
     # via -r requirements/dev.in
 pydocstyle==6.1.1
@@ -173,20 +185,18 @@ pytest==7.0.0
     # via -r requirements/dev.in
 python-dateutil==2.8.2
     # via
-    #   -c requirements/prod.txt
     #   jupyter-client
     #   matplotlib
     #   pandas
     #   wandb
 pytz==2022.1
-    # via
-    #   -c requirements/prod.txt
-    #   pandas
+    # via pandas
 pyyaml==6.0
     # via
     #   -c requirements/prod.txt
     #   bandit
     #   dparse
+    #   huggingface-hub
     #   wandb
 pyzmq==23.2.0
     # via
@@ -196,6 +206,7 @@ requests==2.27.1
     # via
     #   -c requirements/prod.txt
     #   -r requirements/dev.in
+    #   huggingface-hub
     #   safety
     #   wandb
 safety==1.10.3
@@ -244,6 +255,7 @@ tqdm==4.64.0
     # via
     #   -c requirements/prod.txt
     #   -r requirements/dev.in
+    #   huggingface-hub
 traitlets==5.3.0
     # via
     #   ipykernel
@@ -256,6 +268,7 @@ typing-extensions==4.0.1
     #   -c requirements/prod.txt
     #   astroid
     #   black
+    #   huggingface-hub
     #   mypy
     #   pylint
 urllib3==1.26.9

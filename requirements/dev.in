@@ -2,9 +2,13 @@
 bandit
 beautifulsoup4
 black==22.3.0
+huggingface_hub
 ipykernel
 matplotlib
 mypy
+numpy
+pandas
+pyarrow
 pycodestyle
 pydocstyle
 pylint
