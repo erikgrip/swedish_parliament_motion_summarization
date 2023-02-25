@@ -5,7 +5,7 @@ import os
 import shutil
 import yaml
 
-from huggingface_hub import HfApi
+from huggingface_hub import hf_api
 from transformers.models.mt5 import MT5Tokenizer
 
 from text_summarizer.models import t5
@@ -26,19 +26,21 @@ def get_local_file_paths(version):
     )
     cfg_path = BASE_PATH + f"version_{version}/hparams.yaml"
 
-    if len(checkpoint_filenames) != 1:
+    num_chkpts = len(checkpoint_filenames)
+    if num_chkpts != 1:
         raise Exception(
-            f"Found {len(checkpoint_filenames)} found in {BASE_PATH + f'version_{version}/checkpoints/'}"
+            f"Found {num_chkpts} found in {BASE_PATH + f'version_{version}/checkpoints/'}"
         )
+
     if not os.path.isfile(cfg_path):
         raise FileNotFoundError(f"No model config found at {cfg_path}")
     return checkpoint_filenames[0], cfg_path
 
 
-def load_litmodel_from_checkpoint(chkpt_path, cfg_path):
+def load_litmodel_from_checkpoint(checkpoint_path, cfg_path):
     """Load Pytorch Lightning model from checkpoint and saved config file"""
 
-    logging.info(f"Loading checkpoint config {cfg_path} ...")
+    logging.info("Loading checkpoint config %s ...", cfg_path)
     with open(cfg_path, "r", encoding="utf-8") as hparams_file:
         lightning_config = argparse.Namespace(
             **yaml.load(hparams_file, Loader=yaml.Loader)
@@ -46,9 +48,9 @@ def load_litmodel_from_checkpoint(chkpt_path, cfg_path):
 
     model = t5.MT5(data_config={}, args=lightning_config)
 
-    logging.info(f"Loading Lightning Model from checkpoint {chkpt_path} ...")
+    logging.info("Loading Lightning Model from checkpoint %s ...", checkpoint_path)
     lit_model = MT5LitModel.load_from_checkpoint(
-        checkpoint_path=chkpt_path,
+        checkpoint_path=checkpoint_path,
         model=model,
     )
     logging.info("Done!")
@@ -76,8 +78,8 @@ def hf_login(user):
 
 def push_model_dir_to_hf(hf_model):
     """Upload local model direktory to Huggingface"""
-    logging.info(f"Pushing model files to {hf_model}...")
-    api = HfApi()
+    logging.info("Pushing model files to %s...", hf_model)
+    api = hf_api.HfApi()
     api.upload_folder(
         folder_path=TMP_SAVE_DIR,
         path_in_repo=".",
