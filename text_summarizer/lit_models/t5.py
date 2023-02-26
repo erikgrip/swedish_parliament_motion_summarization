@@ -5,6 +5,7 @@ from random import sample
 from transformers.models.mt5 import MT5Tokenizer
 
 from text_summarizer.data.t5_encodings_dataset import MAX_TEXT_TOKENS, MAX_TITLE_TOKENS
+from text_summarizer.data.util import encode
 from text_summarizer.lit_models.base import BaseLitModel
 from text_summarizer.util import summarize
 
@@ -16,6 +17,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         super().__init__(model, args=args)
         self.model = model
         self.tokenizer = MT5Tokenizer.from_pretrained(model.model_name)
+        self.max_text_tokens = self.args.get("max_title_tokens", MAX_TEXT_TOKENS)
         self.max_title_tokens = self.args.get("max_title_tokens", MAX_TITLE_TOKENS)
 
     @staticmethod
@@ -88,3 +90,27 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("test_loss", loss, prog_bar=True, logger=True)
+
+    def predict(self, text):
+        """Generate title for single text."""
+        text_encoding = encode(text, self.tokenizer, self.max_text_tokens)
+
+        self.model.eval()
+        generated_ids = self.model.model.generate(
+            input_ids=text_encoding["input_ids"],
+            attention_mask=text_encoding["attention_mask"],
+            max_length=self.max_title_tokens,
+            num_beams=2,
+            repetition_penalty=2.5,
+            length_penalty=1.0,
+            early_stopping=True,
+        )
+        self.model.train()
+
+        preds = [
+            self.tokenizer.decode(
+                gen_id, skip_special_tokens=True, clean_up_tokenization_spaces=True
+            )
+            for gen_id in generated_ids
+        ]
+        return "".join(preds)
