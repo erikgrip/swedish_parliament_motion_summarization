@@ -5,6 +5,7 @@ from typing import Any, Dict
 from transformers.models.mt5 import MT5Tokenizer
 
 from .base_dataset import BaseDataset
+from text_summarizer.data.util import encode
 
 MAX_TEXT_TOKENS = 512
 MAX_TITLE_TOKENS = 64
@@ -54,25 +55,8 @@ class MT5EncodingsDataset(BaseDataset):
         """Return text and title with their encodings and attention masks."""
         text, title = super().__getitem__(index)
 
-        text_encoding = self.tokenizer(
-            text,
-            max_length=self.max_text_tokens,
-            padding="max_length",
-            truncation=True,
-            return_attention_mask=True,
-            add_special_tokens=True,
-            return_tensors="pt",
-        )
-
-        title_encoding = self.tokenizer(
-            title,
-            max_length=self.max_title_tokens,
-            padding="max_length",
-            truncation=True,
-            return_attention_mask=True,
-            add_special_tokens=True,
-            return_tensors="pt",
-        )
+        text_encoding = encode(text, self.tokenizer, self.max_text_tokens)
+        title_encoding = encode(title, self.tokenizer, self.max_title_tokens)
 
         title_mod_ids = title_encoding["input_ids"]
         title_mod_ids[title_mod_ids == 0] = -100
