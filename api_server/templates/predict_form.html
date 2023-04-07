@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Title Generation App</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <script src="../static/js/jquery-1.11.2.js"></script>
+    <style>
+        .btn-file {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2 class="text-muted">Swedish Parliament Motion Title Generator</h2>
+        </div>
+        <form role="form" method="post" action="/v1/predict">
+            <!-- Text input-->
+            <div class="form-group">
+                <label for="txtPost">Enter motion text</label>
+                <textarea class="form-control" id="txtPost" name="text", rows="30">{{ text }}
+                </textarea>
+            </div>
+            <!-- Button -->
+            <div class="form-group">
+                <p class="text-center">
+                    <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit"
+                        value="Generate Title!" />
+                </p>
+            </div>
+        </form>
+        <div class="header">
+            <h3 class="text-center">Suggested title:</h3>
+        </div>
+        <div class="header">
+            <h4 class="text-center">{{ pred }}</h4>
+        </div>
+        <footer class="footer">
+            <p><a href="https://erikgrip.github.io/">Erik Grip</a></p>
+        </footer>
+    </div>
+</body>
+</html>
