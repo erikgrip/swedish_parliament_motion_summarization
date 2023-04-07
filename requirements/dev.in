@@ -13,7 +13,7 @@ pycodestyle
 pydocstyle
 pylint
 pytest
-requests
+pytorch-lightning
 safety
 seaborn
 tqdm
