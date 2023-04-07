@@ -7,6 +7,8 @@ from text_summarizer.motion_title_generator import MotionTitleGenerator
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Do not use GPU
 
+INDEX_TEXT = "App is running. Make predictions at http://localhost:8000/v1/predict"
+
 
 app = Flask(__name__)
 model = MotionTitleGenerator()
@@ -16,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 @app.route("/")
 def index():
     """Provide simple health check route."""
-    return "App is running. Make predictions at http://localhost:8000/v1/predict"
+    return INDEX_TEXT
 
 
 @app.route("/v1/predict")
