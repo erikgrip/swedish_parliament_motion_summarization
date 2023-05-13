@@ -3,7 +3,7 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 import requests
 
-from text_summarizer.data.base_data_module import BaseDataModule
+from motion_title_generator.data.base_data_module import BaseDataModule
 
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded/zipped"

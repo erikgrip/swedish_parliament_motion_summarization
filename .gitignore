@@ -4,7 +4,7 @@ __pycache__/
 data/*
 !data/test
 
-text_summarizer/artifacts/*
+motion_title_generator/artifacts/*
 training/logs/*
 
 

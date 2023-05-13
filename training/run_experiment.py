@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import pytorch_lightning as pl
 
-from text_summarizer import lit_models
+from motion_title_generator import lit_models
 
 
 DEFAULT_DATA_CLASS = "MotionsDataModule"

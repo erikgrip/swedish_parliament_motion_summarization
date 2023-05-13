@@ -4,9 +4,9 @@ import argparse
 import pandas as pd
 from torch.utils.data import DataLoader, random_split
 
-from text_summarizer.data.base_data_module import BaseDataModule, load_and_print_info
-from text_summarizer.data.t5_encodings_dataset import MT5EncodingsDataset
-from text_summarizer.data.util import split_data
+from motion_title_generator.data.base_data_module import BaseDataModule, load_and_print_info
+from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset
+from motion_title_generator.data.util import split_data
 from training_dataset_downloader import get_training_dataset
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"

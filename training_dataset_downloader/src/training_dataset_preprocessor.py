@@ -3,7 +3,7 @@ import re
 
 import pandas as pd
 
-from text_summarizer.data.base_data_module import BaseDataModule
+from motion_title_generator.data.base_data_module import BaseDataModule
 from training_dataset_downloader.src.zip_data_reader import OUTPUT_PATH
 
 

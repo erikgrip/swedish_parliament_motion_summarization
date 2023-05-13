@@ -5,7 +5,7 @@ import zipfile
 
 from bs4 import BeautifulSoup
 
-from text_summarizer.data.base_data_module import BaseDataModule
+from motion_title_generator.data.base_data_module import BaseDataModule
 
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"

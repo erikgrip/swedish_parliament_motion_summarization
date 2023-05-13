@@ -7,9 +7,9 @@ import torch
 from transformers.models.auto.modeling_auto import AutoModelForSeq2SeqLM
 
 
-from text_summarizer.data.motions_data_module import MotionsDataModule
-from text_summarizer.lit_models.t5 import MT5LitModel
-from text_summarizer.models.t5 import MT5
+from motion_title_generator.data.motions_data_module import MotionsDataModule
+from motion_title_generator.lit_models.t5 import MT5LitModel
+from motion_title_generator.models.t5 import MT5
 
 
 LOCALE_ENCODING = getattr(io, "LOCALE_ENCODING", "utf-8")

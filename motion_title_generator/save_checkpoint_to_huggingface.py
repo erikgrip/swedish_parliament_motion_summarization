@@ -8,8 +8,8 @@ import yaml
 from huggingface_hub import hf_api
 from transformers.models.mt5 import MT5Tokenizer
 
-from text_summarizer.models import t5
-from text_summarizer.lit_models import MT5LitModel
+from motion_title_generator.models import t5
+from motion_title_generator.lit_models import MT5LitModel
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("torch").setLevel(logging.WARNING)
