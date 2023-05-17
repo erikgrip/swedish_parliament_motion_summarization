@@ -7,13 +7,11 @@ ipykernel
 matplotlib
 mypy
 numpy
-pandas
 pyarrow
 pycodestyle
 pydocstyle
 pylint
 pytest
-pytorch-lightning
 safety
 seaborn
 tqdm
