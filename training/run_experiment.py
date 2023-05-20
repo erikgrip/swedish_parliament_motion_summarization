@@ -20,7 +20,7 @@ torch.manual_seed(42)
 
 
 def _import_class(module_and_class_name: str) -> type:
-    """Import class from a module, e.g. 'motion_summarizer.models.t5'."""
+    """Import class from a module, e.g. 'motion_title_generator.models.t5'."""
     module_name, class_name = module_and_class_name.rsplit(".", 1)
     module = importlib.import_module(module_name)
     class_ = getattr(module, class_name)
@@ -42,7 +42,6 @@ def _setup_parser():
     trainer_group.add_argument("--overfit_batches", type=int, default=0.0)
 
     # Basic arguments
-    parser.add_argument("--wandb", action="store_true", default=False)
     parser.add_argument("--data_class", type=str, default=DEFAULT_DATA_CLASS)
     parser.add_argument("--model_class", type=str, default=DEFAULT_MODEL_CLASS)
     parser.add_argument("--load_checkpoint", type=str, default=None)
@@ -50,8 +49,10 @@ def _setup_parser():
 
     # Get the data and model classes, so that we can add their specific arguments
     temp_args, _ = parser.parse_known_args()
-    data_class = _import_class(f"text_summarizer.data.{temp_args.data_class}")
-    model_class = _import_class(f"text_summarizer.models.{temp_args.model_class}")
+    data_class = _import_class(f"motion_title_generator.data.{temp_args.data_class}")
+    model_class = _import_class(
+        f"motion_title_generator.models.{temp_args.model_class}"
+    )
 
     # Get data, model, and LitModel specific arguments
     data_group = parser.add_argument_group("Data Args")
@@ -83,8 +84,8 @@ def main():
     """
     parser = _setup_parser()
     args = parser.parse_args()
-    data_class = _import_class(f"text_summarizer.data.{args.data_class}")
-    model_class = _import_class(f"text_summarizer.models.{args.model_class}")
+    data_class = _import_class(f"motion_title_generator.data.{args.data_class}")
+    model_class = _import_class(f"motion_title_generator.models.{args.model_class}")
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
 
