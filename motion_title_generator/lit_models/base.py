@@ -1,7 +1,6 @@
 # type: ignore
 import argparse
 
-from torchmetrics import Accuracy
 import pytorch_lightning as pl
 import torch
 

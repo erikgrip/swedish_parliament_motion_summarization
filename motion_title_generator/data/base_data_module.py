@@ -1,13 +1,12 @@
 """Base DataModule class."""
+import argparse
 from pathlib import Path
 from typing import Optional, Union
-import argparse
 
-from torch.utils.data import ConcatDataset, DataLoader
 import pytorch_lightning as pl
+from torch.utils.data import ConcatDataset, DataLoader
 
 from motion_title_generator.data.base_dataset import BaseDataset
-
 
 BATCH_SIZE = 8
 NUM_WORKERS = 0

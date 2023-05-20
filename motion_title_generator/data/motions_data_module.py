@@ -2,7 +2,7 @@
 import argparse
 
 import pandas as pd
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 
 from motion_title_generator.data.base_data_module import BaseDataModule, load_and_print_info
 from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset

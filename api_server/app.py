@@ -1,7 +1,7 @@
-import os
 import logging
+import os
 
-from flask import Flask, request, render_template
+from flask import Flask, render_template, request
 from pandas import DataFrame
 
 from motion_title_generator.motion_title_generator import MotionTitleGenerator

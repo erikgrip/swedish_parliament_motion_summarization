@@ -3,13 +3,13 @@ import glob
 import logging
 import os
 import shutil
-import yaml
 
+import yaml
 from huggingface_hub import hf_api
 from transformers.models.mt5 import MT5Tokenizer
 
-from motion_title_generator.models import t5
 from motion_title_generator.lit_models import MT5LitModel
+from motion_title_generator.models import t5
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("torch").setLevel(logging.WARNING)

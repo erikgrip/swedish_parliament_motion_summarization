@@ -1,7 +1,7 @@
 # type: ignore
 """BaseDataset class."""
 
-from typing import Any, Callable, Sequence, Dict, Union
+from typing import Any, Callable, Dict, Sequence, Union
 
 import torch
 

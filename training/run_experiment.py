@@ -4,11 +4,10 @@ import argparse
 import importlib
 
 import numpy as np
-import torch
 import pytorch_lightning as pl
+import torch
 
 from motion_title_generator import lit_models
-
 
 DEFAULT_DATA_CLASS = "MotionsDataModule"
 DEFAULT_MODEL_CLASS = "MT5"
