@@ -14,5 +14,5 @@ pylint
 pytest
 safety
 seaborn
+tensorboard
 tqdm
-wandb
