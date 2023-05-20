@@ -21,6 +21,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         self.tokenizer = MT5Tokenizer.from_pretrained(model.model_name)
         self.max_text_tokens = self.args.get("max_title_tokens", MAX_TEXT_TOKENS)
         self.max_title_tokens = self.args.get("max_title_tokens", MAX_TITLE_TOKENS)
+        self.validation_step_outputs = []
 
     @staticmethod
     def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
@@ -66,10 +67,12 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("val_loss", loss, prog_bar=True, logger=True)
-        return {"loss": loss, "example": {k: v[:1] for k, v in batch.items()}}
+        self.validation_step_outputs.append({k: v[:1] for k, v in batch.items()})
+        return loss
 
-    def validation_epoch_end(self, outputs):
-        sample_output = sample(outputs, 1)[0]["example"]
+    def on_validation_epoch_end(self):
+        sample_output = sample(self.validation_step_outputs, 1)[0]
+        self.validation_step_outputs.clear()
 
         generated_title = summarize(
             self.model,

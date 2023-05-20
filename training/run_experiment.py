@@ -31,12 +31,15 @@ def _setup_parser():
     """Set up Python's ArgumentParser with data, model, trainer, and other arguments."""
     parser = argparse.ArgumentParser(add_help=False)
 
-    # Add Trainer specific arguments, such as --max_epochs, --gpus, --precision
-    trainer_parser = pl.Trainer.add_argparse_args(parser)
-    trainer_parser._action_groups[  # pylint: disable=protected-access
-        1
-    ].title = "Trainer Args"
-    parser = argparse.ArgumentParser(add_help=False, parents=[trainer_parser])
+    # Add pl.Trainer args to use
+    trainer_group = parser.add_argument_group("Trainer Args")
+    trainer_group.add_argument(
+        "--accelerator", default="auto", help="Lightning Trainer accelerator"
+    )
+    trainer_group.add_argument("--devices", type=int, default=-1, help="Number of GPUs")
+    trainer_group.add_argument("--max_epochs", type=int, default=-1)
+    trainer_group.add_argument("--fast_dev_run", type=bool, default=False)
+    trainer_group.add_argument("--overfit_batches", type=int, default=0.0)
 
     # Basic arguments
     parser.add_argument("--wandb", action="store_true", default=False)
@@ -119,14 +122,17 @@ def main():
         else [early_stopping_callback]
     )
 
-    trainer = pl.Trainer.from_argparse_args(
-        args,
+    trainer = pl.Trainer(
+        accelerator=args.accelerator,
+        devices=args.devices,
+        max_epochs=args.max_epochs,
+        fast_dev_run=args.fast_dev_run,
+        overfit_batches=args.overfit_batches,
         callbacks=callbacks,
         logger=logger,
         enable_checkpointing=enable_checkpointing,
     )
     # pylint: disable=no-member
-    trainer.tune(lit_model, datamodule=data)
     trainer.fit(lit_model, datamodule=data)
     trainer.test(lit_model, datamodule=data)
     # pylint: enable=no-member
