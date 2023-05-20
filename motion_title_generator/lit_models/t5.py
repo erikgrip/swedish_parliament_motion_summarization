@@ -5,9 +5,8 @@ from random import sample
 from transformers.models.mt5 import MT5Tokenizer
 
 from motion_title_generator.data.t5_encodings_dataset import MAX_TEXT_TOKENS, MAX_TITLE_TOKENS
-from motion_title_generator.data.util import encode
 from motion_title_generator.lit_models.base import BaseLitModel
-from motion_title_generator.util import summarize
+from utils.encode_decode import generate
 
 
 class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors

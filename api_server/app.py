@@ -5,7 +5,7 @@ from flask import Flask, request, render_template
 from pandas import DataFrame
 
 from motion_title_generator.motion_title_generator import MotionTitleGenerator
-from training_dataset_downloader.src.training_dataset_preprocessor import prep_text
+from utils.text import prep_text
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Do not use GPU
 

@@ -17,16 +17,3 @@ def split_data(df, train_frac, val_frac, seed):
         lengths=[train_size, val_size, test_size],
         generator=torch.Generator().manual_seed(seed),
     )
-
-
-def encode(text, tokenizer, max_tokens):
-    """Use tokenizer to encode text."""
-    return tokenizer(
-        text,
-        max_length=max_tokens,
-        padding="max_length",
-        truncation=True,
-        return_attention_mask=True,
-        add_special_tokens=True,
-        return_tensors="pt",
-    )

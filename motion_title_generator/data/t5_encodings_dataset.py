@@ -5,7 +5,7 @@ from typing import Any, Dict
 from transformers.models.mt5 import MT5Tokenizer
 
 from .base_dataset import BaseDataset
-from motion_title_generator.data.util import encode
+from utils.encode_decode import encode
 
 MAX_TEXT_TOKENS = 512
 MAX_TITLE_TOKENS = 64
