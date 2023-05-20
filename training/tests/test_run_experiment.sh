@@ -1,7 +1,7 @@
 #!/bin/bash
 FAILURE=false
 
-PYTHONPATH=. python training/run_experiment.py --max_epochs=1 --gpus=0 --data_fraction=0.0001 || FAILURE=true
+PYTHONPATH=. python training/run_experiment.py --max_epochs=1 --accelerator=cpu --data_fraction=0.0001 || FAILURE=true
 
 if [ "$FAILURE" = true ]; then
   echo "Test for run_experiment.py failed"

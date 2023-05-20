@@ -36,10 +36,10 @@ def _setup_parser():
     trainer_group.add_argument(
         "--accelerator", default="auto", help="Lightning Trainer accelerator"
     )
-    trainer_group.add_argument("--devices", type=int, default=-1, help="Number of GPUs")
+    trainer_group.add_argument("--devices", default="auto", help="Number of GPUs")
     trainer_group.add_argument("--max_epochs", type=int, default=-1)
     trainer_group.add_argument("--fast_dev_run", type=bool, default=False)
-    trainer_group.add_argument("--overfit_batches", type=int, default=0.0)
+    trainer_group.add_argument("--overfit_batches", default=0.0)
 
     # Basic arguments
     parser.add_argument("--data_class", type=str, default=DEFAULT_DATA_CLASS)
@@ -76,7 +76,7 @@ def main():
     ```
     python training/run_experiment.py \
         --max_epochs=3 \
-        --gpus=0 \
+        --devices=0 \
         --num_workers=20
         --model_class=MT5 \
         --data_class=MotionsDataModule
