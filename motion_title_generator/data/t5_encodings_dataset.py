@@ -64,8 +64,8 @@ class MT5EncodingsDataset(BaseDataset):
         return dict(
             text=text,
             title=title,
-            text_input_ids=text_encoding["input_ids"].flatten(),
-            text_attention_mask=text_encoding["attention_mask"].flatten(),
+            input_ids=text_encoding["input_ids"].flatten(),
+            attention_mask=text_encoding["attention_mask"].flatten(),
             title_mod_ids=title_mod_ids.flatten(),
             title_attention_mask=title_encoding["attention_mask"].flatten(),
         )
