@@ -15,19 +15,19 @@ else
 fi
 
 echo "pylint"
-pylint text_summarizer training || FAILURE=true
+pylint motion_title_generator training || FAILURE=true
 
 echo "pycodestyle"
-pycodestyle text_summarizer training || FAILURE=true
+pycodestyle motion_title_generator training || FAILURE=true
 
 echo "pydocstyle"
-pydocstyle text_summarizer training || FAILURE=true
+pydocstyle motion_title_generator training || FAILURE=true
 
 echo "mypy"
-mypy text_summarizer training || FAILURE=true
+mypy motion_title_generator training || FAILURE=true
 
 echo "bandit"
-bandit -ll -r {text_summarizer,training} || FAILURE=true
+bandit -ll -r {motion_title_generator,training} || FAILURE=true
 
 echo "shellcheck"
 find . -name "*.sh" -print0 | xargs -0 shellcheck || FAILURE=true
