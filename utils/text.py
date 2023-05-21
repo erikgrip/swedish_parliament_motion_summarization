@@ -21,31 +21,29 @@ def trim_motion_text_by_leading_title(row):
 
 
 def trim_whitespace(s):
-    """Remove trailing and multiple whitespaces"""
+    """Remove trailing and multiple whitespaces from a pandas series"""
     return s.replace("\s+", " ", regex=True).str.strip()
 
 
 def trim_linebreaks(s):
-    """Remove linebreaks and trailing whitespaces"""
-    return s.replace("\n", " ").replace("\r", "").str.strip()
+    """Remove linebreaks and trailing whitespaces from a pandas series"""
+    return s.replace("\n", " ", regex=True).replace("\r", " ", regex=True).str.strip()
 
 
 def trim_motion_text_by_proposed_decision(row):
     """Remove leading text up to and including the proposed decision"""
     # .+?(?=(\. [A-ZÅÄÖ])) --> All up to first '.' followed by whitespace and
     # upper case letter. Not watertight by any means but a reasonable best effort.
-    # TODO: the original .json holds the proposed decisions by document under
-    # the key 'dokforslag'. Use that instead.
-    split = re.split(
-        "Förslag till riksdagsbeslut .+?\. (?=([A-ZÅÄÖ]))|"
-        + "Riksdagen tillkännager för [A-Öa-ö]+ som sin mening .+?\. (?=([A-ZÅÄÖ]))|"
-        + "Riksdagen bemyndigar .+?\. (?=([A-ZÅÄÖ]))|"
-        + "Riksdagen beslutar om .+?\. (?=([A-ZÅÄÖ]))|"
-        + "Härmed hemställs att riksdagen .+?\. (?=([A-ZÅÄÖ]))|"
-        + "Med hänvisning till vad so(?:m|rn) anförts .+?\. (?=([A-ZÅÄÖ]))|"
-        + "Riksdagen ställer sig bakom det som anförs .+?\. (?=([A-ZÅÄÖ]))",
-        row["text"],
-    )
+    patterns = [
+        r"Förslag till riksdagsbeslut .+?\. (?=([A-ZÅÄÖ]))",
+        r"Riksdagen tillkännager för [A-Öa-ö]+ som sin mening .+?\. (?=([A-ZÅÄÖ]))",
+        r"Riksdagen bemyndigar .+?\. (?=([A-ZÅÄÖ]))",
+        r"Riksdagen beslutar om .+?\. (?=([A-ZÅÄÖ]))",
+        r"Härmed hemställs att riksdagen .+?\. (?=([A-ZÅÄÖ]))",
+        r"Med hänvisning till vad so(?:m|rn) anförts .+?\. (?=([A-ZÅÄÖ]))",
+        r"Riksdagen ställer sig bakom det som anförs .+?\. (?=([A-ZÅÄÖ]))",
+    ]
+    split = re.split("|".join(patterns), row["text"])
     return split[-1].strip()
 
 

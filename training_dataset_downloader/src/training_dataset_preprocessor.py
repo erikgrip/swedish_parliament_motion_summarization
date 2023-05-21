@@ -12,8 +12,8 @@ OUTPUT_DATA_PATH = DOWNLOADED_DATA_DIRNAME / "prepped_training_data.feather"
 
 def prep_training_dataset(data_path=INPUT_DATA_PATH):
     """Pipeline to format and filter data."""
+    print("Preprocessing data ...")
     with open(data_path, "rb") as f:
-        print("Preprocessing data ...")
         df = pd.DataFrame(pickle.load(f))
 
     pre_filter_len = len(df)
