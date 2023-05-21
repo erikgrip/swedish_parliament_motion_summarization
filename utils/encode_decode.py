@@ -13,6 +13,9 @@ def encode(text, tokenizer, max_tokens):
 
 def generate(model, tokenizer, text_encoding, max_title_tokens):
     """Generate title for single text."""
+    if len(text_encoding["input_ids"]) == 0:
+        return ""
+
     generated_ids = model.generate(
         input_ids=text_encoding["input_ids"],
         attention_mask=text_encoding["attention_mask"],
