@@ -13,7 +13,7 @@ INDEX_TEXT = "App is running. Make predictions at http://localhost:8000/v1/predi
 
 app = Flask(__name__)
 logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
-
+model = MotionTitleGenerator()
 
 @app.route("/")
 def index():
@@ -30,7 +30,6 @@ def predict_form():
 @app.route("/v1/predict", methods=["GET", "POST"])
 def predict():
     """Get text from web app and render prediction."""
-    model = MotionTitleGenerator()
     text = request.form.get("text")
     if not text:
         return "Please enter some text"
