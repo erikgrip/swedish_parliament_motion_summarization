@@ -54,7 +54,7 @@ def load_litmodel_from_checkpoint(checkpoint_path, cfg_path):
         model=model,
     )
     logging.info("Done!")
-    return lightning_model  
+    return lightning_model
 
 
 def load_tokenizer(model):

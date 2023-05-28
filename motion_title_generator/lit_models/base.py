@@ -59,14 +59,18 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
             "monitor": "val_loss",
         }
 
-    def forward(self, *args, **kwargs):
+    # pylint: disable=arguments-differ
+    def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
         raise NotImplementedError
 
-    def training_step(self, batch, batch_idx):  # pylint: disable=unused-argument
+    # pylint: disable=arguments-differ, unused-argument
+    def training_step(self, batch, batch_idx):
         raise NotImplementedError
 
-    def validation_step(self, batch, batch_idx):  # pylint: disable=unused-argument
+    # pylint: disable=arguments-differ, unused-argument
+    def validation_step(self, batch, batch_idx):
         raise NotImplementedError
 
-    def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
+    # pylint: disable=arguments-differ, unused-argument
+    def test_step(self, batch, batch_idx):
         raise NotImplementedError
