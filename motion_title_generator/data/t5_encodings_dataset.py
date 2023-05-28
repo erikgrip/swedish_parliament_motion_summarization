@@ -1,10 +1,10 @@
 # type: ignore
-import argparse
+import argparseUnknown option value for '--disable', expected a valid pylint message and got 'undocumented-public-package'
 from typing import Any, Dict
 
 from transformers.models.mt5 import MT5Tokenizer
 
-from .base_dataset import BaseDataset
+from motion_title_generator.data.base_dataset import BaseDataset
 from utils.encode_decode import encode
 
 MAX_TEXT_TOKENS = 512
