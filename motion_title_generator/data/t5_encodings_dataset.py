@@ -1,5 +1,5 @@
 # type: ignore
-import argparseUnknown option value for '--disable', expected a valid pylint message and got 'undocumented-public-package'
+import argparse
 from typing import Any, Dict
 
 from transformers.models.mt5 import MT5Tokenizer
