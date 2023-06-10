@@ -1,5 +1,3 @@
-# type: ignore
-"""Experiment-running framework."""
 import argparse
 import importlib
 
@@ -56,10 +54,10 @@ def _setup_parser():
 
     # Get data, model, and LitModel specific arguments
     data_group = parser.add_argument_group("Data Args")
-    data_class.add_to_argparse(data_group)
+    data_class.add_to_argparse(data_group)  # type: ignore
 
     model_group = parser.add_argument_group("Model Args")
-    model_class.add_to_argparse(model_group)
+    model_class.add_to_argparse(model_group)  # type: ignore
 
     lit_model_group = parser.add_argument_group("LitModel Args")
     lit_models.BaseLitModel.add_to_argparse(lit_model_group)
@@ -68,6 +66,7 @@ def _setup_parser():
     return parser
 
 
+# pylint: too-many-locals
 def main():
     """
     Run an experiment.
@@ -89,8 +88,7 @@ def main():
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
 
-    if args.model_class == "MT5":
-        lit_model_class = lit_models.MT5LitModel
+    lit_model_class = lit_models.MT5LitModel
 
     if args.load_checkpoint is not None:
         lit_model = lit_model_class.load_from_checkpoint(
@@ -99,7 +97,7 @@ def main():
     else:
         lit_model = lit_model_class(args=args, model=model)
 
-    logger = pl.loggers.TensorBoardLogger("training/logs")
+    logger = pl.pytorch.loggers.TensorBoardLogger("training/logs")
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
