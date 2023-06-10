@@ -97,7 +97,7 @@ def main():
     else:
         lit_model = lit_model_class(args=args, model=model)
 
-    logger = pl.pytorch.loggers.TensorBoardLogger("training/logs")
+    logger = pl.loggers.TensorBoardLogger("training/logs")
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
