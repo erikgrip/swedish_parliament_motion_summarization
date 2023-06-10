@@ -49,12 +49,12 @@ def load_litmodel_from_checkpoint(checkpoint_path, cfg_path):
     model = t5.MT5(data_config={}, args=lightning_config)
 
     logging.info("Loading Lightning Model from checkpoint %s ...", checkpoint_path)
-    lit_model = MT5LitModel.load_from_checkpoint(
+    lightning_model = MT5LitModel.load_from_checkpoint(
         checkpoint_path=checkpoint_path,
         model=model,
     )
     logging.info("Done!")
-    return lit_model
+    return lightning_model
 
 
 def load_tokenizer(model):
@@ -62,10 +62,10 @@ def load_tokenizer(model):
     return MT5Tokenizer.from_pretrained(model.model_name)
 
 
-def save_local_model(lit_model, tokenizer):
+def save_local_model(pl_model, tok):
     "Save tokenizer and Pytorch Lightning model to a local directory."
-    tokenizer.save_pretrained(TMP_SAVE_DIR)
-    lit_model.model.model.save_pretrained(TMP_SAVE_DIR)
+    tok.save_pretrained(TMP_SAVE_DIR)
+    pl_model.model.model.save_pretrained(TMP_SAVE_DIR)
 
 
 def hf_login(user):

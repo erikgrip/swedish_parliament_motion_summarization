@@ -4,13 +4,18 @@ import argparse
 import pandas as pd
 from torch.utils.data import DataLoader
 
-from motion_title_generator.data.base_data_module import BaseDataModule, load_and_print_info
+from motion_title_generator.data.base_data_module import (
+    BaseDataModule,
+    load_and_print_info,
+)
 from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset
 from motion_title_generator.data.util import split_data
 from training_dataset_downloader import get_training_dataset
 
-DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
-TEST_DATA_DIRNAME = BaseDataModule.data_dirname() / "test"
+DATA_PATH = (
+    BaseDataModule.data_dirname() / "downloaded" / "prepped_training_data.feather"
+)
+TEST_DATA_PATH = BaseDataModule.data_dirname() / "test" / "test_data.csv"
 
 DATA_FRACTION = 1.0  # Allows scaling data down for faster trining
 TRAIN_FRAC = 0.75
@@ -23,8 +28,6 @@ class MotionsDataModule(BaseDataModule):
     def __init__(self, args: argparse.Namespace) -> None:
         super().__init__(args)
         self.args = vars(args) if args is not None else {}
-        self.data_dir = DOWNLOADED_DATA_DIRNAME
-        self.data_file = DOWNLOADED_DATA_DIRNAME / "prepped_training_data.feather"
         self.data_fraction = float(self.args.get("data_fraction", DATA_FRACTION))
         self.seed = 2
 
@@ -43,10 +46,10 @@ class MotionsDataModule(BaseDataModule):
         """Define steps that should be done on only one GPU, like getting data."""
         # Don't load/prep data if overfitting to 1 batch, test data is loaded in setup()
         if self.args.get("overfit_batches") == 1:
-            return
+            pass
         # Avoid loading data again in trainer.test() call.
         elif self.trainer and self.trainer.testing:
-            return
+            pass
         else:
             get_training_dataset()
 
@@ -58,9 +61,9 @@ class MotionsDataModule(BaseDataModule):
             return
 
         if self.args.get("overfit_batches", 0) == 1:
-            data = pd.read_csv(TEST_DATA_DIRNAME / "test_data.csv")
+            data = pd.read_csv(TEST_DATA_PATH)
         else:
-            data = pd.read_feather(self.data_file)
+            data = pd.read_feather(DATA_PATH)
 
         total_rows = len(data)
         data = data.sample(frac=self.data_fraction, random_state=self.seed)

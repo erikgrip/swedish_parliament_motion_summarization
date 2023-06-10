@@ -37,11 +37,7 @@ class MotionTitleGenerator:
 
 def main():
     """
-    Run the paragraph text recognizer. Example runs:
-    ```
-    python text_recognizer/paragraph_text_recognizer.py text_recognizer/tests/support/paragraphs/a01-077.png
-    python text_recognizer/paragraph_text_recognizer.py
-           https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png
+    Run the motion title generator.
     """
     parser = argparse.ArgumentParser(
         description="Generate a title for a Swedish Parliament Motion."
