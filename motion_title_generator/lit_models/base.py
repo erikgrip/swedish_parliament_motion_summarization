@@ -1,7 +1,7 @@
 # type: ignore
 import argparse
 
-import pytorch_lightning as pl
+import lightning as L
 import torch
 
 
@@ -10,7 +10,7 @@ LR = 1e-3
 ONE_CYCLE_TOTAL_STEPS = 100
 
 
-class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
+class BaseLitModel(L.LightningModule):  # pylint: disable=too-many-ancestors
     """Generic PyTorch-Lightning class that must be initialized
     with a PyTorch module."""
 

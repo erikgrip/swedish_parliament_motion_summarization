@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 from typing import Optional, Union
 
-import pytorch_lightning as pl
+import lightning as L
 from torch.utils.data import ConcatDataset, DataLoader
 
 from motion_title_generator.data.base_dataset import BaseDataset
@@ -12,7 +12,7 @@ BATCH_SIZE = 8
 NUM_WORKERS = 0
 
 
-class BaseDataModule(pl.LightningDataModule):
+class BaseDataModule(L.LightningDataModule):
     """
     Base DataModule. Learn more at
     https://pytorch-lightning.readthedocs.io/en/stable/extensions/datamodules.html

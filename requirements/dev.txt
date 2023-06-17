@@ -18,8 +18,10 @@ backcall==0.2.0
     # via ipython
 bandit==1.7.2
     # via -r requirements/dev.in
-beautifulsoup4==4.11.1
-    # via -r requirements/dev.in
+beautifulsoup4==4.12.2
+    # via
+    #   -c requirements/prod.txt
+    #   -r requirements/dev.in
 black==22.3.0
     # via -r requirements/dev.in
 cachetools==5.3.0
@@ -170,8 +172,10 @@ prompt-toolkit==3.0.30
     # via ipython
 protobuf==3.20.1
     # via tensorboard
-psutil==5.9.0
-    # via ipykernel
+psutil==5.9.5
+    # via
+    #   -c requirements/prod.txt
+    #   ipykernel
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
@@ -190,8 +194,10 @@ pycodestyle==2.8.0
     # via -r requirements/dev.in
 pydocstyle==6.1.1
     # via -r requirements/dev.in
-pygments==2.12.0
-    # via ipython
+pygments==2.15.1
+    # via
+    #   -c requirements/prod.txt
+    #   ipython
 pylint==2.12.2
     # via -r requirements/dev.in
 pyparsing==3.0.9
@@ -247,8 +253,10 @@ smmap==5.0.0
     # via gitdb
 snowballstemmer==2.2.0
     # via pydocstyle
-soupsieve==2.3.2.post1
-    # via beautifulsoup4
+soupsieve==2.4.1
+    # via
+    #   -c requirements/prod.txt
+    #   beautifulsoup4
 stack-data==0.3.0
     # via ipython
 stevedore==3.5.0
@@ -275,14 +283,15 @@ tqdm==4.64.0
     #   -c requirements/prod.txt
     #   -r requirements/dev.in
     #   huggingface-hub
-traitlets==5.3.0
+traitlets==5.9.0
     # via
+    #   -c requirements/prod.txt
     #   ipykernel
     #   ipython
     #   jupyter-client
     #   jupyter-core
     #   matplotlib-inline
-typing-extensions==4.0.1
+typing-extensions==4.6.3
     # via
     #   -c requirements/prod.txt
     #   astroid
@@ -299,14 +308,18 @@ urllib3==1.26.9
     #   -c requirements/prod.txt
     #   google-auth
     #   requests
-wcwidth==0.2.5
-    # via prompt-toolkit
+wcwidth==0.2.6
+    # via
+    #   -c requirements/prod.txt
+    #   prompt-toolkit
 werkzeug==2.2.3
     # via
     #   -c requirements/prod.txt
     #   tensorboard
 wheel==0.40.0
-    # via tensorboard
+    # via
+    #   -c requirements/prod.txt
+    #   tensorboard
 wrapt==1.13.3
     # via astroid
 zipp==3.8.0
