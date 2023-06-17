@@ -2,8 +2,10 @@ import argparse
 import importlib
 
 import numpy as np
-import pytorch_lightning as pl
 import torch
+from lightning.pytorch import Trainer
+from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
+from lightning.pytorch.loggers import TensorBoardLogger
 
 from motion_title_generator import lit_models
 
@@ -97,7 +99,7 @@ def main():
     else:
         lit_model = lit_model_class(args=args, model=model)
 
-    logger = pl.loggers.TensorBoardLogger("training/logs")
+    logger = TensorBoardLogger("training/logs")
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
@@ -107,10 +109,10 @@ def main():
         loss_to_log = "val_loss"
         enable_checkpointing = True
 
-    early_stopping_callback = pl.callbacks.EarlyStopping(
+    early_stopping_callback = EarlyStopping(
         monitor=loss_to_log, mode="min", patience=args.early_stopping
     )
-    model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
+    model_checkpoint_callback = ModelCheckpoint(
         filename="{epoch:03d}-{val_loss:.2f}",
         monitor=loss_to_log,
         mode="min",
@@ -121,7 +123,7 @@ def main():
         else [early_stopping_callback]
     )
 
-    trainer = pl.Trainer(
+    trainer = Trainer(
         accelerator=args.accelerator,
         devices=args.devices,
         max_epochs=args.max_epochs,
