@@ -36,9 +36,7 @@ class MotionTitleGenerator:
 
 
 def main():
-    """
-    Run the motion title generator.
-    """
+    """Run the motion title generator."""
     parser = argparse.ArgumentParser(
         description="Generate a title for a Swedish Parliament Motion."
     )
