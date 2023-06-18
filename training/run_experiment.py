@@ -67,7 +67,6 @@ def _setup_parser():
     return parser
 
 
-# pylint: too-many-locals
 def main():
     """
     Run an experiment.
@@ -89,14 +88,12 @@ def main():
     data = data_class(args)
     model = model_class(data_config=data.config(), args=args)
 
-    lit_model_class = lit_models.MT5LitModel
-
     if args.load_checkpoint is not None:
-        lit_model = lit_model_class.load_from_checkpoint(
+        lit_model = lit_models.MT5LitModel.load_from_checkpoint(
             args.load_checkpoint, args=args, model=model
         )
     else:
-        lit_model = lit_model_class(args=args, model=model)
+        lit_model = lit_models.MT5LitModel(args=args, model=model)
 
     logger = TensorBoardLogger("training/logs")
 
