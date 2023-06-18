@@ -20,6 +20,7 @@ TEST_DATA_PATH = BaseDataModule.data_dirname() / "test" / "test_data.csv"
 DATA_FRACTION = 1.0  # Allows scaling data down for faster trining
 TRAIN_FRAC = 0.75
 VAL_FRAC = 0.15
+# TODO: Add NUM_WORKERS, overfit doesn't work well with num_workers > 0
 
 
 class MotionsDataModule(BaseDataModule):

@@ -89,8 +89,8 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
 
     def test_step(self, batch, batch_idx):
         loss, _ = self(
-            input_ids=batch["text_input_ids"],
-            attention_mask=batch["text_attention_mask"],
+            input_ids=batch["input_ids"],
+            attention_mask=batch["attention_mask"],
             labels=batch["title_mod_ids"],
             decoder_attention_mask=batch["title_attention_mask"],
         )

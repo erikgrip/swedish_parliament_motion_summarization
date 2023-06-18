@@ -13,7 +13,6 @@ DEFAULT_DATA_CLASS = "MotionsDataModule"
 DEFAULT_MODEL_CLASS = "MT5"
 DEFAULT_EARLY_STOPPING = 10
 
-
 # Set random seeds
 np.random.seed(42)
 torch.manual_seed(42)
@@ -39,7 +38,7 @@ def _setup_parser():
     trainer_group.add_argument("--devices", default="auto", help="Number of GPUs")
     trainer_group.add_argument("--max_epochs", type=int, default=-1)
     trainer_group.add_argument("--fast_dev_run", type=bool, default=False)
-    trainer_group.add_argument("--overfit_batches", default=0.0)
+    trainer_group.add_argument("--overfit_batches", type=float, default=0.0)
 
     # Basic arguments
     parser.add_argument("--data_class", type=str, default=DEFAULT_DATA_CLASS)
@@ -124,12 +123,13 @@ def main():
     )
 
     trainer = Trainer(
+        precision="bf16-mixed",
         accelerator=args.accelerator,
         devices=args.devices,
         max_epochs=args.max_epochs,
         fast_dev_run=args.fast_dev_run,
         overfit_batches=args.overfit_batches,
-        callbacks=callbacks,
+        callbacks=callbacks,  # type: ignore
         logger=logger,
         enable_checkpointing=enable_checkpointing,
     )
