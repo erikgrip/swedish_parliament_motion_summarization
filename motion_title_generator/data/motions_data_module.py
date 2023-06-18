@@ -56,7 +56,8 @@ class MotionsDataModule(BaseDataModule):
 
     def setup(self, stage: str = None) -> None:
         """Define steps that should be done on every GPU, like splitting data,
-        applying transform etc."""
+        applying transform etc.
+        """
         if stage and stage != "fit":
             # Setup for all stages is done in trainer.fit()
             return
