@@ -1,5 +1,6 @@
 import argparse
 from random import sample
+from typing import Dict, List
 
 from transformers.models.mt5 import MT5Tokenizer
 
@@ -20,7 +21,7 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         self.tokenizer = MT5Tokenizer.from_pretrained(model.model_name)
         self.max_text_tokens = self.args.get("max_title_tokens", MAX_TEXT_TOKENS)
         self.max_title_tokens = self.args.get("max_title_tokens", MAX_TITLE_TOKENS)
-        self.validation_step_outputs = []
+        self.validation_step_outputs: List[Dict] = []
 
     @staticmethod
     def add_to_argparse(parser):  # pylint: disable=missing-function-docstring
