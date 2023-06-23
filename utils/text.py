@@ -6,7 +6,7 @@ def trim_motion_text_by_subtitle(row):
     try:
         split = row["text"].split(row["subtitle"], 1)
         return split[-1].strip()
-    except Exception as e:
+    except ValueError as e:
         print(e)
         return row["text"]
 
@@ -20,14 +20,16 @@ def trim_motion_text_by_leading_title(row):
     return text
 
 
-def trim_whitespace(s):
+def trim_whitespace(series):
     """Remove trailing and multiple whitespaces from a pandas series"""
-    return s.replace("\s+", " ", regex=True).str.strip()
+    return series.replace(r"\s+", " ", regex=True).str.strip()
 
 
-def trim_linebreaks(s):
+def trim_linebreaks(series):
     """Remove linebreaks and trailing whitespaces from a pandas series"""
-    return s.replace("\n", " ", regex=True).replace("\r", " ", regex=True).str.strip()
+    return (
+        series.replace("\n", " ", regex=True).replace("\r", " ", regex=True).str.strip()
+    )
 
 
 def trim_motion_text_by_proposed_decision(row):

@@ -1,16 +1,14 @@
-from pathlib import Path
 import argparse
-import json
 import io
+import json
+from pathlib import Path
 
 import torch
 from transformers.models.auto.modeling_auto import AutoModelForSeq2SeqLM
 
-
 from motion_title_generator.data import MotionsDataModule
 from motion_title_generator.lit_models import MT5LitModel
 from motion_title_generator.models import MT5
-
 
 LOCALE_ENCODING = getattr(io, "LOCALE_ENCODING", "utf-8")
 ARTIFACT_DIR = Path(__file__).resolve().parent / "artifacts" / "motion_title_generator"

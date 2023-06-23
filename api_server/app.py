@@ -12,8 +12,11 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Do not use GPU
 INDEX_TEXT = "App is running. Make predictions at http://localhost:8000/v1/predict"
 
 app = Flask(__name__)
-logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO
+)
 model = MotionTitleGenerator()
+
 
 @app.route("/")
 def index():

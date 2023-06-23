@@ -45,6 +45,7 @@ class BaseLitModel(L.LightningModule):  # pylint: disable=too-many-ancestors
         return parser
 
     def configure_optimizers(self):
+        """Initialize optimizer and learning rate scheduler."""
         optimizer = self.optimizer_class(self.parameters(), lr=self.lr)
         if self.one_cycle_max_lr is None:
             return optimizer
@@ -59,18 +60,18 @@ class BaseLitModel(L.LightningModule):  # pylint: disable=too-many-ancestors
             "monitor": "val_loss",
         }
 
-    # pylint: disable=arguments-differ
+    # pylint: disable=arguments-differ,missing-function-docstring
     def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
         raise NotImplementedError
 
-    # pylint: disable=arguments-differ, unused-argument
+    # pylint: disable=arguments-differ, unused-argument, missing-function-docstring
     def training_step(self, batch, batch_idx):
         raise NotImplementedError
 
-    # pylint: disable=arguments-differ, unused-argument
+    # pylint: disable=arguments-differ, unused-argument, missing-function-docstring
     def validation_step(self, batch, batch_idx):
         raise NotImplementedError
 
-    # pylint: disable=arguments-differ, unused-argument
+    # pylint: disable=arguments-differ, unused-argument, missing-function-docstring
     def test_step(self, batch, batch_idx):
         raise NotImplementedError
