@@ -1,4 +1,3 @@
-# type: ignore
 import argparse
 
 import lightning as L

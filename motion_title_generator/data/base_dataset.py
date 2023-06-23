@@ -1,6 +1,3 @@
-# type: ignore
-"""BaseDataset class."""
-
 from typing import Any, Callable, Dict, Sequence, Union
 
 import torch
@@ -65,4 +62,4 @@ class BaseDataset(torch.utils.data.Dataset):
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        return datum, target
+        return {"datum": datum, "target": target}

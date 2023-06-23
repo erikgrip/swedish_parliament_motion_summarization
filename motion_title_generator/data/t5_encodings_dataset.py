@@ -1,4 +1,3 @@
-# type: ignore
 import argparse
 from typing import Any, Dict
 
@@ -53,7 +52,9 @@ class MT5EncodingsDataset(BaseDataset):
 
     def __getitem__(self, index: int) -> Dict[Any, Any]:
         """Return text and title with their encodings and attention masks."""
-        text, title = super().__getitem__(index)
+        items = super().__getitem__(index)
+        text = items["datum"]
+        title = items["target"]
 
         text_encoding = encode(text, self.tokenizer, self.max_text_tokens)
         title_encoding = encode(title, self.tokenizer, self.max_title_tokens)

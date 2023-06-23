@@ -1,4 +1,3 @@
-# type: ignore
 import argparse
 from random import sample
 
@@ -8,7 +7,7 @@ from motion_title_generator.data.t5_encodings_dataset import (
     MAX_TEXT_TOKENS,
     MAX_TITLE_TOKENS,
 )
-from motion_title_generator.lit_models.base import BaseLitModel
+from motion_title_generator.lit_models import BaseLitModel
 from utils.encode_decode import generate
 
 
