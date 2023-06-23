@@ -6,11 +6,18 @@ from transformers.testing_utils import slow
 
 from utils.encode_decode import encode, generate
 
+
 @pytest.fixture(scope="module")
-def tokenizer_model():
-    tokenizer = MT5Tokenizer.from_pretrained('google/mt5-small')
-    model = MT5ForConditionalGeneration.from_pretrained('google/mt5-small')
-    yield tokenizer, model
+def model():
+    """Fixture to load model."""
+    yield MT5ForConditionalGeneration.from_pretrained("google/mt5-small")
+
+
+@pytest.fixture(scope="module")
+def tokenizer():
+    """Fixture to load tokenizer."""
+    yield MT5Tokenizer.from_pretrained("google/mt5-small")
+
 
 @slow
 @pytest.mark.parametrize(
@@ -18,19 +25,20 @@ def tokenizer_model():
     [
         ("This is a sample text.", 10),
         ("This is the first sentence. This is the second sentence.", 15),
-    ]
+    ],
 )
-def test_encode(tokenizer_model, text, max_tokens):
-    tokenizer, _ = tokenizer_model
+def test_encode(tokenizer, text, max_tokens):
+    """Test that encode returns tensors of correct shape."""
     encoding = encode(text, tokenizer, max_tokens)
     assert isinstance(encoding["input_ids"], torch.Tensor)
     assert isinstance(encoding["attention_mask"], torch.Tensor)
     assert encoding["input_ids"].shape == encoding["attention_mask"].shape
     assert encoding["input_ids"].shape[-1] == max_tokens
 
+
 @slow
-def test_generate_with_input(tokenizer_model):
-    tokenizer, model = tokenizer_model
+def test_generate_with_input(model, tokenizer):
+    """Test that generate returns a non-empty string."""
     text_encoding = {
         "input_ids": torch.tensor([[1, 2, 3, 4, 5]]),
         "attention_mask": torch.tensor([[1, 1, 1, 1, 1]]),
@@ -41,8 +49,8 @@ def test_generate_with_input(tokenizer_model):
 
 
 @slow
-def test_generate_without_input(tokenizer_model):
-    tokenizer, model = tokenizer_model
+def test_generate_without_input(model, tokenizer):
+    """Test that generate returns an empty string when input is empty."""
     text_encoding = {
         "input_ids": torch.empty(0, dtype=torch.long),
         "attention_mask": torch.empty(0, dtype=torch.long),
