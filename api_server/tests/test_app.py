@@ -1,15 +1,16 @@
 import os
 import unittest
 
-from api_server.app import app, INDEX_TEXT
+from api_server.app import INDEX_TEXT, app
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 INVALID_TEXT = "This one's too short."
-VALID_TEXT = """Persontrafik på järnvägen genom Sörmland på den så kallade TGOJ-banan
-(Trafikaktie­bolaget Grängesberg–Oxelösunds Järnvägar) bör återinföras. Järnvägen sträcker
-sig från Oxelösund, via Flen och Eskilstuna vidare norrut. I dagsläget används sträckan
-mellan Oxelösund och Flen för godstrafik men inte persontrafik."""
+VALID_TEXT = """Persontrafik på järnvägen genom Sörmland på den så kallade \
+TGOJ-banan (Trafikaktie­bolaget Grängesberg–Oxelösunds Järnvägar) bör \
+återinföras. Järnvägen sträcker sig från Oxelösund, via Flen och Eskilstuna \
+vidare norrut. I dagsläget används sträckanmellan Oxelösund och Flen för \
+godstrafik men inte persontrafik."""
 
 
 class TestIntegrations(unittest.TestCase):

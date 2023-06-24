@@ -1,16 +1,14 @@
-from pathlib import Path
 import argparse
-import json
 import io
+import json
+from pathlib import Path
 
 import torch
 from transformers.models.auto.modeling_auto import AutoModelForSeq2SeqLM
 
-
-from motion_title_generator.data.motions_data_module import MotionsDataModule
-from motion_title_generator.lit_models.t5 import MT5LitModel
-from motion_title_generator.models.t5 import MT5
-
+from motion_title_generator.data import MotionsDataModule
+from motion_title_generator.lit_models import MT5LitModel
+from motion_title_generator.models import MT5
 
 LOCALE_ENCODING = getattr(io, "LOCALE_ENCODING", "utf-8")
 ARTIFACT_DIR = Path(__file__).resolve().parent / "artifacts" / "motion_title_generator"
@@ -21,7 +19,7 @@ class MotionTitleGenerator:
 
     def __init__(self):
         with open(ARTIFACT_DIR / "config.json", "r", encoding=LOCALE_ENCODING) as f:
-            args = argparse.Namespace(**json.load(f))
+            args = vars(argparse.Namespace(**json.load(f)))
         data = MotionsDataModule(args)
         model = MT5(data_config=data.config(), args=args)
         model.model = AutoModelForSeq2SeqLM.from_pretrained(
@@ -36,13 +34,7 @@ class MotionTitleGenerator:
 
 
 def main():
-    """
-    Run the paragraph text recognizer. Example runs:
-    ```
-    python text_recognizer/paragraph_text_recognizer.py text_recognizer/tests/support/paragraphs/a01-077.png
-    python text_recognizer/paragraph_text_recognizer.py
-           https://fsdl-public-assets.s3-us-west-2.amazonaws.com/paragraphs/a01-077.png
-    """
+    """Run the motion title generator."""
     parser = argparse.ArgumentParser(
         description="Generate a title for a Swedish Parliament Motion."
     )

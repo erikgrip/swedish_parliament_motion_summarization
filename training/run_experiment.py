@@ -1,11 +1,11 @@
-# type: ignore
-"""Experiment-running framework."""
 import argparse
 import importlib
 
 import numpy as np
-import pytorch_lightning as pl
 import torch
+from lightning.pytorch import Trainer
+from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
+from lightning.pytorch.loggers import TensorBoardLogger
 
 from motion_title_generator import lit_models
 
@@ -55,10 +55,10 @@ def _setup_parser():
 
     # Get data, model, and LitModel specific arguments
     data_group = parser.add_argument_group("Data Args")
-    data_class.add_to_argparse(data_group)
+    data_class.add_to_argparse(data_group)  # type: ignore
 
     model_group = parser.add_argument_group("Model Args")
-    model_class.add_to_argparse(model_group)
+    model_class.add_to_argparse(model_group)  # type: ignore
 
     lit_model_group = parser.add_argument_group("LitModel Args")
     lit_models.BaseLitModel.add_to_argparse(lit_model_group)
@@ -85,20 +85,17 @@ def main():
     args = parser.parse_args()
     data_class = _import_class(f"motion_title_generator.data.{args.data_class}")
     model_class = _import_class(f"motion_title_generator.models.{args.model_class}")
-    data = data_class(args)
-    model = model_class(data_config=data.config(), args=args)
-
-    if args.model_class == "MT5":
-        lit_model_class = lit_models.MT5LitModel
+    data = data_class(vars(args))
+    model = model_class(data_config=data.config(), args=vars(args))
 
     if args.load_checkpoint is not None:
-        lit_model = lit_model_class.load_from_checkpoint(
-            args.load_checkpoint, args=args, model=model
+        lit_model = lit_models.MT5LitModel.load_from_checkpoint(
+            args.load_checkpoint, args=vars(args), model=model
         )
     else:
-        lit_model = lit_model_class(args=args, model=model)
+        lit_model = lit_models.MT5LitModel(args=vars(args), model=model)
 
-    logger = pl.loggers.TensorBoardLogger("training/logs")
+    logger = TensorBoardLogger("training/logs")
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
@@ -108,10 +105,10 @@ def main():
         loss_to_log = "val_loss"
         enable_checkpointing = True
 
-    early_stopping_callback = pl.callbacks.EarlyStopping(
+    early_stopping_callback = EarlyStopping(
         monitor=loss_to_log, mode="min", patience=args.early_stopping
     )
-    model_checkpoint_callback = pl.callbacks.ModelCheckpoint(
+    model_checkpoint_callback = ModelCheckpoint(
         filename="{epoch:03d}-{val_loss:.2f}",
         monitor=loss_to_log,
         mode="min",

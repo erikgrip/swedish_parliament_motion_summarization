@@ -1,7 +1,4 @@
-# type: ignore
-"""BaseDataset class."""
-
-from typing import Any, Callable, Dict, Sequence, Union
+from typing import Any, Callable, Dict, Optional, Sequence, Union
 
 import torch
 
@@ -30,8 +27,8 @@ class BaseDataset(torch.utils.data.Dataset):
         self,
         data: SequenceOrTensor,
         targets: SequenceOrTensor,
-        transform: Callable = None,
-        target_transform: Callable = None,
+        transform: Optional[Callable] = None,
+        target_transform: Optional[Callable] = None,
     ) -> None:
         if len(data) != len(targets):
             raise ValueError("Data and targets must be of equal length")
@@ -65,4 +62,4 @@ class BaseDataset(torch.utils.data.Dataset):
         if self.target_transform is not None:
             target = self.target_transform(target)
 
-        return datum, target
+        return {"datum": datum, "target": target}

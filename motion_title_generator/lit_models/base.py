@@ -1,7 +1,6 @@
-# type: ignore
-import argparse
+from typing import Dict, Optional
 
-import pytorch_lightning as pl
+import lightning as L
 import torch
 
 
@@ -10,13 +9,14 @@ LR = 1e-3
 ONE_CYCLE_TOTAL_STEPS = 100
 
 
-class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
+class BaseLitModel(L.LightningModule):  # pylint: disable=too-many-ancestors
     """Generic PyTorch-Lightning class that must be initialized
-    with a PyTorch module."""
+    with a PyTorch module.
+    """
 
-    def __init__(self, model, args: argparse.Namespace = None):
+    def __init__(self, model, args: Optional[Dict] = None):
         super().__init__()
-        self.args = vars(args) if args is not None else {}
+        self.args = args if args is not None else {}
         self.save_hyperparameters(self.args)
         self.model = model
 
@@ -45,6 +45,7 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
         return parser
 
     def configure_optimizers(self):
+        """Initialize optimizer and learning rate scheduler."""
         optimizer = self.optimizer_class(self.parameters(), lr=self.lr)
         if self.one_cycle_max_lr is None:
             return optimizer
@@ -59,14 +60,18 @@ class BaseLitModel(pl.LightningModule):  # pylint: disable=too-many-ancestors
             "monitor": "val_loss",
         }
 
-    def forward(self, *args, **kwargs):
+    # pylint: disable=arguments-differ,missing-function-docstring
+    def forward(self, input_ids, attention_mask, decoder_attention_mask, labels=None):
         raise NotImplementedError
 
-    def training_step(self, batch, batch_idx):  # pylint: disable=unused-argument
+    # pylint: disable=arguments-differ, unused-argument, missing-function-docstring
+    def training_step(self, batch, batch_idx):
         raise NotImplementedError
 
-    def validation_step(self, batch, batch_idx):  # pylint: disable=unused-argument
+    # pylint: disable=arguments-differ, unused-argument, missing-function-docstring
+    def validation_step(self, batch, batch_idx):
         raise NotImplementedError
 
-    def test_step(self, batch, batch_idx):  # pylint: disable=unused-argument
+    # pylint: disable=arguments-differ, unused-argument, missing-function-docstring
+    def test_step(self, batch, batch_idx):
         raise NotImplementedError
