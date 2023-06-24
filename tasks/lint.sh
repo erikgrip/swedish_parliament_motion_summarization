@@ -24,7 +24,7 @@ echo "pydocstyle"
 pydocstyle api_server motion_title_generator training utils || FAILURE=true
 
 echo "mypy"
-mypy api_server motion_title_generator training utils --verbose || FAILURE=true
+mypy api_server motion_title_generator training utils || FAILURE=true
 
 echo "bandit"
 bandit -ll -r {api_server,motion_title_generator,training,utils} || FAILURE=true

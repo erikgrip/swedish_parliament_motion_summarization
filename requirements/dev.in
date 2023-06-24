@@ -1,7 +1,7 @@
 -c prod.txt
 bandit
 beautifulsoup4
-black==22.3.0
+black==22.3.0  # Avoid 'packaging' version conflict
 huggingface_hub
 ipykernel
 matplotlib
