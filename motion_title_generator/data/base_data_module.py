@@ -51,7 +51,7 @@ class BaseDataModule(L.LightningDataModule):
         )
         return parser
 
-    def config(self):  # pylint: disable=no-self-use
+    def config(self):
         """Return settings of the dataset, to be passed to instantiate models.
 
         For example:
