@@ -1,5 +1,4 @@
-import argparse
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from transformers.models.mt5 import MT5Tokenizer
 
@@ -14,13 +13,13 @@ MT5_VERSION = "small"
 class MT5EncodingsDataset(BaseDataset):
     """Extends base class to return text encodings."""
 
-    def __init__(self, data, targets, args: argparse.Namespace = None) -> None:
-        self.args = vars(args) if args is not None else {}
+    def __init__(self, data, targets, args: Optional[Dict] = None) -> None:
+        self.args = args if args is not None else {}
         super().__init__(
             data,
             targets,
-            self.args.get("data_transform", None),
-            self.args.get("target_transform", None),
+            transform=self.args.get("data_transform"),
+            target_transform=self.args.get("target_transform"),
         )
         model_version = self.args.get("model_version", MT5_VERSION)
         model = f"google/mt5-{model_version}"

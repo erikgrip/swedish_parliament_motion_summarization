@@ -19,7 +19,7 @@ class MotionTitleGenerator:
 
     def __init__(self):
         with open(ARTIFACT_DIR / "config.json", "r", encoding=LOCALE_ENCODING) as f:
-            args = argparse.Namespace(**json.load(f))
+            args = vars(argparse.Namespace(**json.load(f)))
         data = MotionsDataModule(args)
         model = MT5(data_config=data.config(), args=args)
         model.model = AutoModelForSeq2SeqLM.from_pretrained(

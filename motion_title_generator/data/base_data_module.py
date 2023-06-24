@@ -1,7 +1,6 @@
-"""Base DataModule class."""
 import argparse
 from pathlib import Path
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
 import lightning as L
 from torch.utils.data import ConcatDataset, DataLoader
@@ -18,9 +17,9 @@ class BaseDataModule(L.LightningDataModule):
     https://pytorch-lightning.readthedocs.io/en/stable/extensions/datamodules.html
     """
 
-    def __init__(self, args: argparse.Namespace = None) -> None:
+    def __init__(self, args: Optional[Dict] = None) -> None:
         super().__init__()
-        self.args = vars(args) if args is not None else {}
+        self.args = args if args is not None else {}
         self.batch_size = self.args.get("batch_size", BATCH_SIZE)
         self.num_workers = self.args.get("num_workers", NUM_WORKERS)
         self.on_gpu = isinstance(self.args.get("gpus", None), (str, int))

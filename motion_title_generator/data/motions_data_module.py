@@ -1,4 +1,4 @@
-import argparse
+from typing import Dict, Optional
 
 import pandas as pd
 from torch.utils.data import DataLoader
@@ -25,9 +25,9 @@ VAL_FRAC = 0.15
 class MotionsDataModule(BaseDataModule):
     """Pytorch lightning DataModule class for the motion data."""
 
-    def __init__(self, args: argparse.Namespace) -> None:
+    def __init__(self, args: Optional[Dict] = None) -> None:
         super().__init__(args)
-        self.args = vars(args) if args is not None else {}
+        self.args = args if args is not None else {}
         self.data_fraction = float(self.args.get("data_fraction", DATA_FRACTION))
         self.seed = 2
 
@@ -53,7 +53,7 @@ class MotionsDataModule(BaseDataModule):
         else:
             get_training_dataset()
 
-    def setup(self, stage: str = None) -> None:
+    def setup(self, stage: Optional[str] = None) -> None:
         """Define steps that should be done on every GPU, like splitting data,
         applying transform etc.
         """

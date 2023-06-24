@@ -40,9 +40,7 @@ def load_litmodel_from_checkpoint(checkpoint_path, cfg_path):
     """Load Pytorch Lightning model from checkpoint and saved config file."""
     logging.info("Loading checkpoint config %s ...", cfg_path)
     with open(cfg_path, "r", encoding="utf-8") as hparams_file:
-        lightning_config = argparse.Namespace(
-            **yaml.safe_load(hparams_file)
-        )
+        lightning_config = vars(argparse.Namespace(**yaml.safe_load(hparams_file)))
 
     model = t5.MT5(data_config={}, args=lightning_config)
 

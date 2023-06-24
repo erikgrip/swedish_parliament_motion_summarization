@@ -1,6 +1,5 @@
-import argparse
 from random import sample
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from transformers.models.mt5 import MT5Tokenizer
 
@@ -15,8 +14,9 @@ from utils.encode_decode import generate
 class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
     """Lightning class to hold a MT5 model for conditional generation."""
 
-    def __init__(self, model, args: argparse.Namespace = None):
+    def __init__(self, model, args: Optional[Dict] = None):
         super().__init__(model, args=args)
+        self.args = args if args is not None else {}
         self.model = model
         self.tokenizer = MT5Tokenizer.from_pretrained(model.model_name)
         self.max_text_tokens = self.args.get("max_title_tokens", MAX_TEXT_TOKENS)

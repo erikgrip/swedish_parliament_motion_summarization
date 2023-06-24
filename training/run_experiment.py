@@ -85,15 +85,15 @@ def main():
     args = parser.parse_args()
     data_class = _import_class(f"motion_title_generator.data.{args.data_class}")
     model_class = _import_class(f"motion_title_generator.models.{args.model_class}")
-    data = data_class(args)
-    model = model_class(data_config=data.config(), args=args)
+    data = data_class(vars(args))
+    model = model_class(data_config=data.config(), args=vars(args))
 
     if args.load_checkpoint is not None:
         lit_model = lit_models.MT5LitModel.load_from_checkpoint(
-            args.load_checkpoint, args=args, model=model
+            args.load_checkpoint, args=vars(args), model=model
         )
     else:
-        lit_model = lit_models.MT5LitModel(args=args, model=model)
+        lit_model = lit_models.MT5LitModel(args=vars(args), model=model)
 
     logger = TensorBoardLogger("training/logs")
 

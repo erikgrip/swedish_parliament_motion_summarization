@@ -1,4 +1,4 @@
-import argparse
+from typing import Dict, Optional
 
 import lightning as L
 import torch
@@ -14,9 +14,9 @@ class BaseLitModel(L.LightningModule):  # pylint: disable=too-many-ancestors
     with a PyTorch module.
     """
 
-    def __init__(self, model, args: argparse.Namespace = None):
+    def __init__(self, model, args: Optional[Dict] = None):
         super().__init__()
-        self.args = vars(args) if args is not None else {}
+        self.args = args if args is not None else {}
         self.save_hyperparameters(self.args)
         self.model = model
 
