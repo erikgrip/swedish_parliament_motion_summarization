@@ -29,7 +29,7 @@ def download_motion_zip_files(
     doc_catalogue_url = base_url + "dataset/katalog/dataset.xml"
     response = requests.get(doc_catalogue_url, allow_redirects=True)
     soup = BeautifulSoup(response.content, features="html.parser")
-    doc_list = soup.datasetlista.findAll("dataset")
+    doc_list = soup.datasetlista.findAll("dataset") if soup.datasetlista else []
 
     downloaded = []
     for doc in doc_list:
