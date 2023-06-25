@@ -7,14 +7,14 @@ from transformers.testing_utils import slow
 from utils.encode_decode import encode, generate
 
 
-@pytest.fixture(scope="module")
-def model():
+@pytest.fixture(scope="module", name="model")
+def setup_model():
     """Fixture to load model."""
     yield MT5ForConditionalGeneration.from_pretrained("google/mt5-small")
 
 
-@pytest.fixture(scope="module")
-def tokenizer():
+@pytest.fixture(scope="module", name="tokenizer")
+def setup_tokenizer():
     """Fixture to load tokenizer."""
     yield MT5Tokenizer.from_pretrained("google/mt5-small")
 
