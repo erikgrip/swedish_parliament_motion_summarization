@@ -7,35 +7,33 @@
 absl-py==1.4.0
     # via tensorboard
 aiohttp==3.8.4
-    # via
-    #   -c requirements/prod.txt
-    #   fsspec
+    # via fsspec
 aiosignal==1.3.1
-    # via
-    #   -c requirements/prod.txt
-    #   aiohttp
+    # via aiohttp
+anyio==3.7.0
+    # via starlette
+arrow==1.2.3
+    # via lightning
 astroid==2.15.5
     # via pylint
 asttokens==2.2.1
     # via stack-data
 async-timeout==4.0.2
-    # via
-    #   -c requirements/prod.txt
-    #   aiohttp
+    # via aiohttp
 attrs==23.1.0
-    # via
-    #   -c requirements/prod.txt
-    #   aiohttp
+    # via aiohttp
 backcall==0.2.0
     # via ipython
 bandit==1.7.5
     # via -r requirements/dev.in
 beautifulsoup4==4.12.2
     # via
-    #   -c requirements/prod.txt
     #   -r requirements/dev.in
+    #   lightning
 black==22.3.0
     # via -r requirements/dev.in
+blessed==1.20.0
+    # via inquirer
 cachetools==5.3.1
     # via google-auth
 certifi==2023.5.7
@@ -51,42 +49,62 @@ click==8.1.3
     # via
     #   -c requirements/prod.txt
     #   black
+    #   lightning
+    #   lightning-cloud
     #   safety
+    #   uvicorn
+cmake==3.26.4
+    # via
+    #   -c requirements/prod.txt
+    #   triton
 comm==0.1.3
     # via ipykernel
 contourpy==1.1.0
     # via matplotlib
+croniter==1.3.15
+    # via lightning
 cycler==0.11.0
     # via matplotlib
+dateutils==0.6.12
+    # via lightning
 debugpy==1.6.7
     # via ipykernel
 decorator==5.1.1
     # via ipython
+deepdiff==6.3.0
+    # via lightning
 dill==0.3.6
     # via pylint
 dparse==0.6.2
     # via safety
 exceptiongroup==1.1.1
     # via
-    #   -c requirements/prod.txt
+    #   anyio
     #   pytest
 executing==1.2.0
     # via stack-data
+fastapi==0.98.0
+    # via
+    #   lightning
+    #   lightning-cloud
 filelock==3.12.2
     # via
     #   -c requirements/prod.txt
     #   huggingface-hub
+    #   torch
+    #   triton
 fonttools==4.40.0
     # via matplotlib
 frozenlist==1.3.3
     # via
-    #   -c requirements/prod.txt
     #   aiohttp
     #   aiosignal
 fsspec[http]==2023.6.0
     # via
     #   -c requirements/prod.txt
     #   huggingface-hub
+    #   lightning
+    #   pytorch-lightning
 gitdb==4.0.10
     # via gitpython
 gitpython==3.1.31
@@ -99,6 +117,8 @@ google-auth-oauthlib==1.0.0
     # via tensorboard
 grpcio==1.56.0
     # via tensorboard
+h11==0.14.0
+    # via uvicorn
 huggingface-hub==0.15.1
     # via
     #   -c requirements/prod.txt
@@ -106,6 +126,7 @@ huggingface-hub==0.15.1
 idna==3.4
     # via
     #   -c requirements/prod.txt
+    #   anyio
     #   requests
     #   yarl
 importlib-metadata==6.7.0
@@ -117,14 +138,25 @@ importlib-resources==5.12.0
     # via matplotlib
 iniconfig==2.0.0
     # via pytest
+inquirer==3.1.3
+    # via lightning
 ipykernel==6.23.3
     # via -r requirements/dev.in
 ipython==8.14.0
     # via ipykernel
 isort==5.12.0
     # via pylint
+itsdangerous==2.1.2
+    # via
+    #   -c requirements/prod.txt
+    #   starsessions
 jedi==0.18.2
     # via ipython
+jinja2==3.1.2
+    # via
+    #   -c requirements/prod.txt
+    #   lightning
+    #   torch
 jupyter-client==8.3.0
     # via ipykernel
 jupyter-core==5.3.1
@@ -135,15 +167,26 @@ kiwisolver==1.4.4
     # via matplotlib
 lazy-object-proxy==1.9.0
     # via astroid
+lightning==2.0.4
+    # via -r requirements/dev.in
+lightning-cloud==0.5.37
+    # via lightning
+lightning-utilities==0.8.0
+    # via
+    #   lightning
+    #   pytorch-lightning
+lit==16.0.6
+    # via
+    #   -c requirements/prod.txt
+    #   triton
 markdown==3.4.3
     # via tensorboard
 markdown-it-py==3.0.0
-    # via
-    #   -c requirements/prod.txt
-    #   rich
+    # via rich
 markupsafe==2.1.3
     # via
     #   -c requirements/prod.txt
+    #   jinja2
     #   werkzeug
 matplotlib==3.7.1
     # via
@@ -156,12 +199,13 @@ matplotlib-inline==0.1.6
 mccabe==0.7.0
     # via pylint
 mdurl==0.1.2
+    # via markdown-it-py
+mpmath==1.3.0
     # via
     #   -c requirements/prod.txt
-    #   markdown-it-py
+    #   sympy
 multidict==6.0.4
     # via
-    #   -c requirements/prod.txt
     #   aiohttp
     #   yarl
 mypy==1.4.0
@@ -172,27 +216,86 @@ mypy-extensions==1.0.0
     #   mypy
 nest-asyncio==1.5.6
     # via ipykernel
+networkx==3.1
+    # via
+    #   -c requirements/prod.txt
+    #   torch
 numpy==1.25.0
     # via
     #   -c requirements/prod.txt
     #   -r requirements/dev.in
     #   contourpy
+    #   lightning
     #   matplotlib
     #   pandas
     #   pyarrow
+    #   pytorch-lightning
     #   seaborn
     #   tensorboard
+    #   torchmetrics
+nvidia-cublas-cu11==11.10.3.66
+    # via
+    #   -c requirements/prod.txt
+    #   nvidia-cudnn-cu11
+    #   nvidia-cusolver-cu11
+    #   torch
+nvidia-cuda-cupti-cu11==11.7.101
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-cuda-nvrtc-cu11==11.7.99
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-cuda-runtime-cu11==11.7.99
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-cudnn-cu11==8.5.0.96
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-cufft-cu11==10.9.0.58
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-curand-cu11==10.2.10.91
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-cusolver-cu11==11.4.0.1
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-cusparse-cu11==11.7.4.91
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-nccl-cu11==2.14.3
+    # via
+    #   -c requirements/prod.txt
+    #   torch
+nvidia-nvtx-cu11==11.7.91
+    # via
+    #   -c requirements/prod.txt
+    #   torch
 oauthlib==3.2.2
     # via requests-oauthlib
+ordered-set==4.1.0
+    # via deepdiff
 packaging==21.3
     # via
     #   -c requirements/prod.txt
     #   dparse
     #   huggingface-hub
     #   ipykernel
+    #   lightning
+    #   lightning-utilities
     #   matplotlib
     #   pytest
+    #   pytorch-lightning
     #   safety
+    #   torchmetrics
 pandas==2.0.2
     # via
     #   -c requirements/prod.txt
@@ -222,8 +325,8 @@ protobuf==4.23.3
     # via tensorboard
 psutil==5.9.5
     # via
-    #   -c requirements/prod.txt
     #   ipykernel
+    #   lightning
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
@@ -238,13 +341,18 @@ pyasn1-modules==0.3.0
     # via google-auth
 pycodestyle==2.10.0
     # via -r requirements/dev.in
+pydantic==1.10.9
+    # via
+    #   fastapi
+    #   lightning
 pydocstyle==6.3.0
     # via -r requirements/dev.in
 pygments==2.15.1
     # via
-    #   -c requirements/prod.txt
     #   ipython
     #   rich
+pyjwt==2.7.0
+    # via lightning-cloud
 pylint==2.17.4
     # via -r requirements/dev.in
 pyparsing==3.1.0
@@ -257,27 +365,45 @@ pytest==7.4.0
 python-dateutil==2.8.2
     # via
     #   -c requirements/prod.txt
+    #   arrow
+    #   croniter
+    #   dateutils
     #   jupyter-client
     #   matplotlib
     #   pandas
+python-editor==1.0.4
+    # via inquirer
+python-multipart==0.0.6
+    # via
+    #   lightning
+    #   lightning-cloud
+pytorch-lightning==2.0.4
+    # via lightning
 pytz==2023.3
     # via
     #   -c requirements/prod.txt
+    #   dateutils
     #   pandas
 pyyaml==6.0
     # via
     #   -c requirements/prod.txt
     #   bandit
     #   huggingface-hub
+    #   lightning
+    #   pytorch-lightning
 pyzmq==25.1.0
     # via
     #   ipykernel
     #   jupyter-client
+readchar==4.0.5
+    # via inquirer
 requests==2.31.0
     # via
     #   -c requirements/prod.txt
     #   fsspec
     #   huggingface-hub
+    #   lightning
+    #   lightning-cloud
     #   requests-oauthlib
     #   safety
     #   tensorboard
@@ -285,8 +411,9 @@ requests-oauthlib==1.3.1
     # via google-auth-oauthlib
 rich==13.4.2
     # via
-    #   -c requirements/prod.txt
     #   bandit
+    #   lightning
+    #   lightning-cloud
 rsa==4.9
     # via google-auth
 ruamel-yaml==0.17.32
@@ -301,20 +428,33 @@ six==1.16.0
     # via
     #   -c requirements/prod.txt
     #   asttokens
+    #   blessed
     #   google-auth
+    #   lightning-cloud
     #   python-dateutil
 smmap==5.0.0
     # via gitdb
+sniffio==1.3.0
+    # via anyio
 snowballstemmer==2.2.0
     # via pydocstyle
 soupsieve==2.4.1
-    # via
-    #   -c requirements/prod.txt
-    #   beautifulsoup4
+    # via beautifulsoup4
 stack-data==0.6.2
     # via ipython
+starlette==0.27.0
+    # via
+    #   fastapi
+    #   lightning
+    #   starsessions
+starsessions==1.3.0
+    # via lightning
 stevedore==5.1.0
     # via bandit
+sympy==1.12
+    # via
+    #   -c requirements/prod.txt
+    #   torch
 tensorboard==2.13.0
     # via -r requirements/dev.in
 tensorboard-data-server==0.7.1
@@ -329,6 +469,17 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.11.8
     # via pylint
+torch==2.0.1
+    # via
+    #   -c requirements/prod.txt
+    #   lightning
+    #   pytorch-lightning
+    #   torchmetrics
+    #   triton
+torchmetrics==0.11.4
+    # via
+    #   lightning
+    #   pytorch-lightning
 tornado==6.3.2
     # via
     #   ipykernel
@@ -338,15 +489,21 @@ tqdm==4.65.0
     #   -c requirements/prod.txt
     #   -r requirements/dev.in
     #   huggingface-hub
+    #   lightning
+    #   pytorch-lightning
 traitlets==5.9.0
     # via
-    #   -c requirements/prod.txt
     #   comm
     #   ipykernel
     #   ipython
     #   jupyter-client
     #   jupyter-core
+    #   lightning
     #   matplotlib-inline
+triton==2.0.0
+    # via
+    #   -c requirements/prod.txt
+    #   torch
 typing-extensions==4.6.3
     # via
     #   -c requirements/prod.txt
@@ -354,8 +511,14 @@ typing-extensions==4.6.3
     #   black
     #   huggingface-hub
     #   ipython
+    #   lightning
+    #   lightning-utilities
     #   mypy
+    #   pydantic
     #   pylint
+    #   pytorch-lightning
+    #   starlette
+    #   torch
 tzdata==2023.3
     # via
     #   -c requirements/prod.txt
@@ -364,11 +527,23 @@ urllib3==1.26.16
     # via
     #   -c requirements/prod.txt
     #   google-auth
+    #   lightning
+    #   lightning-cloud
     #   requests
+uvicorn==0.22.0
+    # via
+    #   lightning
+    #   lightning-cloud
 wcwidth==0.2.6
     # via
-    #   -c requirements/prod.txt
+    #   blessed
     #   prompt-toolkit
+websocket-client==1.6.1
+    # via
+    #   lightning
+    #   lightning-cloud
+websockets==11.0.3
+    # via lightning
 werkzeug==2.3.6
     # via
     #   -c requirements/prod.txt
@@ -376,13 +551,17 @@ werkzeug==2.3.6
 wheel==0.40.0
     # via
     #   -c requirements/prod.txt
+    #   nvidia-cublas-cu11
+    #   nvidia-cuda-cupti-cu11
+    #   nvidia-cuda-runtime-cu11
+    #   nvidia-curand-cu11
+    #   nvidia-cusparse-cu11
+    #   nvidia-nvtx-cu11
     #   tensorboard
 wrapt==1.15.0
     # via astroid
 yarl==1.9.2
-    # via
-    #   -c requirements/prod.txt
-    #   aiohttp
+    # via aiohttp
 zipp==3.15.0
     # via
     #   -c requirements/prod.txt

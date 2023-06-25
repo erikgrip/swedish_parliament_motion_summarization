@@ -4,50 +4,16 @@
 #
 #    pip-compile requirements/prod.in
 #
-aiohttp==3.8.4
-    # via fsspec
-aiosignal==1.3.1
-    # via aiohttp
-anyio==3.7.0
-    # via starlette
-arrow==1.2.3
-    # via lightning
-async-timeout==4.0.2
-    # via aiohttp
-attrs==23.1.0
-    # via aiohttp
-beautifulsoup4==4.12.2
-    # via lightning
-blessed==1.20.0
-    # via inquirer
 blinker==1.6.2
     # via flask
 certifi==2023.5.7
     # via requests
 charset-normalizer==3.1.0
-    # via
-    #   aiohttp
-    #   requests
+    # via requests
 click==8.1.3
-    # via
-    #   flask
-    #   lightning
-    #   lightning-cloud
-    #   uvicorn
+    # via flask
 cmake==3.26.4
     # via triton
-croniter==1.3.15
-    # via lightning
-dateutils==0.6.12
-    # via lightning
-deepdiff==6.3.0
-    # via lightning
-exceptiongroup==1.1.1
-    # via anyio
-fastapi==0.98.0
-    # via
-    #   lightning
-    #   lightning-cloud
 filelock==3.12.2
     # via
     #   huggingface-hub
@@ -56,69 +22,33 @@ filelock==3.12.2
     #   triton
 flask==2.3.2
     # via -r requirements/prod.in
-frozenlist==1.3.3
-    # via
-    #   aiohttp
-    #   aiosignal
-fsspec[http]==2023.6.0
-    # via
-    #   huggingface-hub
-    #   lightning
-    #   pytorch-lightning
-h11==0.14.0
-    # via uvicorn
+fsspec==2023.6.0
+    # via huggingface-hub
 huggingface-hub==0.15.1
     # via transformers
 idna==3.4
-    # via
-    #   anyio
-    #   requests
-    #   yarl
+    # via requests
 importlib-metadata==6.7.0
     # via flask
-inquirer==3.1.3
-    # via lightning
 itsdangerous==2.1.2
-    # via
-    #   flask
-    #   starsessions
+    # via flask
 jinja2==3.1.2
     # via
     #   flask
-    #   lightning
     #   torch
-lightning==2.0.4
-    # via -r requirements/prod.in
-lightning-cloud==0.5.37
-    # via lightning
-lightning-utilities==0.8.0
-    # via
-    #   lightning
-    #   pytorch-lightning
 lit==16.0.6
     # via triton
-markdown-it-py==3.0.0
-    # via rich
 markupsafe==2.1.3
     # via
     #   jinja2
     #   werkzeug
-mdurl==0.1.2
-    # via markdown-it-py
 mpmath==1.3.0
     # via sympy
-multidict==6.0.4
-    # via
-    #   aiohttp
-    #   yarl
 networkx==3.1
     # via torch
 numpy==1.25.0
     # via
-    #   lightning
     #   pandas
-    #   pytorch-lightning
-    #   torchmetrics
     #   transformers
 nvidia-cublas-cu11==11.10.3.66
     # via
@@ -145,90 +75,35 @@ nvidia-nccl-cu11==2.14.3
     # via torch
 nvidia-nvtx-cu11==11.7.91
     # via torch
-ordered-set==4.1.0
-    # via deepdiff
 packaging==21.3
     # via
     #   huggingface-hub
-    #   lightning
-    #   lightning-utilities
-    #   pytorch-lightning
-    #   torchmetrics
     #   transformers
 pandas==2.0.2
     # via -r requirements/prod.in
-psutil==5.9.5
-    # via lightning
-pydantic==1.10.9
-    # via
-    #   fastapi
-    #   lightning
-pygments==2.15.1
-    # via rich
-pyjwt==2.7.0
-    # via lightning-cloud
 pyparsing==3.1.0
     # via packaging
 python-dateutil==2.8.2
-    # via
-    #   arrow
-    #   croniter
-    #   dateutils
-    #   pandas
-python-editor==1.0.4
-    # via inquirer
-python-multipart==0.0.6
-    # via
-    #   lightning
-    #   lightning-cloud
-pytorch-lightning==2.0.4
-    # via lightning
+    # via pandas
 pytz==2023.3
-    # via
-    #   dateutils
-    #   pandas
+    # via pandas
 pyyaml==6.0
     # via
     #   huggingface-hub
-    #   lightning
-    #   pytorch-lightning
     #   transformers
-readchar==4.0.5
-    # via inquirer
 regex==2023.6.3
     # via transformers
 requests==2.31.0
     # via
     #   -r requirements/prod.in
-    #   fsspec
     #   huggingface-hub
-    #   lightning
-    #   lightning-cloud
     #   transformers
-rich==13.4.2
-    # via
-    #   lightning
-    #   lightning-cloud
 safetensors==0.3.1
     # via transformers
 sentencepiece==0.1.99
     # via -r requirements/prod.in
 six==1.16.0
-    # via
-    #   blessed
-    #   lightning-cloud
-    #   python-dateutil
-sniffio==1.3.0
-    # via anyio
-soupsieve==2.4.1
-    # via beautifulsoup4
-starlette==0.27.0
-    # via
-    #   fastapi
-    #   lightning
-    #   starsessions
-starsessions==1.3.0
-    # via lightning
+    # via python-dateutil
 sympy==1.12
     # via torch
 tokenizers==0.13.3
@@ -236,22 +111,11 @@ tokenizers==0.13.3
 torch==2.0.1
     # via
     #   -r requirements/prod.in
-    #   lightning
-    #   pytorch-lightning
-    #   torchmetrics
     #   triton
-torchmetrics==0.11.4
-    # via
-    #   lightning
-    #   pytorch-lightning
 tqdm==4.65.0
     # via
     #   huggingface-hub
-    #   lightning
-    #   pytorch-lightning
     #   transformers
-traitlets==5.9.0
-    # via lightning
 transformers==4.30.2
     # via -r requirements/prod.in
 triton==2.0.0
@@ -259,31 +123,11 @@ triton==2.0.0
 typing-extensions==4.6.3
     # via
     #   huggingface-hub
-    #   lightning
-    #   lightning-utilities
-    #   pydantic
-    #   pytorch-lightning
-    #   starlette
     #   torch
 tzdata==2023.3
     # via pandas
 urllib3==1.26.16
-    # via
-    #   lightning
-    #   lightning-cloud
-    #   requests
-uvicorn==0.22.0
-    # via
-    #   lightning
-    #   lightning-cloud
-wcwidth==0.2.6
-    # via blessed
-websocket-client==1.6.1
-    # via
-    #   lightning
-    #   lightning-cloud
-websockets==11.0.3
-    # via lightning
+    # via requests
 werkzeug==2.3.6
     # via flask
 wheel==0.40.0
@@ -294,8 +138,6 @@ wheel==0.40.0
     #   nvidia-curand-cu11
     #   nvidia-cusparse-cu11
     #   nvidia-nvtx-cu11
-yarl==1.9.2
-    # via aiohttp
 zipp==3.15.0
     # via importlib-metadata
 
