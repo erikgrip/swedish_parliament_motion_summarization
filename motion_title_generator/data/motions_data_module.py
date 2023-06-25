@@ -16,10 +16,9 @@ DATA_PATH = (
 )
 TEST_DATA_PATH = BaseDataModule.data_dirname() / "test" / "test_data.csv"
 
-DATA_FRACTION = 1.0  # Allows scaling data down for faster trining
+DATA_FRACTION = 1.0  # Allows scaling data down for faster training
 TRAIN_FRAC = 0.75
 VAL_FRAC = 0.15
-# TODO: Add NUM_WORKERS, overfit doesn't work well with num_workers > 0
 
 
 class MotionsDataModule(BaseDataModule):
@@ -90,19 +89,28 @@ class MotionsDataModule(BaseDataModule):
     def train_dataloader(self):
         """Return DataLoader for Training Data."""
         return DataLoader(
-            self.data_train, batch_size=self.batch_size, shuffle=True, num_workers=4
+            self.data_train,
+            batch_size=self.batch_size,
+            shuffle=True,
+            num_workers=self.num_workers,
         )
 
     def val_dataloader(self):
         """Return DataLoader for Validation Data."""
         return DataLoader(
-            self.data_val, batch_size=self.batch_size, shuffle=False, num_workers=4
+            self.data_val,
+            batch_size=self.batch_size,
+            shuffle=False,
+            num_workers=self.num_workers,
         )
 
     def test_dataloader(self):
         """Return DataLoader for Test Data."""
         return DataLoader(
-            self.data_test, batch_size=self.batch_size, shuffle=False, num_workers=4
+            self.data_test,
+            batch_size=self.batch_size,
+            shuffle=False,
+            num_workers=self.num_workers,
         )
 
 
