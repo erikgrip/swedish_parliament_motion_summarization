@@ -38,4 +38,4 @@ jobs:
           bash tasks/lint.sh
       - name: Test with pytest
         run: |
-          PTYHONPATH=. bash tasks/test.sh
+          pytest -s .
