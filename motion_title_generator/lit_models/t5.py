@@ -80,8 +80,8 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
         sample_output = sample(self.validation_step_outputs, 1)[0]
         self.validation_step_outputs.clear()
 
-        generated_title = summarize(
-            self.model,
+        generated_title = generate(
+            self.model.model,
             self.tokenizer,
             sample_output,
             self.max_title_tokens,
@@ -102,27 +102,3 @@ class MT5LitModel(BaseLitModel):  # pylint: disable=too-many-ancestors
             decoder_attention_mask=batch["title_attention_mask"],
         )
         self.log("test_loss", loss, prog_bar=True, logger=True)
-
-    def predict(self, text):
-        """Generate title for single text."""
-        text_encoding = encode(text, self.tokenizer, self.max_text_tokens)
-
-        self.model.eval()
-        generated_ids = self.model.model.generate(
-            input_ids=text_encoding["input_ids"],
-            attention_mask=text_encoding["attention_mask"],
-            max_length=self.max_title_tokens,
-            num_beams=2,
-            repetition_penalty=2.5,
-            length_penalty=1.0,
-            early_stopping=True,
-        )
-        self.model.train()
-
-        preds = [
-            self.tokenizer.decode(
-                gen_id, skip_special_tokens=True, clean_up_tokenization_spaces=True
-            )
-            for gen_id in generated_ids
-        ]
-        return "".join(preds)

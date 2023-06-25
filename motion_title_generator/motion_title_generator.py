@@ -1,36 +1,32 @@
 import argparse
-import io
-import json
-from pathlib import Path
 
 import torch
 from transformers.models.auto.modeling_auto import AutoModelForSeq2SeqLM
+from transformers.models.mt5 import MT5Tokenizer
 
-from motion_title_generator.data import MotionsDataModule
-from motion_title_generator.lit_models import MT5LitModel
-from motion_title_generator.models import MT5
+from utils.encode_decode import encode, generate
 
-LOCALE_ENCODING = getattr(io, "LOCALE_ENCODING", "utf-8")
-ARTIFACT_DIR = Path(__file__).resolve().parent / "artifacts" / "motion_title_generator"
+MODEL = "erikgrip2/mt5-finetuned-for-motion-title"
+MAX_TEXT_TOKENS = 512
+MAX_TITLE_TOKENS = 64
 
 
 class MotionTitleGenerator:
     """Class to generate a title for a motion text."""
 
     def __init__(self):
-        with open(ARTIFACT_DIR / "config.json", "r", encoding=LOCALE_ENCODING) as f:
-            args = vars(argparse.Namespace(**json.load(f)))
-        data = MotionsDataModule(args)
-        model = MT5(data_config=data.config(), args=args)
-        model.model = AutoModelForSeq2SeqLM.from_pretrained(
-            "erikgrip2/mt5-finetuned-for-motion-title"
-        )
-        self.lit_model = MT5LitModel(model, args)
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(MODEL)
+        self.tokenizer = MT5Tokenizer.from_pretrained(MODEL)
+
+    def encode_text(self, text):
+        """Use tokenizer to encode text."""
+        return encode(text, tokenizer=self.tokenizer, max_tokens=MAX_TEXT_TOKENS)
 
     @torch.no_grad()
     def predict(self, text: str) -> str:
         """Generate a title for an input text."""
-        return self.lit_model.predict(text)
+        enc = self.encode_text(text)
+        return generate(self.model, self.tokenizer, enc, MAX_TITLE_TOKENS)
 
 
 def main():
