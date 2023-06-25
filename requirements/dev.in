@@ -4,6 +4,7 @@ beautifulsoup4
 black==22.3.0  # Avoid 'packaging' version conflict
 huggingface_hub
 ipykernel
+lightning
 matplotlib
 mypy
 numpy

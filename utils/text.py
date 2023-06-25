@@ -6,8 +6,7 @@ def trim_motion_text_by_subtitle(row):
     try:
         split = row["text"].split(row["subtitle"], 1)
         return split[-1].strip()
-    except ValueError as e:
-        print(e)
+    except ValueError:
         return row["text"]
 
 
