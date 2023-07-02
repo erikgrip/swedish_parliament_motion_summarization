@@ -19,6 +19,7 @@ model = MotionTitleGenerator()
 
 @app.route("/health")
 def health_check():
+    """Health check endpoint."""
     return "OK"
 
 

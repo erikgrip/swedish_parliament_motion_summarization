@@ -20,7 +20,7 @@ class TestIntegrations(unittest.TestCase):
         self.app = app.test_client()
 
     def test_index(self):
-        """Test that the index page returns the expected text."""
+        """Test that the health check page returns the expected text."""
         response = self.app.get("/health")
         assert response.get_data().decode() == "OK"
 
