@@ -9,7 +9,6 @@ from utils.text import prep_text
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Do not use GPU
 
-INDEX_TEXT = "App is running. Make predictions at http://localhost:8000/v1/predict"
 
 app = Flask(__name__)
 logging.basicConfig(
@@ -19,13 +18,7 @@ model = MotionTitleGenerator()
 
 
 @app.route("/")
-def index():
-    """Provide simple health check route."""
-    return INDEX_TEXT
-
-
-@app.route("/v1/predict")
-def predict_form():
+def home():
     """Render prediction input form."""
     return render_template("predict_form.html")
 

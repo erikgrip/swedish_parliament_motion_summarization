@@ -13,7 +13,7 @@ PYTHONPATH=. python motion_title_generator/save_checkpoint_to_huggingface.py --v
 Build app Docker image:
 ```bash
 # Navigate to project's root directory and run
-docker build -f api_server/Dockerfile .
+docker build -t motion_title_app -f api_server/Dockerfile .
 ```
 
 Run app in Docker container:
