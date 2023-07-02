@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from api_server.app import INDEX_TEXT, app
+from api_server.app import app
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
@@ -20,20 +20,20 @@ class TestIntegrations(unittest.TestCase):
         self.app = app.test_client()
 
     def test_index(self):
-        """Test that the index page returns the expected text."""
-        response = self.app.get("/")
-        assert response.get_data().decode() == INDEX_TEXT
+        """Test that the health check page returns the expected text."""
+        response = self.app.get("/health")
+        assert response.get_data().decode() == "OK"
 
     def test_predict_valid_input(self):
         """Test that the predict page contains the expected text for valid input."""
-        response = self.app.post("/v1/predict", data={"text": VALID_TEXT})
+        response = self.app.post("/predict", data={"text": VALID_TEXT})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Suggested title:", response.data)
         self.assertNotIn(b"Please enter a longer text", response.data)
 
     def test_predict_invalid_input(self):
         """Test that the predict page contains the expected text for too short input."""
-        response = self.app.post("/v1/predict", data={"text": INVALID_TEXT})
+        response = self.app.post("/predict", data={"text": INVALID_TEXT})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Please enter a longer text", response.data)
 
