@@ -18,7 +18,7 @@ docker build -t motion_title_app -f api_server/Dockerfile .
 
 Run app in Docker container:
 ```bash
-docker run -p 8000:8000 motion_title_app/v1
+docker run -p 8000:8000 motion_title_app
 ```
 
 Run app without docker:

@@ -23,7 +23,7 @@ def home():
     return render_template("predict_form.html")
 
 
-@app.route("/v1/predict", methods=["GET", "POST"])
+@app.route("/predict", methods=["GET", "POST"])
 def predict():
     """Get text from web app and render prediction."""
     text = request.form.get("text")

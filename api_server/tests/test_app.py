@@ -26,14 +26,14 @@ class TestIntegrations(unittest.TestCase):
 
     def test_predict_valid_input(self):
         """Test that the predict page contains the expected text for valid input."""
-        response = self.app.post("/v1/predict", data={"text": VALID_TEXT})
+        response = self.app.post("/predict", data={"text": VALID_TEXT})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Suggested title:", response.data)
         self.assertNotIn(b"Please enter a longer text", response.data)
 
     def test_predict_invalid_input(self):
         """Test that the predict page contains the expected text for too short input."""
-        response = self.app.post("/v1/predict", data={"text": INVALID_TEXT})
+        response = self.app.post("/predict", data={"text": INVALID_TEXT})
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Please enter a longer text", response.data)
 
