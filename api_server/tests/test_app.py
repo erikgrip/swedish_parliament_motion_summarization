@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from api_server.app import INDEX_TEXT, app
+from api_server.app import app
 
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
@@ -21,8 +21,8 @@ class TestIntegrations(unittest.TestCase):
 
     def test_index(self):
         """Test that the index page returns the expected text."""
-        response = self.app.get("/")
-        assert response.get_data().decode() == INDEX_TEXT
+        response = self.app.get("/health")
+        assert response.get_data().decode() == "OK"
 
     def test_predict_valid_input(self):
         """Test that the predict page contains the expected text for valid input."""

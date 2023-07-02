@@ -17,6 +17,11 @@ logging.basicConfig(
 model = MotionTitleGenerator()
 
 
+@app.route("/health")
+def health_check():
+    return "OK"
+
+
 @app.route("/")
 def home():
     """Render prediction input form."""
