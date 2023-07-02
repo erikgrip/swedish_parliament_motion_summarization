@@ -10,9 +10,21 @@ Push checkpoint to Huggingface Hub:
 PYTHONPATH=. python motion_title_generator/save_checkpoint_to_huggingface.py --version=2 --hf_model="erikgrip2/mt5-finetuned-for-motion-title"  --hf_user="erikgrip2"
 ```
 
+Build app Docker image:
+```bash
+# Navigate to project's root directory and run
+docker build -f api_server/Dockerfile .
+```
 
-Run app:
+Run app in Docker container:
+```bash
+docker run -p 8000:8000 motion_title_app/v1
+```
+
+Run app without docker:
 ```bash
 PYTHONPATH=. python api_server/app.py
 ```
+
+
 
