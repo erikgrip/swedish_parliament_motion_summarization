@@ -6,6 +6,7 @@ import zipfile
 from bs4 import BeautifulSoup
 
 from motion_title_generator.data.base_data_module import BaseDataModule
+from utils.log import logger
 
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
@@ -14,15 +15,16 @@ OUTPUT_PATH = DOWNLOADED_DATA_DIRNAME / "raw_swe_parl_mot.pkl"
 
 
 def read_zip_file_data_to_pkl(zip_dir=ZIP_DIR, output_path=OUTPUT_PATH):
+    logger.info("Reading data from zip files in %s ...", zip_dir)
     data = []
-    for zf in zip_dir.glob("*.zip"):
-        data_list = _read_motions_from_zip_arch(zf)
+    for zip_file in zip_dir.glob("*.zip"):
+        data_list = _read_motions_from_zip_arch(zip_file)
         data.extend(data_list)
 
-    print("Saving pkl...")
+    logger.info("Saving data ...")
     with open(output_path, "wb") as target_file:
         pickle.dump(data, target_file)
-    print("Pkl saved!")
+    logger.info("The %s file was saved at %s", target_file, output_path)
 
 
 def _read_motions_from_zip_arch(zip_arch):

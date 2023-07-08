@@ -10,6 +10,7 @@ from motion_title_generator.data.base_data_module import (
 from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset
 from motion_title_generator.data.util import split_data
 from training_dataset_downloader import get_training_dataset
+from utils.log import logger
 
 DATA_PATH = (
     BaseDataModule.data_dirname() / "downloaded" / "prepped_training_data.feather"
@@ -67,7 +68,7 @@ class MotionsDataModule(BaseDataModule):
 
         total_rows = len(data)
         data = data.sample(frac=self.data_fraction, random_state=self.seed)
-        print(f"Using {len(data)} of {total_rows} examples.")
+        logger.info("Using %s of %s examples.", len(data), total_rows)
 
         data_train, data_val, data_test = split_data(
             data, TRAIN_FRAC, VAL_FRAC, self.seed

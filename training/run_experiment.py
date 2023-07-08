@@ -8,6 +8,7 @@ from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
 from lightning.pytorch.loggers import TensorBoardLogger
 
 from motion_title_generator import lit_models
+from utils.log import logger
 
 DEFAULT_DATA_CLASS = "MotionsDataModule"
 DEFAULT_MODEL_CLASS = "MT5"
@@ -95,7 +96,7 @@ def main():
     else:
         lit_model = lit_models.MT5LitModel(args=vars(args), model=model)
 
-    logger = TensorBoardLogger("training/logs")
+    tb_logger = TensorBoardLogger("training/logs")
 
     # There's no available val_loss when overfitting to batches
     if args.overfit_batches:
@@ -127,7 +128,7 @@ def main():
         fast_dev_run=args.fast_dev_run,
         overfit_batches=args.overfit_batches,
         callbacks=callbacks,  # type: ignore
-        logger=logger,
+        logger=tb_logger,
         enable_checkpointing=enable_checkpointing,
     )
     # pylint: disable=no-member
@@ -137,7 +138,7 @@ def main():
 
     best_model_path = model_checkpoint_callback.best_model_path
     if best_model_path:
-        print("Best model saved at:", best_model_path)
+        logger.info("Best model saved at %s:", best_model_path)
 
 
 if __name__ == "__main__":

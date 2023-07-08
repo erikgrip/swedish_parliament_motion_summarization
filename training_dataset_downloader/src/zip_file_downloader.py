@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import requests
 
 from motion_title_generator.data.base_data_module import BaseDataModule
+from utils.log import logger
 
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded/zipped"
@@ -31,7 +32,7 @@ def download_motion_zip_files(
     soup = BeautifulSoup(response.content, features="html.parser")
     doc_list = soup.datasetlista.findAll("dataset") if soup.datasetlista else []
 
-    downloaded = []
+    paths_to_downloads = []
     for doc in doc_list:
         if (doc.typ.string == "mot") & (doc.format.string == file_type):
             output_file_path = Path(dl_dirname / doc.filnamn.string)
@@ -39,12 +40,12 @@ def download_motion_zip_files(
                 zip_arch_url = base_url + doc.url.string
                 response = requests.get(zip_arch_url, allow_redirects=True)
                 with open(output_file_path, "wb") as f:
-                    print(
-                        f"Downloading raw dataset from {zip_arch_url} to {output_file_path}..."
+                    logger.info(
+                        "Downloading raw dataset from %s to %s ...",  zip_arch_url, output_file_path
                     )
                     f.write(response.content)
-                downloaded.append(output_file_path)
-    return downloaded
+                paths_to_downloads.append(output_file_path)
+    return paths_to_downloads
 
 
 if __name__ == "__main__":
