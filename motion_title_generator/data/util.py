@@ -1,6 +1,8 @@
 import torch
 from torch.utils.data import random_split
 
+from utils.log import logger
+
 
 def split_data(df, train_frac, val_frac, seed):
     """Return train, validation and test dataframes"""
@@ -10,7 +12,12 @@ def split_data(df, train_frac, val_frac, seed):
 
     if (train_size + val_size + test_size) != len(df):
         raise ValueError(f"Invalid train/val fractions: {train_frac}, {val_frac}")
-    print(f"Train: {train_size}, Val: {val_size}, Test: {test_size}")
+    logger.info(
+        "Data split sizes -- train: %s, val: %s, test: %s",
+        train_size,
+        val_size,
+        test_size,
+    )
 
     return random_split(
         dataset=df,
