@@ -9,7 +9,7 @@ from motion_title_generator.data.base_data_module import (
 )
 from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset
 from motion_title_generator.data.util import split_data
-from training_dataset_downloader import get_training_dataset
+from data_downloader import get_training_dataset
 from utils.log import logger
 
 DATA_PATH = (

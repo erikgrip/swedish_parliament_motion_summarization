@@ -16,8 +16,8 @@ pip-tools:
 	pip-compile requirements/prod.in && pip-compile requirements/dev.in
 	pip-sync requirements/prod.txt requirements/dev.txt
 
-training-dataset:
-	python -m training_dataset_downloader
+data-download:
+	python -m data_downloader
 
 # Overfit on single batch
 overfit:
