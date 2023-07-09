@@ -103,7 +103,3 @@ def _parse_html_text(html: str):
     chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
     text = " ".join(chunk for chunk in chunks if chunk)
     return text
-
-
-if __name__ == "__main__":
-    read_zip_file_data_to_pkl()

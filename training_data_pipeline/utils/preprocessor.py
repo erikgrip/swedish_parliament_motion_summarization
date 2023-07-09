@@ -69,7 +69,3 @@ def prep_training_dataset():
     logger.info("Number of rows remaining: %s", len(df))
     df.to_feather(path=OUTPUT_DATA_PATH)
     logger.info("Preprocessed data saved to %s", OUTPUT_DATA_PATH)
-
-
-if __name__ == "__main__":
-    prep_training_dataset()

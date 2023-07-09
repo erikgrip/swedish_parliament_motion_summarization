@@ -54,10 +54,3 @@ def download_motion_zip_files(
                     f.write(response.content)
                 paths_to_downloads.append(output_file_path)
     return paths_to_downloads
-
-
-if __name__ == "__main__":
-    downloaded = download_motion_zip_files(
-        dl_dirname=DOWNLOADED_DATA_DIRNAME, file_type="json"
-    )
-    print("Downloaded zip files:", [str(p) for p in downloaded])
