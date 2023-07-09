@@ -1,11 +1,11 @@
 from pathlib import Path
 
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 from motion_title_generator.data.base_data_module import BaseDataModule
 from utils.log import logger
-
 
 DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded/zipped"
 
@@ -33,9 +33,9 @@ def download_motion_zip_files(
     response = requests.get(doc_catalogue_url, allow_redirects=True, timeout=10.0)
     soup = BeautifulSoup(response.content, features="html.parser")
     doc_list = soup.datasetlista.findAll("dataset") if soup.datasetlista else []
-
+    logger.info("Dowloading files from %s.", base_url)
     paths_to_downloads = []
-    for doc in doc_list:
+    for doc in tqdm(doc_list):
         if (doc.typ.string == "mot") & (doc.format.string == file_type):
             output_file_path = Path(dl_dirname / doc.filnamn.string)
             if not output_file_path.is_file():
@@ -44,7 +44,7 @@ def download_motion_zip_files(
                     zip_arch_url, allow_redirects=True, timeout=10.0
                 )
                 with open(output_file_path, "wb") as f:
-                    logger.info(
+                    logger.debug(
                         "Downloading raw dataset from %s to %s ...",
                         zip_arch_url,
                         output_file_path,

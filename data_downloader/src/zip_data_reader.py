@@ -43,24 +43,29 @@ def _read_motions_from_zip_arch(zip_arch):
     data = read_motions_from_zip_arch('data/raw/mot-2018-2021.json.zip')
     df = pd.DataFrame(data)
     """
-    docs = []
+    parsed_docs = []
+    total_docs = 0
     with zipfile.ZipFile(zip_arch) as zipped:
         for filename in zipped.namelist():
+            total_docs += 1
             with zipped.open(filename) as f:
                 data = f.read()
                 data = json.loads(data.decode("utf-8-sig"))
                 try:
                     document = data["dokumentstatus"]["dokument"]
                 except TypeError as e:
-                    logging.warning("Failed to read motion %s: %s", filename, e)
+                    logging.debug("Failed to read motion %s: %s", filename, e)
                     continue
 
                 doc = {}
                 try:
+                    doc["title"] = document["titel"]
+                    if doc["title"] == "Motionen utgår":
+                        continue
+
                     doc["id"] = document["dok_id"]
                     doc["date"] = document["datum"]
                     doc["file_date"] = document["systemdatum"]
-                    doc["title"] = document["titel"]
                     doc["subtitle"] = document["subtitel"]
                     doc["text"] = _parse_html_text(document["html"])
                     authors = data["dokumentstatus"]["dokintressent"]["intressent"]
@@ -70,15 +75,21 @@ def _read_motions_from_zip_arch(zip_arch):
                     else:
                         doc["main_author"] = authors["namn"]
                         doc["author_party"] = authors["partibet"]
-                    docs.append(doc)
-                    logging.info(
+                    parsed_docs.append(doc)
                 except (KeyError, TypeError) as e:
+                    logging.debug(
                         "Did not find key %s in motion id=%s, title=%s",
                         e,
                         document["dok_id"],
                         document["titel"],
                     )
-    return docs
+    logger.info(
+        "Successfully parsed %s of %s documents from %s.",
+        len(parsed_docs),
+        total_docs,
+        zip_arch,
+    )
+    return parsed_docs
 
 
 def _parse_html_text(html: str):
