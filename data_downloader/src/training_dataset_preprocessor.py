@@ -9,7 +9,7 @@ INPUT_DATA_PATH = DOWNLOADED_DATA_DIRNAME / "raw_swe_parl_mot.pkl"
 OUTPUT_DATA_PATH = DOWNLOADED_DATA_DIRNAME / "prepped_training_data.feather"
 
 
-def load_dataframe(data_path=INPUT_DATA_PATH):
+def load_dataframe(data_path=INPUT_DATA_PATH) -> pd.DataFrame:
     """Load data from pickle file into a pandas dataframe."""
     logger.info("Loading data from %s into pandas dataframe.", data_path)
     try:
@@ -22,6 +22,7 @@ def load_dataframe(data_path=INPUT_DATA_PATH):
     return df
 
 
+# pylint: disable=unsupported-assignment-operation,unsubscriptable-object
 def prep_training_dataset():
     """Pipeline to format and filter data."""
     df = load_dataframe()
