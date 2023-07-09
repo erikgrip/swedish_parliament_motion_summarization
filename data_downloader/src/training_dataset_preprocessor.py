@@ -22,31 +22,48 @@ def load_dataframe(data_path=INPUT_DATA_PATH) -> pd.DataFrame:
     return df
 
 
+def filter_nan_rows(df) -> pd.DataFrame:
+    """Filter out rows with missing values."""
+    pre_filter_len = len(df)
+    df = df.dropna()
+    logger.info("Filtered %s rows with missing values.", (pre_filter_len - len(df)))
+    return df
+
+
+def filter_short_motions(df) -> pd.DataFrame:
+    """Filter out rows with motions shorter than 150 characters."""
+    pre_filter_len = len(df)
+    df = df.loc[df["text"].str.len() >= 150].reset_index(drop=True)
+    logger.info(
+        "Filtered %s texts shorter than 150 characters.", (pre_filter_len - len(df))
+    )
+    return df
+
+
+def filter_titles(df) -> pd.DataFrame:
+    """Filter out rows with generic titles that won't make good training examples."""
+    pre_filter_len = len(df)
+    df = df.loc[
+        ~df["title"].str.lower().str.startswith("med anledning av prop")
+    ].reset_index(drop=True)
+    logger.info("Filtered %s texts based on their title.", (pre_filter_len - len(df)))
+    return df
+
+
 # pylint: disable=unsupported-assignment-operation,unsubscriptable-object
 def prep_training_dataset():
     """Pipeline to format and filter data."""
     df = load_dataframe()
     logger.info("Preprocessing data ...")
 
-    pre_filter_len = len(df)
-    df = df.dropna()
-    logger.info("Filtered %s rows with missing values.", (pre_filter_len - len(df)))
+    df = filter_nan_rows(df)
 
     # Prep target and feature texts
     df["title"] = trim_whitespace(df["title"])
     df["text"] = prep_text(df)
 
-    pre_filter_len = len(df)
-    df = df.loc[df["text"].str.len() >= 150].reset_index(drop=True)
-    logger.info(
-        "Filtered %s texts shorter than 150 characters.", (pre_filter_len - len(df))
-    )
-
-    pre_filter_len = len(df)
-    df = df.loc[
-        ~df["title"].str.lower().str.startswith("med anledning av prop")
-    ].reset_index(drop=True)
-    logger.info("Filtered %s texts with generic title.", (pre_filter_len - len(df)))
+    df = filter_short_motions(df)
+    df = filter_titles(df)
 
     logger.info("Number of rows remaining: %s", len(df))
     df.to_feather(path=OUTPUT_DATA_PATH)
