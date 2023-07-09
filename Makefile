@@ -33,3 +33,6 @@ lint:
 # Test
 test:
 	PYTHONPATH=. tasks/test.sh
+
+unit-test:
+	PYTHONPATH=. pytest -s .
