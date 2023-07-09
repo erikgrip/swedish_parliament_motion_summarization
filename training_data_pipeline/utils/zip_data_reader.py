@@ -2,14 +2,13 @@ import json
 import logging
 import pickle
 import zipfile
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 
-from motion_title_generator.data.base_data_module import BaseDataModule
 from utils.log import logger
 
-
-DOWNLOADED_DATA_DIRNAME = BaseDataModule.data_dirname() / "downloaded"
+DOWNLOADED_DATA_DIRNAME = Path(__file__).resolve().parents[3] / "data" / "downloaded"
 ZIP_DIR = DOWNLOADED_DATA_DIRNAME / "zipped"
 OUTPUT_PATH = DOWNLOADED_DATA_DIRNAME / "raw_swe_parl_mot.pkl"
 
