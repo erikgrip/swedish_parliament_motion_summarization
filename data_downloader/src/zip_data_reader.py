@@ -71,8 +71,8 @@ def _read_motions_from_zip_arch(zip_arch):
                         doc["main_author"] = authors["namn"]
                         doc["author_party"] = authors["partibet"]
                     docs.append(doc)
-                except KeyError as e:
                     logging.info(
+                except (KeyError, TypeError) as e:
                         "Did not find key %s in motion id=%s, title=%s",
                         e,
                         document["dok_id"],

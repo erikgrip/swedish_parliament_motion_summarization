@@ -13,7 +13,7 @@ def load_dataframe(data_path=INPUT_DATA_PATH):
     """Load data from pickle file into a pandas dataframe."""
     logger.info("Loading data from %s into pandas dataframe.", data_path)
     try:
-        df = pd.read_pickle(data_path)  # nosec
+        df = pd.DataFrame(pd.read_pickle(data_path))  # nosec
     except FileNotFoundError:
         logger.error("No data found at %s.", data_path)
         raise
