@@ -9,7 +9,7 @@ from motion_title_generator.data.base_data_module import (
 )
 from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset
 from motion_title_generator.data.util import split_data
-from data_downloader import get_training_dataset
+from training_data_pipeline.pipeline import get_data
 from utils.log import logger
 
 DATA_PATH = (
@@ -51,7 +51,7 @@ class MotionsDataModule(BaseDataModule):
         elif self.trainer and self.trainer.testing:
             pass
         else:
-            get_training_dataset()
+            get_data()
 
     def setup(self, stage: Optional[str] = None) -> None:
         """Define steps that should be done on every GPU, like splitting data,

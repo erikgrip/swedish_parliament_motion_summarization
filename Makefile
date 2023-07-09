@@ -16,8 +16,8 @@ pip-tools:
 	pip-compile requirements/prod.in && pip-compile requirements/dev.in
 	pip-sync requirements/prod.txt requirements/dev.txt
 
-data-download:
-	python -m data_downloader
+data-pipeline:
+	PYTHONPATH=. python training_data_pipeline/pipeline.py
 
 # Overfit on single batch
 overfit:
