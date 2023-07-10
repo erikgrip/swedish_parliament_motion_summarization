@@ -36,3 +36,6 @@ test:
 
 unit-test:
 	PYTHONPATH=. pytest -s .
+
+unit-test-slow:
+	PYTHONPATH=. RUN_SLOW=true pytest -s .
