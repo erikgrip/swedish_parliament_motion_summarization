@@ -16,8 +16,8 @@ pip-tools:
 	pip-compile requirements/prod.in && pip-compile requirements/dev.in
 	pip-sync requirements/prod.txt requirements/dev.txt
 
-data-download:
-	python -m data_downloader
+data-pipeline:
+	PYTHONPATH=. python training_data_pipeline/pipeline.py
 
 # Overfit on single batch
 overfit:
@@ -33,3 +33,9 @@ lint:
 # Test
 test:
 	PYTHONPATH=. tasks/test.sh
+
+unit-test:
+	PYTHONPATH=. pytest -s .
+
+unit-test-slow:
+	PYTHONPATH=. RUN_SLOW=true pytest -s .
