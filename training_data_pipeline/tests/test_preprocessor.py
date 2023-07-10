@@ -14,7 +14,6 @@ from training_data_pipeline.utils.preprocessor import (
 )
 
 
-# Sample test data
 @pytest.fixture(name="sample_dataframe")
 def fixture_sample_dataframe():
     """Create a sample dataframe for testing."""
@@ -52,6 +51,7 @@ def test_filter_nan_rows(sample_dataframe):
     sample_dataframe.loc[0, "title"] = pd.NA
     filtered_df = filter_nan_rows(sample_dataframe)
 
+    assert len(filtered_df) == 3
     assert filtered_df["text"].values.tolist() == ["Text 2", "Text 3", "Text 4"]
 
 
@@ -59,6 +59,7 @@ def test_filter_short_motions(sample_dataframe):
     sample_dataframe.loc[3, "text"] = 20 * "bla, bla, bla,"
     filtered_df = filter_short_motions(sample_dataframe)
 
+    assert len(filtered_df) == 1
     assert filtered_df["title"].values.tolist() == ["Title 4"]
 
 
@@ -72,4 +73,5 @@ def test_filter_titles(sample_dataframe):
     ]
     filtered_df = filter_titles(sample_dataframe)
 
+    assert len(filtered_df) == 2
     assert filtered_df["title"].values.tolist() == ["Title 2", "Title 3"]
