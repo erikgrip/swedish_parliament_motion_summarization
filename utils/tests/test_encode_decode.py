@@ -1,8 +1,6 @@
 import pytest
 import torch
-from transformers import MT5Tokenizer, MT5ForConditionalGeneration
-from transformers.testing_utils import slow
-
+from transformers import MT5ForConditionalGeneration, MT5Tokenizer
 
 from utils.encode_decode import encode, generate
 
@@ -19,7 +17,6 @@ def setup_tokenizer():
     yield MT5Tokenizer.from_pretrained("google/mt5-small")
 
 
-@slow
 @pytest.mark.parametrize(
     "text, max_tokens",
     [
@@ -36,7 +33,6 @@ def test_encode(tokenizer, text, max_tokens):
     assert encoding["input_ids"].shape[-1] == max_tokens
 
 
-@slow
 def test_generate_with_input(model, tokenizer):
     """Test that generate returns a non-empty string."""
     text_encoding = {
@@ -48,7 +44,6 @@ def test_generate_with_input(model, tokenizer):
     assert len(title) > 0
 
 
-@slow
 def test_generate_without_input(model, tokenizer):
     """Test that generate returns an empty string when input is empty."""
     text_encoding = {
