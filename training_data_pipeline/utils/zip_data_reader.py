@@ -18,7 +18,7 @@ def read_zip_file_data_to_pkl(zip_dir=ZIP_DIR, output_path=OUTPUT_PATH):
     logger.info("Reading data from zip files in %s ...", zip_dir)
     data = []
     for zip_file in zip_dir.glob("*.zip"):
-        data_list = _read_motions_from_zip_arch(zip_file)
+        data_list = read_motions_from_zip_arch(zip_file)
         data.extend(data_list)
 
     logger.info("Saving data ...")
@@ -27,7 +27,7 @@ def read_zip_file_data_to_pkl(zip_dir=ZIP_DIR, output_path=OUTPUT_PATH):
     logger.info("The %s file was saved at %s", target_file, output_path)
 
 
-def _read_motions_from_zip_arch(zip_arch):
+def read_motions_from_zip_arch(zip_arch):
     """Read motion files from local zipped directories and return
     a list of dictionaries with one entry per motion. Each dict hold info
     about the document's ID, date, title and text.
@@ -66,7 +66,7 @@ def _read_motions_from_zip_arch(zip_arch):
                     doc["date"] = document["datum"]
                     doc["file_date"] = document["systemdatum"]
                     doc["subtitle"] = document["subtitel"]
-                    doc["text"] = _parse_html_text(document["html"])
+                    doc["text"] = parse_html_text(document["html"])
                     authors = data["dokumentstatus"]["dokintressent"]["intressent"]
                     if isinstance(authors, list):
                         doc["main_author"] = authors[0]["namn"]
@@ -91,7 +91,8 @@ def _read_motions_from_zip_arch(zip_arch):
     return parsed_docs
 
 
-def _parse_html_text(html: str):
+def parse_html_text(html: str) -> str:
+    """Parse html text and return a string with the text content."""
     soup = BeautifulSoup(html, features="html.parser")
 
     # Drop script and style elements
