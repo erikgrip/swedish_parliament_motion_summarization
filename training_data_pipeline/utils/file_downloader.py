@@ -7,7 +7,7 @@ from tqdm import tqdm
 from utils.log import logger
 
 DOWNLOADED_DATA_DIRNAME = (
-    Path(__file__).resolve().parents[3] / "data" / "downloaded" / "zipped"
+    Path(__file__).resolve().parents[2] / "data" / "downloaded" / "zipped"
 )
 
 
@@ -44,7 +44,6 @@ def download_motion_zip_files(
                 response = requests.get(
                     zip_arch_url, allow_redirects=True, timeout=10.0
                 )
-                logger.info("response: %s", response.content)
                 with open(output_file_path, "wb") as f:
                     logger.debug(
                         "Downloading raw dataset from %s to %s ...",
