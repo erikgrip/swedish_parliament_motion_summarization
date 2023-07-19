@@ -1,5 +1,3 @@
-import argparse
-
 import torch
 from transformers.models.auto.modeling_auto import AutoModelForSeq2SeqLM
 from transformers.models.mt5 import MT5Tokenizer
@@ -27,20 +25,3 @@ class MotionTitleGenerator:
         """Generate a title for an input text."""
         enc = self.encode_text(text)
         return generate(self.model, self.tokenizer, enc, MAX_TITLE_TOKENS)
-
-
-def main():
-    """Run the motion title generator."""
-    parser = argparse.ArgumentParser(
-        description="Generate a title for a Swedish Parliament Motion."
-    )
-    parser.add_argument("text", type=str)
-    args = parser.parse_args()
-
-    text_recognizer = MotionTitleGenerator()
-    pred_str = text_recognizer.predict(args.text)
-    print(pred_str)
-
-
-if __name__ == "__main__":
-    main()

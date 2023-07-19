@@ -1,4 +1,3 @@
-import argparse
 from pathlib import Path
 from typing import Dict, Optional, Union
 
@@ -106,14 +105,3 @@ class BaseDataModule(L.LightningDataModule):
             num_workers=self.num_workers,
             pin_memory=self.on_gpu,
         )
-
-
-def load_and_print_info(data_module_class) -> None:
-    """Print dataset loaded from given data_module_class."""
-    parser = argparse.ArgumentParser()
-    data_module_class.add_to_argparse(parser)
-    args = parser.parse_args()
-    dataset = data_module_class(args)
-    dataset.prepare_data()
-    dataset.setup()
-    print(dataset)
