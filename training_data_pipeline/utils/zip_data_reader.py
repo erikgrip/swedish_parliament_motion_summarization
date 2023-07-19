@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 from utils.log import logger
 
-DOWNLOADED_DATA_DIRNAME = Path(__file__).resolve().parents[3] / "data" / "downloaded"
+DOWNLOADED_DATA_DIRNAME = Path(__file__).resolve().parents[2] / "data" / "downloaded"
 ZIP_DIR = DOWNLOADED_DATA_DIRNAME / "zipped"
 OUTPUT_PATH = DOWNLOADED_DATA_DIRNAME / "raw_swe_parl_mot.pkl"
 

@@ -5,7 +5,7 @@ import pandas as pd
 from utils.log import logger
 from utils.text import prep_text, trim_whitespace
 
-DOWNLOADED_DATA_DIRNAME = Path(__file__).resolve().parents[3] / "data" / "downloaded"
+DOWNLOADED_DATA_DIRNAME = Path(__file__).resolve().parents[2] / "data" / "downloaded"
 INPUT_DATA_PATH = DOWNLOADED_DATA_DIRNAME / "raw_swe_parl_mot.pkl"
 OUTPUT_DATA_PATH = DOWNLOADED_DATA_DIRNAME / "prepped_training_data.feather"
 
