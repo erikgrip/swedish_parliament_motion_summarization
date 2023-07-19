@@ -1,12 +1,12 @@
 import argparse
 import glob
-import logging
 import os
 
 import yaml
 
 from motion_title_generator.lit_models import MT5LitModel
 from motion_title_generator.models import t5
+from utils.log import logger
 
 BASE_PATH = "training/logs/lightning_logs/"
 
@@ -30,18 +30,18 @@ def get_local_file_paths(version):
 
 def load_litmodel(checkpoint_path, cfg_path):
     """Load Pytorch Lightning model from checkpoint and saved config file."""
-    logging.info("Loading checkpoint config %s ...", cfg_path)
+    logger.info("Loading checkpoint config %s ...", cfg_path)
     with open(cfg_path, "r", encoding="utf-8") as hparams_file:
         lightning_config = vars(argparse.Namespace(**yaml.safe_load(hparams_file)))
 
     model = t5.MT5(data_config={}, args=lightning_config)
 
-    logging.info("Loading Lightning Model from checkpoint %s ...", checkpoint_path)
+    logger.info("Loading Lightning Model from checkpoint %s ...", checkpoint_path)
     lightning_model = MT5LitModel.load_from_checkpoint(
         checkpoint_path=checkpoint_path,
         model=model,
     )
-    logging.info("Done!")
+    logger.info("Done!")
     return lightning_model
 
 

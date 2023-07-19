@@ -1,4 +1,3 @@
-import logging
 import os
 
 from flask import Flask, render_template, request
@@ -11,9 +10,6 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Do not use GPU
 
 
 app = Flask(__name__)
-logging.basicConfig(
-    format="%(asctime)s - %(levelname)s - %(message)s", level=logging.INFO
-)
 model = MotionTitleGenerator()
 
 
@@ -41,7 +37,6 @@ def predict():
         pred = "Please enter a longer text"
     else:
         pred = model.predict(text)
-        logging.info("pred %s", pred)
 
     return render_template("predict_form.html", text=text or "", pred=pred or "")
 

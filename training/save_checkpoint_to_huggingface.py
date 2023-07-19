@@ -1,5 +1,4 @@
 import argparse
-import logging
 import os
 import shutil
 
@@ -7,11 +6,9 @@ from huggingface_hub import hf_api
 from transformers.models.mt5 import MT5Tokenizer
 
 from utils.checkpoint import add_version_arg, get_local_file_paths, load_litmodel
+from utils.log import logger
 
 TMP_SAVE_DIR = "tmp/hf_upload"
-
-logging.basicConfig(level=logging.INFO)
-logging.getLogger("torch").setLevel(logging.WARNING)
 
 
 def hf_login(user):
@@ -24,7 +21,7 @@ def hf_login(user):
 
 def push_model_dir_to_hf(hf_model):
     """Upload local model direktory to Huggingface."""
-    logging.info("Pushing model files to %s...", hf_model)
+    logger.info("Pushing model files to %s...", hf_model)
     api = hf_api.HfApi()
     api.upload_folder(
         folder_path=TMP_SAVE_DIR,
@@ -32,7 +29,7 @@ def push_model_dir_to_hf(hf_model):
         repo_id=hf_model,
         repo_type="model",
     )
-    logging.info("Done!")
+    logger.info("Done!")
 
 
 if __name__ == "__main__":
