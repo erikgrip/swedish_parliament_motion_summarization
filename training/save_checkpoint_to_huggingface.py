@@ -4,12 +4,9 @@ import os
 import shutil
 
 from huggingface_hub import hf_api
+from transformers.models.mt5 import MT5Tokenizer
 
-from utils.checkpoint import (
-    get_local_file_paths,
-    load_litmodel_from_checkpoint,
-    load_tokenizer,
-)
+from utils.checkpoint import add_version_arg, get_local_file_paths, load_litmodel
 
 TMP_SAVE_DIR = "tmp/hf_upload"
 
@@ -39,12 +36,7 @@ def push_model_dir_to_hf(hf_model):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--version",
-        type=int,
-        help="the version in the directory name in yor lightning_logs directory",
-    )
+    parser = add_version_arg(argparse.ArgumentParser())
     parser.add_argument(
         "--hf_user",
         type=str,
@@ -59,8 +51,8 @@ if __name__ == "__main__":
 
     hf_login(args.hf_user)
     chkpt_path, config_path = get_local_file_paths(args.version)
-    lit_model = load_litmodel_from_checkpoint(chkpt_path, config_path)
-    tokenizer = load_tokenizer(lit_model.model.model_name)
+    lit_model = load_litmodel(chkpt_path, config_path)
+    tokenizer = MT5Tokenizer.from_pretrained(lit_model.model.model_name)
 
     lit_model.model.model.save_pretrained(TMP_SAVE_DIR)
     tokenizer.save_pretrained(TMP_SAVE_DIR)

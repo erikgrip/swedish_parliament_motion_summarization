@@ -4,7 +4,6 @@ import logging
 import os
 
 import yaml
-from transformers.models.mt5 import MT5Tokenizer
 
 from motion_title_generator.lit_models import MT5LitModel
 from motion_title_generator.models import t5
@@ -29,7 +28,7 @@ def get_local_file_paths(version):
     return checkpoint_filenames[0], cfg_path
 
 
-def load_litmodel_from_checkpoint(checkpoint_path, cfg_path):
+def load_litmodel(checkpoint_path, cfg_path):
     """Load Pytorch Lightning model from checkpoint and saved config file."""
     logging.info("Loading checkpoint config %s ...", cfg_path)
     with open(cfg_path, "r", encoding="utf-8") as hparams_file:
@@ -46,7 +45,11 @@ def load_litmodel_from_checkpoint(checkpoint_path, cfg_path):
     return lightning_model
 
 
-def load_tokenizer(model_name: str):
-    """Return tokenizer object for a given MT5 model."""
-    return MT5Tokenizer.from_pretrained(model_name)
-
+def add_version_arg(parser: argparse.ArgumentParser):
+    """Add version argument to parser."""
+    parser.add_argument(
+        "--version",
+        type=int,
+        help="the version in the directory name in yor lightning_logs directory",
+    )
+    return parser
