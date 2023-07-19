@@ -1,5 +1,4 @@
 import json
-import logging
 import pickle
 import zipfile
 from pathlib import Path
@@ -53,7 +52,7 @@ def read_motions_from_zip_arch(zip_arch):
                 try:
                     document = data["dokumentstatus"]["dokument"]
                 except TypeError as e:
-                    logging.debug("Failed to read motion %s: %s", filename, e)
+                    logger.debug("Failed to read motion %s: %s", filename, e)
                     continue
 
                 doc = {}
@@ -76,7 +75,7 @@ def read_motions_from_zip_arch(zip_arch):
                         doc["author_party"] = authors["partibet"]
                     parsed_docs.append(doc)
                 except (KeyError, TypeError) as e:
-                    logging.debug(
+                    logger.debug(
                         "Did not find key %s in motion id=%s, title=%s",
                         e,
                         document["dok_id"],

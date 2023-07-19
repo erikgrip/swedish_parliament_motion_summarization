@@ -3,10 +3,7 @@ from typing import Dict, Optional
 import pandas as pd
 from torch.utils.data import DataLoader
 
-from motion_title_generator.data.base_data_module import (
-    BaseDataModule,
-    load_and_print_info,
-)
+from motion_title_generator.data.base_data_module import BaseDataModule
 from motion_title_generator.data.t5_encodings_dataset import MT5EncodingsDataset
 from motion_title_generator.data.util import split_data
 from training_data_pipeline.pipeline import get_data
@@ -113,7 +110,3 @@ class MotionsDataModule(BaseDataModule):
             shuffle=False,
             num_workers=self.num_workers,
         )
-
-
-if __name__ == "__main__":
-    load_and_print_info(MotionsDataModule)
