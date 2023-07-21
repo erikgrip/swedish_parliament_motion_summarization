@@ -1,5 +1,6 @@
-ARG MODEL_TYPE
+# Re-declare inside each build stage to use in that stage
 ARG MODEL_PATH
+ARG MODEL_TYPE
 
 # 1. Use this image with model stored at huggingface
 # --------------------------------------------------
@@ -23,14 +24,20 @@ COPY utils/ ./utils
 # 2. Use this image to include local model artifacts
 # --------------------------------------------------
 FROM build_hf AS build_local
-COPY $MODEL_PATH ./motion_title_generator/artifacts
+
+ARG MODEL_PATH
+
+COPY $MODEL_PATH $MODEL_PATH
 
 
-# 3. Use relevant image version
+# 3. Select base image using MODEL_TYPE arg
 # -----------------------------
 FROM build_${MODEL_TYPE} AS build
+
+ARG MODEL_PATH
 
 # Run the web server
 EXPOSE 8000
 ENV PYTHONPATH /repo
+ENV HF_REPO_OR_ARTIFACT_PATH ${MODEL_PATH}
 CMD python3 /repo/api/app.py
