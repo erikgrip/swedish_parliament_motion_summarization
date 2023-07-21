@@ -1,4 +1,4 @@
-name: swe-parl-mot-summarization
+name: swe-motion-env
 channels:
   - defaults
 dependencies:
@@ -7,4 +7,4 @@ dependencies:
   - cudnn
   - pip
   - pip:
-    - pip-tools
+      - pip-tools
