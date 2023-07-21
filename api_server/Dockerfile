@@ -21,17 +21,17 @@ COPY motion_title_generator/motion_title_generator.py ./motion_title_generator/m
 COPY utils/ ./utils
 
 
-# 2. Use this image to include local model artifacts
+# 2. Extend image to include local model artifacts
 # --------------------------------------------------
 FROM build_hf AS build_local
 
 ARG MODEL_PATH
 
-COPY $MODEL_PATH $MODEL_PATH
+COPY $MODEL_PATH ${MODEL_PATH}
 
 
 # 3. Select base image using MODEL_TYPE arg
-# -----------------------------
+# -----------------------------------------
 FROM build_${MODEL_TYPE} AS build
 
 ARG MODEL_PATH
