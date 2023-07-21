@@ -25,11 +25,9 @@ overfit:
 minimal-training:
 	PYTHONPATH=. python training/run_experiment.py --max_epochs=2 --num_workers=0 --data_class=MotionsDataModule --model_class=MT5 --fast_dev_run=True  --data_frac=0.001
 
-# Lint
 lint:
 	tasks/lint.sh
 
-# Test
 test:
 	PYTHONPATH=. tasks/test.sh
 
