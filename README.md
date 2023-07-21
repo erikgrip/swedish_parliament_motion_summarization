@@ -18,12 +18,17 @@ docker build -t motion_title_app -f api_server/Dockerfile .
 
 Run app in Docker container:
 ```bash
-docker run -p 8000:8000 motion_title_app
+docker run -p 8000:8000 --name app_container motion_title_app
 ```
 
 Run app without docker:
 ```bash
 PYTHONPATH=. python api_server/app.py
+```
+
+Make build script executable if needed:
+```bash
+chmod +x api_server/build_app_image.sh
 ```
 
 

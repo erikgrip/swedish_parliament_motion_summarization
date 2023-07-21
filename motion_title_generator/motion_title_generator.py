@@ -1,3 +1,5 @@
+import os
+
 import torch
 from transformers.models.auto.modeling_auto import AutoModelForSeq2SeqLM
 from transformers.models.mt5 import MT5Tokenizer
@@ -13,8 +15,9 @@ class MotionTitleGenerator:
     """Class to generate a title for a motion text."""
 
     def __init__(self):
-        self.model = AutoModelForSeq2SeqLM.from_pretrained(MODEL)
-        self.tokenizer = MT5Tokenizer.from_pretrained(MODEL)
+        model = os.environ.get("HF_REPO_OR_ARTIFACT_PATH", MODEL)  # Set in Dockerfile
+        self.model = AutoModelForSeq2SeqLM.from_pretrained(model)
+        self.tokenizer = MT5Tokenizer.from_pretrained(model)
 
     def encode_text(self, text):
         """Use tokenizer to encode text."""
