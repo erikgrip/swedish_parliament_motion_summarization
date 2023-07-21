@@ -22,7 +22,7 @@ COPY utils/ ./utils
 
 
 # 2. Extend image to include local model artifacts
-# --------------------------------------------------
+# ------------------------------------------------
 FROM build_hf AS build_local
 
 ARG MODEL_PATH
