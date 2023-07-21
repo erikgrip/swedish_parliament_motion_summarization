@@ -26,5 +26,10 @@ Run app without docker:
 PYTHONPATH=. python api_server/app.py
 ```
 
+Make build script executable if needed:
+```bash
+chmod +x api_server/build_app_image.sh
+```
+
 
 
