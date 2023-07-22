@@ -113,7 +113,7 @@ chmod +x api_server/build_app_image.sh
 The script takes two command line arguments:
 
 - model_type - Specifiy where the model is located. Either hf (for huggingface) or local.
-- model_path - Either a huggingface repo (`user-name/repo-name`) or a local path (`motion_title_generator/artifacts/...`).
+- model_path - Either a huggingface repo (`user-name/repo-name`) or a local path (for example`motion_title_generator/artifacts/version1_epoch001_val_loss0.01`).
 
 If you just want to get a sample app going you can use:
 
