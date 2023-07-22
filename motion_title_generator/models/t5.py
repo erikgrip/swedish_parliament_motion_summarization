@@ -26,7 +26,7 @@ class MT5(nn.Module):
             type=str,
             choices=["small", "base", "large", "xl", "xxl"],
             default=MT5_VERSION,
-            help="MT5 model version (small, base, large, xl, xxl)",
+            help="MT5 model version to fine tune.",
         )
         return parser
 
