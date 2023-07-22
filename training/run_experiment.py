@@ -115,9 +115,9 @@ def main():
         mode="min",
     )
     callbacks = (
-        [early_stopping_callback, model_checkpoint_callback]
-        if not args.overfit_batches
-        else [early_stopping_callback]
+        [early_stopping_callback]
+        if args.overfit_batches
+        else [early_stopping_callback, model_checkpoint_callback]
     )
 
     trainer = Trainer(
