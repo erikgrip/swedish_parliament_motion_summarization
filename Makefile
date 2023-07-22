@@ -11,10 +11,13 @@ conda-update:
 	conda env update --prune -f environment.yml
 	echo "Now run:\nconda activate swe-motion-env"
 
+pip-sync:
+	pip-sync requirements/prod.txt requirements/dev.txt
+
 pip-tools:
 	pip install pip-tools
 	pip-compile requirements/prod.in && pip-compile requirements/dev.in
-	pip-sync requirements/prod.txt requirements/dev.txt
+	make pip-sync
 
 
 # Training
@@ -40,3 +43,14 @@ test:
 
 unit-test:
 	PYTHONPATH=. pytest -s .
+
+
+# Prediction
+build-sample-app-image:
+	./api_server/build_app_image.sh hf erikgrip2/mt5-finetuned-for-motion-title
+
+run-app:
+	docker stop app_container || true && docker rm app_container || true
+	docker run -p 8000:8000 --name app_container motion_title_app
+
+
