@@ -1,11 +1,3 @@
-# swedish_parliament_motion_summarization
-
-Push checkpoint to Huggingface Hub:
-
-```bash
-PYTHONPATH=. python motion_title_generator/save_checkpoint_to_huggingface.py --version=2 --hf_model="erikgrip2/mt5-finetuned-for-motion-title"  --hf_user="erikgrip2"
-```
-
 # motion_title_generator
 
 ## Table of contents
@@ -22,6 +14,10 @@ This is a project to
 
 1. fine tune a language model to suggest titles for Swedish parliament motions
 2. serve predictions in a simple web app
+
+__the data__  
+Motions from the Swedish Parliament (Riksdagen) can be downloaded via their [open data](https://data.riksdagen.se/in-english/) site. Here is one  [example motion](https://data.riksdagen.se/dokumentstatus/HA022405.html). Use the [API's user interface](https://data.riksdagen.se/dokumentlista/) to read more motions.
+
 
 ## Technologies
 
@@ -45,14 +41,14 @@ $ git clone https://github.com/erikgrip/swedish_parliament_motion_summarization.
 
 There's some commands to get you started available in the Makefile. If you have Make installed the simply run 'make <command>'. If not, you can still just copy the commands from the Makefile to your terminal.
 
-`make conda-update`  
-Sets up a conda environment called `swe-motion-env` with the contents specified in [environment.yml](environment.yml). Afterwards, make sure to activate the environment.
+__make conda-update__  
+Sets up a conda environment called _swe-motion-env_ with the contents specified in [environment.yml](environment.yml). Afterwards, make sure to activate the environment.
 
 ```bash
 conda activate swe-motion-env
 ```
 
-`make pip-sync`  
+__make pip-sync__  
 Installs the package dependencies in your environment. The dependency specifications can be found in the [requirements/](requirements/) directory.
 
 ## Training
@@ -60,8 +56,9 @@ Installs the package dependencies in your environment. The dependency specificat
 When a training is started
 
 1. Training data is downloaded from the Swedish parliament ([read more here](https://data.riksdagen.se/in-english/)), if not already present on your system. It will be kept in the [data/](data/) directory.
-2. A version of [Google's MT5](https://huggingface.co/docs/transformers/model_doc/mt5) language models will be downloaded fine tuned on the training data using the PyTorch Lightning framework. In the prepped training data each example is a motion text, and it's target the motion's title.
-3. There will be a saved model checkpoint for the epoch with the best validation score in the [training/logs/lightning_logs/](training/logs/lightning_logs/) directory.
+2. The data is filtered and preprocessed to get better quality training data.
+3. A version of [Google's MT5](https://huggingface.co/docs/transformers/model_doc/mt5) language models will be downloaded fine tuned on the training data using the PyTorch Lightning framework. In the prepped training data each example is a motion text, and it's target the motion's title.
+4. There will be a saved model checkpoint for the epoch with the best validation score in the [training/logs/lightning_logs/](training/logs/lightning_logs/) directory.
 
 To list the available training parameters, run:
 
@@ -113,7 +110,7 @@ chmod +x api_server/build_app_image.sh
 The script takes two command line arguments:
 
 - model_type - Specifiy where the model is located. Either hf (for huggingface) or local.
-- model_path - Either a huggingface repo (`user-name/repo-name`) or a local path (for example`motion_title_generator/artifacts/version1_epoch001_val_loss0.01`).
+- model_path - Either a huggingface repo (`user-name/repo-name`) or a local path (for example `motion_title_generator/artifacts/version1_epoch001_val_loss0.01`).
 
 If you just want to get a sample app going you can use:
 
