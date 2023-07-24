@@ -23,11 +23,12 @@ Motions from the Swedish Parliament (Riksdagen) can be downloaded via their [ope
 
 ## Technologies
 
-Project is created using
+The project was created using
 
 - Python 3
 - Pytorch and [PyTorch Lightning](https://lightning.ai/docs/pytorch/latest/)
 - Docker, Bash, Pytest, Github Actions, Tensorboard and more
+
 
 ## Setup
 
@@ -52,6 +53,7 @@ conda activate swe-motion-env
 
 __make pip-sync__  
 Installs the package dependencies in your environment. The dependency specifications can be found in the [requirements/](requirements/) directory.
+
 
 ## Training
 
@@ -99,6 +101,7 @@ PYTHONPATH=. python training/save_checkpoint_to_local_artifact.py --version=<ver
 ```
 
 where `<version>` is an integer representing a model directory in [training/logs/lightning_logs/](training/logs/lightning_logs/)
+
 
 ## Generating Titles
 
