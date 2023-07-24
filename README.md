@@ -15,6 +15,8 @@ This is a project to
 1. fine tune a language model to suggest titles for Swedish parliament motions
 2. serve predictions in a simple web app
 
+The project was created with some very concrete inspiration from the course [Full Stack Deep Learning 2021](https://fullstackdeeplearning.com/spring2021/) and from Venelin Valkov's Youtube video [Text summarization with T5 Transformer using PyTorch, PyTorch Lightning and Python](https://www.youtube.com/watch?v=KMyZUIraHio). Go check them out!
+
 __the data__  
 Motions from the Swedish Parliament (Riksdagen) can be downloaded via their [open data](https://data.riksdagen.se/in-english/) site. Here is one  [example motion](https://data.riksdagen.se/dokumentstatus/HA022405.html). Use the [API's user interface](https://data.riksdagen.se/dokumentlista/) to read more motions.
 
