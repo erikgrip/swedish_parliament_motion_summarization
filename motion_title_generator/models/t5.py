@@ -24,8 +24,9 @@ class MT5(nn.Module):
         parser.add_argument(
             "--mt5_version",
             type=str,
+            choices=["small", "base", "large", "xl", "xxl"],
             default=MT5_VERSION,
-            help="MT5 model version (small, base, large, xl, xxl)",
+            help="MT5 model version to fine tune.",
         )
         return parser
 
